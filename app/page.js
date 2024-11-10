@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { metadata } from '@/app/metaData'
+import { metadata } from '@/app/meta-data'
 
 export { metadata }
 
