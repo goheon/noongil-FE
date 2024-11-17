@@ -1,9 +1,9 @@
 'use client'
 
 import localFont from 'next/font/local'
-import { useState } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 
+import { queryClient } from '@/app/_lib'
 import '@/app/_styles'
 
 // const geistSans = localFont({
@@ -18,7 +18,6 @@ import '@/app/_styles'
 // })
 
 export default function RootLayout({ children }) {
-  const [queryClient] = useState(() => new QueryClient())
   return (
     <html lang="ko">
       <body className={``}>
