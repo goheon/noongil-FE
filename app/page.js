@@ -1,7 +1,9 @@
 import Image from 'next/image'
-import { metadata } from '@/app/meta-data'
 
-export { metadata }
+export const metadata = {
+  title: '눈길 noongil',
+  description: '...',
+}
 
 export default function Home() {
   return (

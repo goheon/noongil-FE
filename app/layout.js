@@ -4,6 +4,7 @@ import localFont from 'next/font/local'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { queryClient } from '@/app/_lib'
+import { Header } from '@/app/_components/common'
 import '@/app/_styles'
 
 // const geistSans = localFont({
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
     <html lang="ko">
       <body className={``}>
         <QueryClientProvider client={queryClient}>
+          <Header />
           {children}
         </QueryClientProvider>
       </body>
