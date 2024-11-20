@@ -5,10 +5,12 @@ export const metadata = {
   description: '...',
 }
 
-export default function Home() {
+const Home = () => {
   return (
     <div>
       <h1>INDEX PAGE</h1>
     </div>
   )
 }
+
+export default Home

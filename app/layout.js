@@ -18,7 +18,7 @@ import '@/app/_styles'
 //   weight: '100 900',
 // })
 
-export default function RootLayout({ children }) {
+const RootLayout = ({ children }) => {
   return (
     <html lang="ko">
       <body className={``}>
@@ -30,3 +30,5 @@ export default function RootLayout({ children }) {
     </html>
   )
 }
+
+export default RootLayout
