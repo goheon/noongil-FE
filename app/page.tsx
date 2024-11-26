@@ -1,11 +1,13 @@
 import Image from 'next/image'
+import React from 'react'
+import { NextPage } from 'next'
 
 export const metadata = {
   title: '눈길 noongil',
   description: '...',
 }
 
-const Home = () => {
+const Home: NextPage = () => {
   return (
     <div>
       <h1>INDEX PAGE</h1>

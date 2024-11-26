@@ -1,6 +1,7 @@
 'use client'
 
 import localFont from 'next/font/local'
+import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { queryClient } from '@/app/_lib'
@@ -18,7 +19,7 @@ import '@/app/_styles'
 //   weight: '100 900',
 // })
 
-const RootLayout = ({ children }) => {
+const RootLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <html lang="ko">
       <body className={``}>
