@@ -40,7 +40,7 @@ export const useNaverMapSDK = ({
       // 컴포넌트 언마운트 시 스크립트 제거
       document.body.removeChild(script)
     }
-  }, [clientId, mapContainerId])
+  }, [center.lat, center.lng, clientId, mapContainerId, zoom])
 
   return map // 초기화된 네이버 지도 객체 반환
 }
