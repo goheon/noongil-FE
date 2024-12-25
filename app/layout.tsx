@@ -5,7 +5,7 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { queryClient } from '@/app/_lib'
-import { Header } from '@/app/_components/common'
+import { BottomNavigation, Header } from '@/app/_components/common'
 import '@/app/_styles'
 
 // const geistSans = localFont({
@@ -22,10 +22,13 @@ import '@/app/_styles'
 const RootLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <html lang="ko">
-      <body className={``}>
+      <body className={`pages`}>
         <QueryClientProvider client={queryClient}>
-          <Header />
-          {children}
+          <div className="pages_wrapper">
+            <Header />
+            <main>{children}</main>
+            <BottomNavigation />
+          </div>
         </QueryClientProvider>
       </body>
     </html>

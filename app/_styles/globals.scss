@@ -1,1 +1,26 @@
+.pages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  box-sizing: border-box;
 
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 430px;
+    height: 100%;
+
+    > :last-child {
+      margin-top: auto;
+    }
+  }
+}
+
+.pages.exhibition {
+  background-color: #000000;
+  color: #ffffff;
+}

@@ -1,0 +1,40 @@
+.header {
+  display: flex;
+  padding: 17px 25px;
+  border: 1px solid black;
+  //   width: 100%;
+
+  &_logo-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-right: 15px;
+
+    &_title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+  }
+
+  &_search-box {
+    position: relative;
+    width: 100%;
+
+    &_input {
+      padding: 0 20% 0 10%;
+      border: 1px solid rgba($color: #000000, $alpha: 0.15);
+      width: 70%;
+      height: 100%;
+      font-size: 20px;
+      font-weight: 400;
+      border-radius: 33px;
+    }
+
+    &_icon {
+      position: absolute;
+      top: 25%;
+      right: 5%;
+    }
+  }
+}
