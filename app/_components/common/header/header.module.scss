@@ -1,8 +1,6 @@
 .header {
   display: flex;
   padding: 17px 25px;
-  border: 1px solid black;
-  //   width: 100%;
 
   &_logo-box {
     display: flex;
@@ -10,6 +8,10 @@
     justify-content: center;
     flex-direction: column;
     margin-right: 15px;
+
+    &_icon.exhibition {
+      fill: #ffffff;
+    }
 
     &_title {
       font-size: 15px;
@@ -29,9 +31,15 @@
       font-size: 20px;
       font-weight: 400;
       border-radius: 33px;
+
+      &_exhibition {
+        background-color: #000000;
+        border: 1px solid #ffffff;
+      }
     }
 
-    &_icon {
+    &_button {
+      all: unset;
       position: absolute;
       top: 25%;
       right: 5%;
