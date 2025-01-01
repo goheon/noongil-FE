@@ -1,15 +1,9 @@
-import { useDisplayState } from '@/app/_lib'
 import styles from './bottomNavigation.module.scss'
 
 const BottomNavigation: React.FC = () => {
-  const { isNavigationDisplay } = useDisplayState()
-
+  // ${!isNavigationDisplay && styles['hidden']}
   return (
-    <div
-      className={`${styles[`bottom-navigation`]} ${!isNavigationDisplay && styles['hidden']}`}
-    >
-      BottomNavigation
-    </div>
+    <div className={`${styles[`bottom-navigation`]}`}>BottomNavigation</div>
   )
 }
 
