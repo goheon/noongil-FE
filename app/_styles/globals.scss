@@ -8,12 +8,19 @@
   box-sizing: border-box;
 
   &_wrapper {
-    border: 1px solid black;
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 430px;
     height: 100%;
+
+    .content {
+      height: 100%;
+      width: 100%;
+      margin-top: 88px;
+      margin-bottom: 103px;
+    }
 
     > :last-child {
       margin-top: auto;

@@ -24,7 +24,9 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
   }
 
   return (
-    <div className={styles.header}>
+    <div
+      className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
+    >
       <div className={`${styles['header_search-bar']}`}>
         <div
           className={`${styles['header_search-bar_logo-box']}`}
@@ -78,7 +80,7 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
           onClick={() => handleSearchClick()}
         >
           <input
-            className={`${styles['header_search-bar_search-box_input']} ${isExhibition && styles['header_search-box_input_exhibition']}`}
+            className={`${styles['header_search-bar_search-box_input']} ${isExhibition && `${styles['header_search-bar_search-box_input_exhibition']}`}`}
             type="text"
             name="search"
             ref={inputRef}

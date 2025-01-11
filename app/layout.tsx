@@ -27,11 +27,11 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
 
   return (
     <html lang="ko">
-      <body className={`pages ${isExhibition && `exhibition`}`}>
+      <body className={`pages ${isExhibition ? 'exhibition' : ''}`}>
         <QueryClientProvider client={queryClient}>
           <div className="pages_wrapper">
             <Header isExhibition={isExhibition} />
-            <main>{children}</main>
+            <main className="content">{children}</main>
             <BottomNavigation />
           </div>
         </QueryClientProvider>
