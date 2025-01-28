@@ -8,7 +8,6 @@ import { HeaderProps } from '@/app/_types'
 import styles from './header.module.scss'
 
 // 헤더
-// 검색창 활성화 시, 뒤로가기 아이콘 렌더링 안됨 이슈
 const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -45,13 +44,23 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
           }}
         >
           {isSearchOpen ? (
-            <Image
-              className={`${styles['header_search-bar_logo-box_icon']}`}
-              src={ICON.back}
-              alt="back Icon"
-              width={39}
-              height={54}
-            />
+            !isExhibition ? (
+              <Image
+                className={`${styles['header_search-bar_logo-box_icon']}`}
+                src={ICON.back_white}
+                alt="back Icon"
+                width={39}
+                height={54}
+              />
+            ) : (
+              <Image
+                className={`${styles['header_search-bar_logo-box_icon']}`}
+                src={ICON.back}
+                alt="back Icon"
+                width={39}
+                height={54}
+              />
+            )
           ) : !isExhibition ? (
             <Image
               className={`${styles['header_search-bar_logo-box_icon']}`}
