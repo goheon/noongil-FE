@@ -4,13 +4,18 @@ import { useRouter } from 'next/navigation'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 import { ICON } from '@/public'
-import { HeaderProps } from '@/app/_types'
+import {
+  HeaderProps,
+  MainPageHeaderProps,
+  MyPageHeaderProps,
+  SearchBoxProps,
+} from '@/app/_types'
 import styles from './header.module.scss'
 
 // 헤더
 const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
-  const pathname = usePathname()
   const searchParams = useSearchParams()
+  const pathname = usePathname()
   const router = useRouter()
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -22,102 +27,162 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
     inputRef?.current?.focus()
   }
 
+  console.log(pathname)
   return (
     <div
       className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
     >
-      <div className={`${styles['header_search-bar']}`}>
-        <div
-          className={`${styles['header_search-bar_logo-box']}`}
-          onClick={() => {
-            if (isSearchOpen) {
-              setIsSearchOpen(false)
-            } else {
-              if (pathname.includes('exhibition')) {
-                router.push('/exhibition')
-              } else if (pathname.includes('popup')) {
-                router.push('/popup')
-              } else {
-                router.push('/')
-              }
-            }
-          }}
-        >
-          {isSearchOpen ? (
-            !isExhibition ? (
-              <Image
-                className={`${styles['header_search-bar_logo-box_icon']}`}
-                src={ICON.back_white}
-                alt="back Icon"
-                width={39}
-                height={54}
-              />
-            ) : (
-              <Image
-                className={`${styles['header_search-bar_logo-box_icon']}`}
-                src={ICON.back}
-                alt="back Icon"
-                width={39}
-                height={54}
-              />
-            )
-          ) : !isExhibition ? (
-            <Image
-              className={`${styles['header_search-bar_logo-box_icon']}`}
-              src={ICON.eyes}
-              alt="Eyes Icon"
-              width={39}
-              height={39}
-            />
-          ) : (
-            <Image
-              className={`${styles['header_search-bar_logo-box_icon']}`}
-              src={ICON.eyes_white}
-              alt="Eyes Icon"
-              width={39}
-              height={39}
-            />
-          )}
-          {!isSearchOpen && (
-            <span className={`${styles['header_search-bar_logo-box_title']}`}>
-              눈 길
-            </span>
-          )}
-        </div>
-        <div
-          className={`${styles['header_search-bar_search-box']}`}
-          onClick={() => handleSearchClick()}
-        >
-          <input
-            className={`${styles['header_search-bar_search-box_input']} ${isExhibition && `${styles['header_search-bar_search-box_input_exhibition']}`}`}
-            type="text"
-            name="search"
-            ref={inputRef}
-            placeholder={
-              isSearchOpen ? '장소, 테마를 검색해보세요.' : undefined
-            }
-          />
-          <button
-            className={`${styles['header_search-bar_search-box_button']}`}
-            type="button"
-            aria-label="Search"
-          >
-            <Image
-              className={`${styles['header_search-bar_search-box_icon']}`}
-              src={ICON.search}
-              alt="Search Icon"
-              width={30}
-              height={30}
-            />
-          </button>
-        </div>
-      </div>
-      {isSearchOpen && <RnPsearchBox />}
+      <MainPageHeader
+        isSearchOpen={isSearchOpen}
+        setIsSearchOpen={setIsSearchOpen}
+        isExhibition={isExhibition}
+        inputRef={inputRef}
+        handleSearchClick={handleSearchClick}
+      />
     </div>
   )
 }
 
-// 검색 포커스 최근, 인기 검색 목록 확장 박스
+// 메인페이지헤더
+const MainPageHeader: React.FC<MainPageHeaderProps> = ({
+  isSearchOpen,
+  setIsSearchOpen,
+  isExhibition,
+  inputRef,
+  handleSearchClick,
+}) => {
+  return (
+    <>
+      {/* 헤더 검색 바 */}
+      <div className={`${styles['header_search-bar']}`}>
+        {/* 로고 박스 */}
+        <LogoBox
+          isSearchOpen={isSearchOpen}
+          setIsSearchOpen={setIsSearchOpen}
+          isExhibition={isExhibition}
+        />
+        {/* 검색창 박스 */}
+        <SearchBox
+          handleSearchClick={handleSearchClick}
+          inputRef={inputRef}
+          isExhibition={isExhibition}
+          isSearchOpen={isSearchOpen}
+        />
+      </div>
+      {/* 검색 포커스 확장 최근, 인기 검색 목록 */}
+      {isSearchOpen && <RnPsearchBox />}
+    </>
+  )
+}
+
+// 검색창 인풋 박스
+const SearchBox: React.FC<SearchBoxProps> = ({
+  handleSearchClick,
+  isExhibition,
+  inputRef,
+  isSearchOpen,
+}) => {
+  return (
+    <div
+      className={`${styles['header_search-bar_search-box']}`}
+      onClick={() => handleSearchClick()}
+    >
+      {/* 검색 인풋 */}
+      <input
+        className={`${styles['header_search-bar_search-box_input']} ${isExhibition && `${styles['header_search-bar_search-box_input_exhibition']}`}`}
+        type="text"
+        name="search"
+        ref={inputRef}
+        placeholder={isSearchOpen ? '장소, 테마를 검색해보세요.' : undefined}
+      />
+      <button
+        className={`${styles['header_search-bar_search-box_button']}`}
+        type="button"
+        aria-label="Search"
+      >
+        <Image
+          className={`${styles['header_search-bar_search-box_icon']}`}
+          src={ICON.search}
+          alt="Search Icon"
+          width={30}
+          height={30}
+        />
+      </button>
+    </div>
+  )
+}
+
+// 헤더 로고 박스 컴포넌트
+const LogoBox: React.FC<MyPageHeaderProps> = ({
+  isSearchOpen,
+  setIsSearchOpen,
+  isExhibition,
+}) => {
+  const pathname = usePathname()
+  const router = useRouter()
+
+  return (
+    <div
+      className={`${styles['header_search-bar_logo-box']}`}
+      onClick={() => {
+        if (isSearchOpen) {
+          setIsSearchOpen(false)
+        } else {
+          if (pathname.includes('exhibition')) {
+            router.push('/exhibition')
+          } else if (pathname.includes('popup')) {
+            router.push('/popup')
+          } else {
+            router.push('/')
+          }
+        }
+      }}
+    >
+      {isSearchOpen ? (
+        !isExhibition ? (
+          <Image
+            className={`${styles['header_search-bar_logo-box_icon']}`}
+            src={ICON.back_white}
+            alt="back Icon"
+            width={39}
+            height={54}
+          />
+        ) : (
+          <Image
+            className={`${styles['header_search-bar_logo-box_icon']}`}
+            src={ICON.back}
+            alt="back Icon"
+            width={39}
+            height={54}
+          />
+        )
+      ) : !isExhibition ? (
+        <Image
+          className={`${styles['header_search-bar_logo-box_icon']}`}
+          src={ICON.eyes}
+          alt="Eyes Icon"
+          width={39}
+          height={39}
+        />
+      ) : (
+        <Image
+          className={`${styles['header_search-bar_logo-box_icon']}`}
+          src={ICON.eyes_white}
+          alt="Eyes Icon"
+          width={39}
+          height={39}
+        />
+      )}
+      {!isSearchOpen && (
+        <span className={`${styles['header_search-bar_logo-box_title']}`}>
+          눈 길
+        </span>
+      )}
+    </div>
+  )
+}
+
+// 검색 포커스 최근, 인기 검색 목록 확장 박스 컴포넌트
 const RnPsearchBox: React.FC = () => {
   return (
     <div className={`${styles['header_search-focus-box']}`}>
@@ -183,5 +248,7 @@ const RnPsearchBox: React.FC = () => {
     </div>
   )
 }
+
+const MyPageHeader = () => {}
 
 export { Header }
