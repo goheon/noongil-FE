@@ -14,6 +14,7 @@ const ICON = {
   report_active: '/icons/report-icon_active.svg',
   my: '/icons/my-icon.svg',
   my_active: '/icons/my-icon_active.svg',
+  cogwheel: '/icons/cogwheel-icon.svg',
 }
 
 export { ICON }

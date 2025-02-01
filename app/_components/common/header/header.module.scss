@@ -1,12 +1,12 @@
 .header {
   display: flex;
   flex-direction: column;
-  padding: 17px 25px;
   position: fixed;
+  box-sizing: border-box;
   width: 100%;
   max-width: 430px;
+  padding: 17px 25px;
   background-color: #ffffff;
-  box-sizing: border-box;
 
   &_search-bar {
     display: flex;
@@ -14,9 +14,9 @@
 
     &_logo-box {
       display: flex;
-      align-items: center;
-      justify-content: center;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
       margin-right: 15px;
 
       &_icon.exhibition {
@@ -24,8 +24,8 @@
       }
 
       &_title {
-        font-size: 15px;
         font-weight: 700;
+        font-size: 15px;
       }
     }
 
@@ -35,13 +35,13 @@
 
       &_input {
         display: inline-block;
-        padding: 0 20% 0 10%;
-        border: 1px solid rgba($color: #000000, $alpha: 0.15);
         width: 70%;
         height: 100%;
-        font-size: 1rem;
-        font-weight: 400;
+        border: 1px solid rgba($color: #000000, $alpha: 0.15);
         border-radius: 33px;
+        padding: 0 20% 0 10%;
+        font-weight: 400;
+        font-size: 1rem;
 
         &_exhibition {
           border: 1px solid #ffffff;
@@ -63,17 +63,17 @@
 
     &_title {
       margin-top: 38px;
-      font-size: 22px;
       font-weight: 600;
+      font-size: 22px;
     }
 
     &_recent-search-box {
       display: flex;
       flex-direction: row;
+      width: 100%;
       margin-top: 35px;
       overflow-x: auto;
       overflow-y: hidden;
-      width: 100%;
       white-space: nowrap;
       scroll-behavior: smooth;
 
@@ -81,9 +81,9 @@
         display: inline-flex;
         justify-content: space-between;
         margin-right: 20px;
-        padding: 15px 15px 12px 15px;
         border: 1px solid #9c9c9c;
         border-radius: 30px;
+        padding: 15px 15px 12px 15px;
 
         > span {
           margin-right: 10px;
@@ -106,6 +106,39 @@
       }
     }
   }
+
+  // 마이페이지 헤더
+  &_my {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+
+    &_text-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+
+      &_text {
+        font-weight: 500;
+        font-size: 20px;
+      }
+    }
+
+    &_icon {
+      position: absolute;
+
+      &_setting {
+        right: 0;
+      }
+    }
+  }
+}
+
+.myHeader {
+  padding: 20px 12px;
 }
 
 .exhibition {

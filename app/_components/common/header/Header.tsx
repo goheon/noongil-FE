@@ -31,47 +31,40 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
 
   console.log(pathname)
 
-  switch (pathname) {
-    // 메인페이지
-    case '/':
-      return (
-        <div
-          className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
-        >
-          <MainPageHeader
-            isSearchOpen={isSearchOpen}
-            setIsSearchOpen={setIsSearchOpen}
-            isExhibition={isExhibition}
-            inputRef={inputRef}
-            handleSearchClick={handleSearchClick}
-          />
-        </div>
-      )
-
-    // 마이페이지
-    case '/my':
-      return (
-        <div
-          className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
-        >
-          <MyPageHeader />
-        </div>
-      )
-
-    default:
-      return (
-        <div
-          className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
-        >
-          <MainPageHeader
-            isSearchOpen={isSearchOpen}
-            setIsSearchOpen={setIsSearchOpen}
-            isExhibition={isExhibition}
-            inputRef={inputRef}
-            handleSearchClick={handleSearchClick}
-          />
-        </div>
-      )
+  if (pathname === '/') {
+    return (
+      <div
+        className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
+      >
+        <MainPageHeader
+          isSearchOpen={isSearchOpen}
+          setIsSearchOpen={setIsSearchOpen}
+          isExhibition={isExhibition}
+          inputRef={inputRef}
+          handleSearchClick={handleSearchClick}
+        />
+      </div>
+    )
+  } else if (pathname.includes('/my')) {
+    return (
+      <div className={`${styles.header} ${styles.myHeader}`}>
+        <MyPageHeader />
+      </div>
+    )
+  } else {
+    return (
+      <div
+        className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
+      >
+        <MainPageHeader
+          isSearchOpen={isSearchOpen}
+          setIsSearchOpen={setIsSearchOpen}
+          isExhibition={isExhibition}
+          inputRef={inputRef}
+          handleSearchClick={handleSearchClick}
+        />
+      </div>
+    )
   }
 }
 
@@ -107,8 +100,66 @@ const MainPageHeader: React.FC<MainPageHeaderProps> = ({
   )
 }
 
+// 마이페이지 헤더
 const MyPageHeader = () => {
-  return <p>myPageHeader</p>
+  const pathname = usePathname()
+  const router = useRouter()
+
+  let headerText = ''
+
+  switch (pathname) {
+    case '/my':
+      headerText = '마이페이지'
+      break
+
+    case '/my/setting':
+      headerText = '계정정보'
+      break
+
+    case '/my/interest':
+      headerText = '내 관심사'
+      break
+
+    case '/my/favorites':
+      headerText = '즐겨찾기 팝업 / 전시'
+      break
+
+    default:
+      headerText = '마이페이지'
+      break
+  }
+
+  return (
+    <div className={`${styles['header_my']}`}>
+      {pathname !== '/my' && (
+        <Image
+          className={`${styles['header_my_icon']}`}
+          src={ICON.back_white}
+          alt="back Icon"
+          width={30}
+          height={30}
+          onClick={() => {
+            router.back()
+          }}
+        />
+      )}
+      <div className={`${styles['header_my_text-box']}`}>
+        <p className={`${styles['header_my_text-box_text']}`}>{headerText}</p>
+      </div>
+      {pathname === '/my' && (
+        <Image
+          className={`${styles['header_my_icon']} ${styles['header_my_icon_setting']}`}
+          src={ICON.cogwheel}
+          alt="Setting Icon"
+          width={30}
+          height={30}
+          onClick={() => {
+            router.push('/my/setting')
+          }}
+        />
+      )}
+    </div>
+  )
 }
 
 // 검색창 인풋 박스
