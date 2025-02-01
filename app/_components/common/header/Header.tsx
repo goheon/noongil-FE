@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useRef } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -51,7 +53,9 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
       return (
         <div
           className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
-        ></div>
+        >
+          <MyPageHeader />
+        </div>
       )
 
     default:
@@ -103,7 +107,9 @@ const MainPageHeader: React.FC<MainPageHeaderProps> = ({
   )
 }
 
-const MyPageHeader = () => {}
+const MyPageHeader = () => {
+  return <p>myPageHeader</p>
+}
 
 // 검색창 인풋 박스
 const SearchBox: React.FC<SearchBoxProps> = ({

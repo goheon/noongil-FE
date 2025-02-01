@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -14,9 +16,9 @@ const BottomNavigation: React.FC = () => {
     <div className={`${styles[`bottom-navigation`]}`}>
       <div
         className={`${styles[`bottom-navigation_button`]}`}
-        onClick={() => router.push('/search')}
+        onClick={() => router.push('/list')}
       >
-        {pathname.includes('/search') ? (
+        {pathname.includes('/list') ? (
           <Image
             className={`${styles['header_search-bar_search-box_icon']}`}
             src={ICON.search_list_active}
@@ -62,7 +64,9 @@ const BottomNavigation: React.FC = () => {
         className={`${styles[`bottom-navigation_button`]}`}
         onClick={() => router.push('/')}
       >
-        {pathname === '/' ? (
+        {pathname === '/' ||
+        pathname === '/exhibition' ||
+        pathname === '/popup' ? (
           <Image
             className={`${styles['header_search-bar_search-box_icon']}`}
             src={ICON.home_active}

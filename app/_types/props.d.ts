@@ -27,14 +27,14 @@ export interface SearchBoxProps {
 
 // 전시 상세 페이지 props
 export interface ExhibitionDetailPageProps {
-  params: {
+  params: Promise<{
     exhibitionNo: string
-  }
+  }>
 }
 
 // 팝업 상세 페이지 props
 export interface PopupDetailPageProps {
-  params: {
+  params: Promise<{
     popupNo: string
-  }
+  }>
 }

@@ -1,8 +1,8 @@
 'use client'
 
 import localFont from 'next/font/local'
-import React from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import React, { Suspense } from 'react'
+import { usePathname } from 'next/navigation'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { queryClient } from '@/app/_lib'
@@ -22,7 +22,6 @@ import '@/app/_styles'
 
 const RootLayout = ({ children }: React.PropsWithChildren) => {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const isExhibition: boolean = pathname.includes('exhibition')
 
   return (
@@ -30,9 +29,13 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
       <body className={`pages ${isExhibition ? 'exhibition' : ''}`}>
         <QueryClientProvider client={queryClient}>
           <div className="pages_wrapper">
-            <Header isExhibition={isExhibition} />
+            <Suspense>
+              <Header isExhibition={isExhibition} />
+            </Suspense>
             <main className="content">{children}</main>
-            <BottomNavigation />
+            <Suspense>
+              <BottomNavigation />
+            </Suspense>
           </div>
         </QueryClientProvider>
       </body>
