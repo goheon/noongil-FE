@@ -28,19 +28,47 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
   }
 
   console.log(pathname)
-  return (
-    <div
-      className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
-    >
-      <MainPageHeader
-        isSearchOpen={isSearchOpen}
-        setIsSearchOpen={setIsSearchOpen}
-        isExhibition={isExhibition}
-        inputRef={inputRef}
-        handleSearchClick={handleSearchClick}
-      />
-    </div>
-  )
+
+  switch (pathname) {
+    // 메인페이지
+    case '/':
+      return (
+        <div
+          className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
+        >
+          <MainPageHeader
+            isSearchOpen={isSearchOpen}
+            setIsSearchOpen={setIsSearchOpen}
+            isExhibition={isExhibition}
+            inputRef={inputRef}
+            handleSearchClick={handleSearchClick}
+          />
+        </div>
+      )
+
+    // 마이페이지
+    case '/my':
+      return (
+        <div
+          className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
+        ></div>
+      )
+
+    default:
+      return (
+        <div
+          className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
+        >
+          <MainPageHeader
+            isSearchOpen={isSearchOpen}
+            setIsSearchOpen={setIsSearchOpen}
+            isExhibition={isExhibition}
+            inputRef={inputRef}
+            handleSearchClick={handleSearchClick}
+          />
+        </div>
+      )
+  }
 }
 
 // 메인페이지헤더
@@ -74,6 +102,8 @@ const MainPageHeader: React.FC<MainPageHeaderProps> = ({
     </>
   )
 }
+
+const MyPageHeader = () => {}
 
 // 검색창 인풋 박스
 const SearchBox: React.FC<SearchBoxProps> = ({
@@ -248,7 +278,5 @@ const RnPsearchBox: React.FC = () => {
     </div>
   )
 }
-
-const MyPageHeader = () => {}
 
 export { Header }
