@@ -112,71 +112,74 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
           </button>
         </div>
       </div>
-      {isSearchOpen && (
-        <div className={`${styles['header_search-focus-box']}`}>
-          <p className={`${styles['header_search-focus-box_title']}`}>
-            최근 검색어
-          </p>
-          <div
-            className={`${styles['header_search-focus-box_recent-search-box']}`}
-          >
-            <div
-              className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
-            >
-              <span>데이식스</span>
-              <button type="button">X</button>
-            </div>
+      {isSearchOpen && <RnPsearchBox />}
+    </div>
+  )
+}
 
-            <div
-              className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
-            >
-              <span>트와이스</span>
-              <button type="button">X</button>
-            </div>
-            <div
-              className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
-            >
-              <span>세상에서 제일가는 포테이토 칩</span>
-              <button type="button">X</button>
-            </div>
-          </div>
-          <p className={`${styles['header_search-focus-box_title']}`}>
-            인기 검색어
-          </p>
-          <ol className={`${styles['header_search-focus-box_popular-list']}`}>
-            <li
-              className={`${styles['header_search-focus-box_popular-list_line']}`}
-            >
-              데이식스
-            </li>
-            <li
-              className={`${styles['header_search-focus-box_popular-list_line']}`}
-            >
-              트와이스
-            </li>
-            <li
-              className={`${styles['header_search-focus-box_popular-list_line']}`}
-            >
-              루피
-            </li>
-            <li
-              className={`${styles['header_search-focus-box_popular-list_line']}`}
-            >
-              데이식스
-            </li>
-            <li
-              className={`${styles['header_search-focus-box_popular-list_line']}`}
-            >
-              트와이스
-            </li>
-            <li
-              className={`${styles['header_search-focus-box_popular-list_line']}`}
-            >
-              루피
-            </li>
-          </ol>
+// 검색 포커스 최근, 인기 검색 목록 확장 박스
+const RnPsearchBox: React.FC = () => {
+  return (
+    <div className={`${styles['header_search-focus-box']}`}>
+      <p className={`${styles['header_search-focus-box_title']}`}>
+        최근 검색어
+      </p>
+      <div className={`${styles['header_search-focus-box_recent-search-box']}`}>
+        <div
+          className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
+        >
+          <span>데이식스</span>
+          <button type="button">X</button>
         </div>
-      )}
+
+        <div
+          className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
+        >
+          <span>트와이스</span>
+          <button type="button">X</button>
+        </div>
+        <div
+          className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
+        >
+          <span>세상에서 제일가는 포테이토 칩</span>
+          <button type="button">X</button>
+        </div>
+      </div>
+      <p className={`${styles['header_search-focus-box_title']}`}>
+        인기 검색어
+      </p>
+      <ol className={`${styles['header_search-focus-box_popular-list']}`}>
+        <li
+          className={`${styles['header_search-focus-box_popular-list_line']}`}
+        >
+          데이식스
+        </li>
+        <li
+          className={`${styles['header_search-focus-box_popular-list_line']}`}
+        >
+          트와이스
+        </li>
+        <li
+          className={`${styles['header_search-focus-box_popular-list_line']}`}
+        >
+          루피
+        </li>
+        <li
+          className={`${styles['header_search-focus-box_popular-list_line']}`}
+        >
+          데이식스
+        </li>
+        <li
+          className={`${styles['header_search-focus-box_popular-list_line']}`}
+        >
+          트와이스
+        </li>
+        <li
+          className={`${styles['header_search-focus-box_popular-list_line']}`}
+        >
+          루피
+        </li>
+      </ol>
     </div>
   )
 }
