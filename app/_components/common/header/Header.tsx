@@ -51,6 +51,15 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
         <MyPageHeader />
       </div>
     )
+  } else if (
+    pathname.startsWith('/lists/popup/') ||
+    pathname.startsWith('lists/exhibition/')
+  ) {
+    return (
+      <div className={`${styles.header} ${styles.myHeader}`}>
+        <MyPageHeader />
+      </div>
+    )
   } else {
     return (
       <div

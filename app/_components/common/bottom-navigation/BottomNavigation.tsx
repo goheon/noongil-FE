@@ -16,9 +16,9 @@ const BottomNavigation: React.FC = () => {
     <div className={`${styles[`bottom-navigation`]}`}>
       <div
         className={`${styles[`bottom-navigation_button`]}`}
-        onClick={() => router.push('/list')}
+        onClick={() => router.push('/lists')}
       >
-        {pathname.includes('/list') ? (
+        {pathname.includes('/lists') ? (
           <Image
             className={`${styles['header_search-bar_search-box_icon']}`}
             src={ICON.search_list_active}
