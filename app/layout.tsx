@@ -31,9 +31,7 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
           <div className="pages_wrapper">
             <Suspense>
               <Header isExhibition={isExhibition} />
-            </Suspense>
-            <main className="content">{children}</main>
-            <Suspense>
+              <main className="content">{children}</main>
               <BottomNavigation />
             </Suspense>
           </div>

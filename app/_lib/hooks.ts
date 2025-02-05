@@ -1,3 +1,5 @@
+'use client'
+
 import { useLayoutEffect, useState, useRef } from 'react'
 import { UseNaverMapOptions } from '@/app/_types'
 
