@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
+import { config } from '@/app/_lib'
 
-const VALID_CATEGORIES = ['popup', 'exhibition']
+const { VALID_CATEGORIES } = config
 
 const CategoryPage = ({ params }: { params: { category: string } }) => {
   const { category } = params

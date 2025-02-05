@@ -2,8 +2,9 @@
 
 import { use } from 'react'
 import { notFound, useSearchParams } from 'next/navigation'
+import { config } from '@/app/_lib'
 
-const VALID_CATEGORIES = ['popup', 'exhibition']
+const { VALID_CATEGORIES } = config
 
 const CategoryPage = ({
   params,

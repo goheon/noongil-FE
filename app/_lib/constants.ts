@@ -12,10 +12,13 @@ const API_BASE_URL_LIST = {
 
 const API_BASE_URL = API_BASE_URL_LIST[ENV]
 
+const VALID_CATEGORIES = ['popup', 'exhibition']
+
 const config = {
   ENV,
   NAVER_MAP_CLIENT_ID,
   API_BASE_URL,
+  VALID_CATEGORIES,
 } as const
 
 export { config }
