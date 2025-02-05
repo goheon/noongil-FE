@@ -57,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
   ) {
     return (
       <div className={`${styles.header} ${styles.myHeader}`}>
-        <MyPageHeader />
+        상세페이지 헤더
       </div>
     )
   } else {
