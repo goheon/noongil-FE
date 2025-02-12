@@ -125,7 +125,7 @@ const MyPageHeader = () => {
       headerText = '계정정보'
       break
 
-    case '/my/interest':
+    case '/my/interests':
       headerText = '내 관심사'
       break
 
