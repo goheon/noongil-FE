@@ -9,7 +9,7 @@ export const metadata = {
 
 const Home: NextPage = () => {
   return (
-    <div>
+    <div className="">
       <h1>INDEX PAGE</h1>
     </div>
   )

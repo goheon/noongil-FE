@@ -1,11 +1,12 @@
 'use client'
 
 import localFont from 'next/font/local'
-import React from 'react'
+import React, { Suspense } from 'react'
+import { usePathname } from 'next/navigation'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { queryClient } from '@/app/_lib'
-import { Header } from '@/app/_components/common'
+import { BottomNavigation, Header } from '@/app/_components/common'
 import '@/app/_styles'
 
 // const geistSans = localFont({
@@ -20,12 +21,20 @@ import '@/app/_styles'
 // })
 
 const RootLayout = ({ children }: React.PropsWithChildren) => {
+  const pathname = usePathname()
+  const isExhibition: boolean = pathname.includes('exhibition')
+
   return (
     <html lang="ko">
-      <body className={``}>
+      <body className={`pages ${isExhibition ? 'exhibition' : ''}`}>
         <QueryClientProvider client={queryClient}>
-          <Header />
-          {children}
+          <div className="pages_wrapper">
+            <Suspense>
+              <Header isExhibition={isExhibition} />
+              <main className="content">{children}</main>
+              <BottomNavigation />
+            </Suspense>
+          </div>
         </QueryClientProvider>
       </body>
     </html>
