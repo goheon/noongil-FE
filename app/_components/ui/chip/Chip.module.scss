@@ -1,0 +1,13 @@
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 30px;
+  border: 1px solid #9c9c9c;
+  color: black;
+
+  &--exhibition {
+    color: #9c9c9c;
+  }
+}
