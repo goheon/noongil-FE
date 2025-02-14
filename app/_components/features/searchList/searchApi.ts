@@ -6,7 +6,8 @@ export const getAllEventList = async (
 ) => {
   try {
     const response = await axios.get(
-      `http://127.0.0.1:8080/api/events/list/${sortType}`,
+      // `http://127.0.0.1:8080/api/events/list/${sortType}`,
+      `http://127.0.0.1:8080/api/events/list`,
       {
         params: {
           page: pageParam,
