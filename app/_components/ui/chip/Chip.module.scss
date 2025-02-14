@@ -6,8 +6,19 @@
   border-radius: 30px;
   border: 1px solid #9c9c9c;
   color: black;
+  width: fit-content;
+  padding: 12px 16px;
+
+  img {
+    filter: invert(1);
+  }
 
   &--exhibition {
-    color: #9c9c9c;
+    color: white;
+    border-color: white;
+
+    img {
+      filter: none;
+    }
   }
 }
