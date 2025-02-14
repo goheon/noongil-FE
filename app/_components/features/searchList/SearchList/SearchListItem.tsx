@@ -5,6 +5,10 @@ import Image from 'next/image'
 import ExampleImg from '@/public/free-img.jpg'
 import { ICON } from '@/public'
 import { useMemo } from 'react'
+import {
+  extractCityDistrict,
+  formatDateRange,
+} from '@/app/_utils/textFormatter'
 
 interface SearchListItemProps {
   data: ISearchListItem
@@ -28,22 +32,10 @@ const SearchListItem = (props: SearchListItemProps) => {
     eventAddr,
   } = data
 
-  const extractCityDistrict = (address: string) => {
-    const match = address.match(/^[^\s]+ \S+구/)
-    return match ? match[0] : address
-  }
-
   const eventAddress = useMemo(
     () => extractCityDistrict(eventAddr),
     [eventAddr],
   )
-
-  const formatDateRange = (start: string, end: string) => {
-    const format = (date: string) =>
-      `${date.slice(0, 4)}.${date.slice(4, 6)}.${date.slice(6, 8)}`
-
-    return `${format(start)} ~ ${format(end)}`
-  }
 
   const eventPeriod = useMemo(
     () => formatDateRange(operStatDt, operEndDt),

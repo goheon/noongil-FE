@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  .title {
+    font-weight: 600;
+    font-size: 22px;
+    padding: 0px 30px;
+  }
+
+  .swiper {
+    width: 100%;
+
+    .list-item {
+      box-sizing: border-box;
+      width: 320px;
+      padding-left: 30px;
+      display: flex;
+      gap: 20px;
+
+      .image {
+        border-radius: 5px;
+      }
+
+      .info-section {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .day-chip {
+          width: 66px;
+          height: 30px;
+          border-color: #5899ed;
+          color: #5899ed;
+
+          &--close {
+            border-color: #f24646;
+            color: #f24646;
+          }
+        }
+
+        .event-title {
+          font-weight: 500;
+          font-size: 17px;
+        }
+
+        .event-address {
+          font-weight: 400;
+          font-size: 13px;
+          color: #9c9c9c;
+        }
+      }
+    }
+  }
+}

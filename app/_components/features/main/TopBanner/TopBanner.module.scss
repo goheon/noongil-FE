@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+
+  .banner-img {
+    border-radius: 10px;
+  }
+
+  .banner-chip {
+    width: 126px;
+    height: 42px;
+    cursor: pointer;
+  }
+}

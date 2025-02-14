@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 0px 30px;
+
+  .top-section {
+    .title {
+      font-weight: 600;
+      font-size: 22px;
+    }
+  }
+
+  .info-section {
+    width: 363px;
+    height: 318px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border: 1px dashed #5899ed;
+
+    .headline {
+      font-weight: 500;
+      font-size: 20px;
+    }
+
+    .subline {
+      font-weight: 300;
+      font-size: 17px;
+    }
+
+    .login-chip {
+      width: 150px;
+      height: 55px;
+      background-color: #5899ed;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  }
+}
