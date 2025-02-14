@@ -13,7 +13,7 @@ interface ChipProps
   > {
   onClick?: () => void
   suffixIcon?: keyof typeof ICON
-  category?: 'popup' | 'exhibition'
+  category?: string
   iconSize?: number
 }
 
@@ -31,10 +31,13 @@ const Chip = (props: ChipProps) => {
 
   return (
     <div
-      className={cx(className, 'chip', {
-        'chip--exhibition': category === 'exhibition',
-      })}
-      style={style}
+      className={cx(
+        'chip',
+        {
+          'chip--exhibition': category === 'exhibition',
+        },
+        className,
+      )}
       onClick={onClick}
       {...rest}
     >

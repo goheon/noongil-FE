@@ -1,0 +1,33 @@
+.container {
+  width: 215px;
+  display: flex;
+  flex-direction: column;
+
+  .info-section {
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .top {
+      display: flex;
+      gap: 4px;
+
+      .title {
+        font-weight: 500;
+        font-size: 19px;
+      }
+    }
+
+    .address {
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .period {
+      font-weight: 400;
+      font-size: 13px;
+      color: #9c9c9c;
+    }
+  }
+}

@@ -1,3 +1,6 @@
+$header-height: 88px;
+$navigation-height: 103px;
+
 .pages {
   display: flex;
   align-items: center;
@@ -16,10 +19,9 @@
     height: 100%;
 
     .content {
-      height: 100%;
       width: 100%;
-      margin-top: 88px;
-      margin-bottom: 103px;
+      height: calc(100vh - #{$header-height} - #{$navigation-height});
+      margin-top: $header-height;
     }
 
     > :last-child {
