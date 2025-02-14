@@ -15,6 +15,9 @@ const ICON = {
   my: '/icons/my-icon.svg',
   my_active: '/icons/my-icon_active.svg',
   cogwheel: '/icons/cogwheel-icon.svg',
+  chevron: '/icons/chevron.svg',
+  heart_exhibition: '/icons/heart_exhibition.svg',
+  heart_popup: '/icons/heart_popup.svg',
 }
 
 export { ICON }
