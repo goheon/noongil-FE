@@ -66,30 +66,31 @@ const PeriodList = (props: PeriodListProps) => {
           modules={[Pagination]}
           className={cx('swiper')}
         >
-          {listData.map((data: IListItem) => (
-            <SwiperSlide key={data.eventId} className={cx('list-item')}>
-              <Image
-                src={SampleImage}
-                alt="image"
-                width={125}
-                height={125}
-                className={cx('image')}
-              />
-              <div className={cx('info-section')}>
-                <Chip
-                  className={cx('day-chip', {
-                    'day-chip--close': type === 'close',
-                  })}
-                >
-                  D-1
-                </Chip>
-                <div className={cx('event-title')}>{data.eventNm}</div>
-                <div className={cx('event-address')}>
-                  {formatDateRange(data.operStatDt, data.operEndDt)}
+          {listData.length > 0 &&
+            listData.map((data: IListItem) => (
+              <SwiperSlide key={data.eventId} className={cx('list-item')}>
+                <Image
+                  src={data.imageUrl ?? SampleImage}
+                  alt="image"
+                  width={125}
+                  height={125}
+                  className={cx('image')}
+                />
+                <div className={cx('info-section')}>
+                  <Chip
+                    className={cx('day-chip', {
+                      'day-chip--close': type === 'close',
+                    })}
+                  >
+                    D-1
+                  </Chip>
+                  <div className={cx('event-title')}>{data.eventNm}</div>
+                  <div className={cx('event-address')}>
+                    {formatDateRange(data.operStatDt, data.operEndDt)}
+                  </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            ))}
         </Swiper>
       )}
     </div>
