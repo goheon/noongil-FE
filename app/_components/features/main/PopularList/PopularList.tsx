@@ -15,7 +15,6 @@ import usePopularList from './usePopularList'
 import { IListItem } from '../type'
 import Image from 'next/image'
 import SampleImage from '@/public/free-img.jpg'
-import { extractCityDistrict } from '@/app/_utils/textFormatter'
 import { useMemo } from 'react'
 
 const cx = classNames.bind(styles)
@@ -63,23 +62,21 @@ const PopularList = (props: PopularListProps) => {
           modules={[Pagination]}
           className={cx('swiper')}
         >
-          {listData.map((data: IListItem) => (
-            <SwiperSlide key={data.eventId} className={cx('list-item')}>
-              <Image
-                className={cx('image')}
-                src={SampleImage}
-                alt="image"
-                width={200}
-                height={200}
-              />
-              <div className={cx('info-section')}>
-                <div className={cx('title')}>{data.eventNm}</div>
-                <div className={cx('address')}>
-                  {extractCityDistrict(data.eventAddr)}
+          {listData.length > 0 &&
+            listData.map((data: IListItem) => (
+              <SwiperSlide key={data.eventId} className={cx('list-item')}>
+                <Image
+                  className={cx('image')}
+                  src={data.imageUrl || SampleImage}
+                  alt="image"
+                  width={200}
+                  height={200}
+                />
+                <div className={cx('info-section')}>
+                  <div className={cx('title')}>{data.eventNm}</div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            ))}
         </Swiper>
       )}
     </div>
