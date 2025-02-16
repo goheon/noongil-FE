@@ -3,6 +3,7 @@ import classNames from 'classnames/bind'
 import useSearchList from './useSearchList'
 import SearchListItem from './SearchListItem'
 import SearchListHeader from '../SearchListHeader/SearchListHeader'
+import { SpeedDial } from '@/app/_components/common'
 
 const cx = classNames.bind(styles)
 
@@ -36,6 +37,7 @@ const SearchList = (props: SearchListProps) => {
           <div>빈페이지입니다.</div>
         )}
       </ul>
+      <SpeedDial />
     </div>
   )
 }
