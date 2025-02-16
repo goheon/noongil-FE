@@ -31,7 +31,7 @@ export const getPopularExhibitionList = async () => {
 export const getOpenList = async () => {
   try {
     const response = await axios.get(
-      'http://127.0.0.1:8080/api/events/operStat?page=0',
+      'http://127.0.0.1:8080/api/events/operStat/ENBN?page=0',
     )
 
     return response.data.data
@@ -44,7 +44,7 @@ export const getOpenList = async () => {
 export const getCloseList = async () => {
   try {
     const response = await axios.get(
-      'http://127.0.0.1:8080/api/events/operEnd?page=0',
+      'http://127.0.0.1:8080/api/events/operEnd/PPST?page=0',
     )
 
     return response.data.data
