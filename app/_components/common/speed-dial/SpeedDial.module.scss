@@ -3,9 +3,11 @@
   flex-direction: row-reverse;
   align-items: center;
   position: sticky;
-  bottom: 0;
+  bottom: 5%;
+  left: 90%;
   z-index: 99;
   box-sizing: border-box;
+  width: fit-content;
   border-radius: 100%;
   text-align: center;
 }

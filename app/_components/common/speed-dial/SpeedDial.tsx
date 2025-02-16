@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
 
 import styles from './SpeedDial.module.scss'
@@ -22,6 +22,7 @@ const SpeedDial = () => {
   }, [pathname])
 
   const handleButtonClick = (button: string) => {
+    if (!open) return
     const currentQuery = new URLSearchParams(window.location.search).toString()
 
     let path = '/'
@@ -39,7 +40,6 @@ const SpeedDial = () => {
     }
 
     if (lists) {
-      // lists가 있을 경우, path에 '/'를 추가
       path = path + lists + '/' + category + queryString
     } else {
       path = path + category + queryString
@@ -49,7 +49,7 @@ const SpeedDial = () => {
   }
 
   return (
-    <div className={`${styles['speed-dial']}`}>
+    <div className={styles['speed-dial']}>
       {/* 메인 버튼 */}
       <motion.button
         className={`${styles['speed-dial-btn']} ${styles['main']}`}
@@ -60,27 +60,29 @@ const SpeedDial = () => {
         {focused}
       </motion.button>
 
-      {/* 액션 버튼들 */}
-      <motion.div
-        className={`${styles['speed-dial-actions']}`}
-        initial={{ opacity: 0, scale: 1, x: 0 }}
-        animate={
-          open
-            ? { opacity: 1, scale: 1, x: -25 }
-            : { opacity: 0, scale: 1, x: 0 }
-        }
-        transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
-      >
-        {buttons.map((button) => (
-          <motion.button
-            key={button}
-            className={`${styles['speed-dial-btn']}`}
-            onClick={() => handleButtonClick(button)}
+      {/* AnimatePresence로 exit 애니메이션 적용 */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className={styles['speed-dial-actions']}
+            initial={{ opacity: 0, scale: 1, x: 0 }}
+            animate={{ opacity: 1, scale: 1, x: -25 }}
+            exit={{ opacity: 0, scale: 1, x: 0 }}
+            transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
           >
-            {button}
-          </motion.button>
-        ))}
-      </motion.div>
+            {buttons.map((button) => (
+              <motion.button
+                key={button}
+                className={`${styles['speed-dial-btn']}`}
+                onClick={() => handleButtonClick(button)}
+                disabled={!open}
+              >
+                {button}
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
