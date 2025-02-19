@@ -24,7 +24,6 @@ import { formatDateRange } from '@/app/_utils/textFormatter'
 const cx = classNames.bind(styles)
 
 // TODO: 오픈, 마감 예정과 관련한 API 완성시 수정
-// TODO: image width 125px 고정
 
 interface PeriodListProps {
   type: 'open' | 'close'
@@ -69,13 +68,16 @@ const PeriodList = (props: PeriodListProps) => {
           {listData.length > 0 &&
             listData.map((data: IListItem) => (
               <SwiperSlide key={data.eventId} className={cx('list-item')}>
-                <Image
-                  src={data.imageUrl ?? SampleImage}
-                  alt="image"
-                  width={125}
-                  height={125}
-                  className={cx('image')}
-                />
+                <div className={cx('img-wrapper')}>
+                  <Image
+                    src={data.imageUrl ?? SampleImage}
+                    alt="image"
+                    width={125}
+                    height={125}
+                    className={cx('image')}
+                  />
+                </div>
+
                 <div className={cx('info-section')}>
                   <Chip
                     className={cx('day-chip', {
@@ -85,7 +87,7 @@ const PeriodList = (props: PeriodListProps) => {
                     D-1
                   </Chip>
                   <div className={cx('event-title')}>{data.eventNm}</div>
-                  <div className={cx('event-address')}>
+                  <div className={cx('event-date')}>
                     {formatDateRange(data.operStatDt, data.operEndDt)}
                   </div>
                 </div>
