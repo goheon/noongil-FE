@@ -19,8 +19,13 @@
       display: flex;
       gap: 20px;
 
-      .image {
-        border-radius: 5px;
+      .img-wrapper {
+        width: 125px;
+        height: 125px;
+
+        .image {
+          border-radius: 5px;
+        }
       }
 
       .info-section {
@@ -45,7 +50,7 @@
           font-size: 17px;
         }
 
-        .event-address {
+        .event-date {
           font-weight: 400;
           font-size: 13px;
           color: #9c9c9c;

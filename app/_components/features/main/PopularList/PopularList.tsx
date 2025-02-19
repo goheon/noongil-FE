@@ -16,6 +16,7 @@ import { IListItem } from '../type'
 import Image from 'next/image'
 import SampleImage from '@/public/free-img.jpg'
 import { useMemo } from 'react'
+import { formatDateRange } from '@/app/_utils/textFormatter'
 
 const cx = classNames.bind(styles)
 
@@ -63,7 +64,7 @@ const PopularList = (props: PopularListProps) => {
           className={cx('swiper')}
         >
           {listData.length > 0 &&
-            listData.map((data: IListItem) => (
+            listData.map((data: IListItem, idx: number) => (
               <SwiperSlide key={data.eventId} className={cx('list-item')}>
                 <Image
                   className={cx('image')}
@@ -73,7 +74,14 @@ const PopularList = (props: PopularListProps) => {
                   height={200}
                 />
                 <div className={cx('info-section')}>
-                  <div className={cx('title')}>{data.eventNm}</div>
+                  <div className={cx('rank')}>{idx + 1}</div>
+
+                  <div className={cx('info')}>
+                    <div className={cx('title')}>{data.eventNm}</div>
+                    <div className={cx('event-date')}>
+                      {formatDateRange(data.operStatDt, data.operEndDt)}
+                    </div>
+                  </div>
                 </div>
               </SwiperSlide>
             ))}
