@@ -12,11 +12,10 @@ const MainPage = () => {
   return (
     <div className={cx('container')}>
       <TopBanner />
-      <PopularList type="popup" />
-      <PopularList type="exhibition" />
+      <PopularList type="all" />
       <CustomList />
-      <PeriodList type="open" />
-      <PeriodList type="close" />
+      <PeriodList type="all" periodType="open" />
+      <PeriodList type="all" periodType="close" />
       <SpeedDial />
     </div>
   )

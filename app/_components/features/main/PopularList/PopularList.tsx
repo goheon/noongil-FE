@@ -18,36 +18,31 @@ import SampleImage from '@/public/free-img.jpg'
 import { useMemo } from 'react'
 import { formatDateRange } from '@/app/_utils/textFormatter'
 import Skeleton from 'react-loading-skeleton'
+import { EVENT_CATEGORY_MAP } from '../type'
 
 const cx = classNames.bind(styles)
 
-interface PopularListProps {
-  type: 'popup' | 'exhibition'
-}
-
 const POPUP_TITLE = '오늘의 인기 팝업'
 const EXHIBITION_TITLE = '오늘의 인기 전시'
+const ALL_TITLE = '오늘의 인기 컨텐츠'
+
+const TITLE_MAP = {
+  popup: POPUP_TITLE,
+  exhibition: EXHIBITION_TITLE,
+  all: ALL_TITLE,
+} as const
+
+interface PopularListProps {
+  type: 'popup' | 'exhibition' | 'all'
+}
 
 const PopularList = (props: PopularListProps) => {
   const { type } = props
 
-  const { isExhibitionLoading, isPopupLoading, popupData, exhibitionData } =
-    usePopularList()
+  const category = EVENT_CATEGORY_MAP[type]
+  const { popularList, isLoading } = usePopularList(category)
 
-  const listTitle = useMemo(
-    () => (type === 'popup' ? POPUP_TITLE : EXHIBITION_TITLE),
-    [type],
-  )
-
-  const isLoading = useMemo(
-    () => (type === 'popup' ? isPopupLoading : isExhibitionLoading),
-    [type, isPopupLoading, isExhibitionLoading],
-  )
-
-  const listData = useMemo(
-    () => (type === 'popup' ? popupData : exhibitionData),
-    [type, popupData, exhibitionData],
-  )
+  const listTitle = useMemo(() => TITLE_MAP[type] ?? ALL_TITLE, [type])
 
   return (
     <div className={cx('container')}>
@@ -76,8 +71,8 @@ const PopularList = (props: PopularListProps) => {
           modules={[Pagination]}
           className={cx('swiper')}
         >
-          {listData.length > 0 &&
-            listData.map((data: IListItem, idx: number) => (
+          {popularList.length > 0 &&
+            popularList.map((data: IListItem, idx: number) => (
               <SwiperSlide key={data.eventId} className={cx('list-item')}>
                 <Image
                   className={cx('image')}

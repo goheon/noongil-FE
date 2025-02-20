@@ -1,35 +1,18 @@
-import { getPopularExhibitionList, getPopularPopupList } from '../mainApi'
+import { getPopularList } from '../mainApi'
 import { useQuery } from '@tanstack/react-query'
+import { EventCategory } from '../type'
 
-// TODO: API 완료시 수정 필요
-
-const usePopularList = () => {
+const usePopularList = (category: EventCategory) => {
   const {
-    isPending: isPopupLoading,
-    error: popupError,
-    data: popupData = [],
+    data: popularList,
+    isLoading,
+    error,
   } = useQuery({
-    queryKey: ['popular-popup'],
-    queryFn: getPopularPopupList,
+    queryKey: ['popular-list', category],
+    queryFn: () => getPopularList(category),
   })
 
-  const {
-    isPending: isExhibitionLoading,
-    error: exhibitionError,
-    data: exhibitionData = [],
-  } = useQuery({
-    queryKey: ['popular-exhibition'],
-    queryFn: getPopularExhibitionList,
-  })
-
-  return {
-    isPopupLoading,
-    popupError,
-    popupData,
-    isExhibitionLoading,
-    exhibitionError,
-    exhibitionData,
-  }
+  return { popularList, isLoading, error }
 }
 
 export default usePopularList

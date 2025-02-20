@@ -1,14 +1,15 @@
 import { getOpenList, getCloseList } from '../mainApi'
 import { useQuery } from '@tanstack/react-query'
+import { EventCategory } from '../type'
 
-const usePeriodList = () => {
+const usePeriodList = (category: EventCategory) => {
   const {
     isPending: isOpenListLoading,
     error: openListError,
     data: openList = [],
   } = useQuery({
-    queryKey: ['open-list'],
-    queryFn: getOpenList,
+    queryKey: ['open-list', category],
+    queryFn: () => getOpenList(category),
   })
 
   const {
@@ -16,8 +17,8 @@ const usePeriodList = () => {
     error: closeListError,
     data: closeList = [],
   } = useQuery({
-    queryKey: ['close-list'],
-    queryFn: getCloseList,
+    queryKey: ['close-list', category],
+    queryFn: () => getCloseList(category),
   })
 
   return {
