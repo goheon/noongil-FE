@@ -17,6 +17,7 @@ import Image from 'next/image'
 import SampleImage from '@/public/free-img.jpg'
 import { useMemo } from 'react'
 import { formatDateRange } from '@/app/_utils/textFormatter'
+import Skeleton from 'react-loading-skeleton'
 
 const cx = classNames.bind(styles)
 
@@ -56,7 +57,19 @@ const PopularList = (props: PopularListProps) => {
       </div>
 
       {isLoading ? (
-        <div>리스트를 불러오고 있습니다.</div>
+        <div className={cx('skeleton-box')}>
+          <div className={cx('skeleton-wrapper')}>
+            <Skeleton width={200} height={200} borderRadius={5} />
+            <Skeleton width={200} />
+            <Skeleton width={200} />
+          </div>
+
+          <div className={cx('skeleton-wrapper')}>
+            <Skeleton width={200} height={200} borderRadius={5} />
+            <Skeleton width={200} />
+            <Skeleton width={200} />
+          </div>
+        </div>
       ) : (
         <Swiper
           slidesPerView={'auto'}

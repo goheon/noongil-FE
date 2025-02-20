@@ -24,6 +24,18 @@
     }
   }
 
+  .skeleton-box {
+    width: 100%;
+    display: flex;
+    gap: 30px;
+
+    .skeleton-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+
   .swiper {
     width: 100%;
 
