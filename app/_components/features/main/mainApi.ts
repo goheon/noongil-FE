@@ -2,6 +2,19 @@ import axios from 'axios'
 
 // TOOD: main API 완성시 수정 필요
 
+export const getBannerEvent = async () => {
+  try {
+    const response = await axios.get(
+      `http://127.0.0.1:8080/api/event/banner/all?page=0`,
+    )
+
+    return response.data
+  } catch (err) {
+    console.log('err :', err)
+    throw err
+  }
+}
+
 export const getPopularPopupList = async () => {
   try {
     const response = await axios.get(

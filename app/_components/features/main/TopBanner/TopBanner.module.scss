@@ -1,11 +1,22 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   align-items: center;
+  gap: 20px;
+  padding: 0px 22px;
 
-  .banner-img {
-    border-radius: 10px;
+  .slide {
+    width: 100%;
+
+    .slide-item {
+      box-sizing: border-box;
+      width: 382px;
+      height: 429px;
+
+      .banner-img {
+        border-radius: 10px;
+      }
+    }
   }
 
   .banner-chip {
