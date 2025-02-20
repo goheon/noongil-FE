@@ -20,6 +20,7 @@ import Image from 'next/image'
 import { Chip } from '@/app/_components/ui'
 
 import { formatDateRange } from '@/app/_utils/textFormatter'
+import Skeleton from 'react-loading-skeleton'
 
 const cx = classNames.bind(styles)
 
@@ -58,7 +59,13 @@ const PeriodList = (props: PeriodListProps) => {
       <div className={cx('title')}>{listTitle}</div>
 
       {isLoading ? (
-        <div>데이터를 불러오고 있습니다.</div>
+        <div className={cx('skeleton-wrapper')}>
+          <Skeleton width={125} height={125} />
+          <div className={cx('skeleton-infos')}>
+            <Skeleton width={100} />
+            <Skeleton width={100} />
+          </div>
+        </div>
       ) : (
         <Swiper
           slidesPerView={'auto'}

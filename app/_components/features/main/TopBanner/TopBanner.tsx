@@ -14,6 +14,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 // Import Swiper styles
 import 'swiper/css'
 
+import Skeleton from 'react-loading-skeleton'
+
 const cx = classNames.bind(styles)
 
 const TopBanner = () => {
@@ -25,7 +27,7 @@ const TopBanner = () => {
   return (
     <div className={cx('container')}>
       {isLoading ? (
-        <div>불러오는 중입니다.</div>
+        <Skeleton width={382} height={429} borderRadius={10} />
       ) : (
         <Swiper className={cx('slide')}>
           {data.map((item: IListItem) => {

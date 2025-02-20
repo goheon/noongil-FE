@@ -9,6 +9,17 @@
     padding: 0px 30px;
   }
 
+  .skeleton-wrapper {
+    display: flex;
+    gap: 20px;
+
+    .skeleton-infos {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+
   .swiper {
     width: 100%;
 

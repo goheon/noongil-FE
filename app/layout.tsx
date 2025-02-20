@@ -7,6 +7,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '@/app/_lib'
 import { BottomNavigation, Header } from '@/app/_components/common'
 import '@/app/_styles'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const RootLayout = ({ children }: React.PropsWithChildren) => {
   const pathname = usePathname()
