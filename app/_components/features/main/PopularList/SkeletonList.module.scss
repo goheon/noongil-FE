@@ -1,0 +1,15 @@
+.skeleton-list {
+  width: 100%;
+  display: flex;
+  gap: 30px;
+  overflow-x: hidden;
+  padding-left: 30px;
+
+  .skeleton-wrapper {
+    box-sizing: border-box;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

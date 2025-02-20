@@ -21,7 +21,7 @@ const cx = classNames.bind(styles)
 const TopBanner = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['banner-event'],
-    queryFn: getBannerEvent,
+    queryFn: () => getBannerEvent('all'),
   })
 
   return (

@@ -24,68 +24,13 @@
     }
   }
 
-  .skeleton-box {
-    width: 100%;
-    display: flex;
-    gap: 30px;
-
-    .skeleton-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-  }
-
-  .swiper {
+  .list {
     width: 100%;
 
-    .list-item {
+    .list-item-wrapper {
       box-sizing: border-box;
       width: 260px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
       padding: 0px 30px;
-
-      .image {
-        border-radius: 5px;
-      }
-
-      .info-section {
-        display: flex;
-        gap: 12px;
-
-        .rank {
-          width: 32px;
-          min-width: 32px;
-          height: 32px;
-          border: 1px solid #9c9c9c;
-          font-weight: 400;
-          font-size: 17px;
-          border-radius: 52px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          box-shadow: 0px 4px 4px 0px #00000040;
-        }
-
-        .info {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-
-          .title {
-            font-weight: 500;
-            font-size: 19px;
-          }
-
-          .event-date {
-            font-weight: 400;
-            font-size: 13px;
-            color: #9c9c9c;
-          }
-        }
-      }
     }
   }
 }

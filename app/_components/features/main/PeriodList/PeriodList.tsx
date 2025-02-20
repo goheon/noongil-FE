@@ -22,35 +22,48 @@ import { Chip } from '@/app/_components/ui'
 import { formatDateRange } from '@/app/_utils/textFormatter'
 import Skeleton from 'react-loading-skeleton'
 
+import { EVENT_CATEGORY_MAP } from '../type'
+
 const cx = classNames.bind(styles)
+
+const TITLE_MAP = {
+  open: {
+    popup: '오픈 예정 팝업',
+    exhibition: '오픈 예정 전시',
+    all: '오픈 예정 컨텐츠',
+  },
+  close: {
+    popup: '마감 임박! 팝업',
+    exhibition: '마감 임박! 전시',
+    all: '마감 임박! 컨텐츠',
+  },
+} as const
 
 // TODO: 오픈, 마감 예정과 관련한 API 완성시 수정
 
 interface PeriodListProps {
-  type: 'open' | 'close'
+  type: 'popup' | 'exhibition' | 'all'
+  periodType: 'open' | 'close'
 }
 
-const OPEN_TITLE = '오픈 예정 팝업'
-const CLOSE_TITLE = '마감 임박! 팝업'
-
 const PeriodList = (props: PeriodListProps) => {
-  const { type } = props
+  const { type, periodType } = props
 
+  const category = EVENT_CATEGORY_MAP[type]
   const { isOpenListLoading, openList, isCloseListLoading, closeList } =
-    usePeriodList()
+    usePeriodList(category)
 
-  const listTitle = useMemo(
-    () => (type === 'open' ? OPEN_TITLE : CLOSE_TITLE),
-    [type],
-  )
+  const listTitle = useMemo(() => {
+    return TITLE_MAP[periodType][type]
+  }, [periodType, type])
 
   const isLoading = useMemo(
-    () => (type === 'open' ? isOpenListLoading : isCloseListLoading),
+    () => (periodType === 'open' ? isOpenListLoading : isCloseListLoading),
     [type, isOpenListLoading, isCloseListLoading],
   )
 
   const listData = useMemo(
-    () => (type === 'open' ? openList : closeList),
+    () => (periodType === 'open' ? openList : closeList),
     [type, openList, closeList],
   )
 
@@ -88,7 +101,7 @@ const PeriodList = (props: PeriodListProps) => {
                 <div className={cx('info-section')}>
                   <Chip
                     className={cx('day-chip', {
-                      'day-chip--close': type === 'close',
+                      'day-chip--close': periodType === 'close',
                     })}
                   >
                     D-1

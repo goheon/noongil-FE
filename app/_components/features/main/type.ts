@@ -1,3 +1,5 @@
+export type EventCategory = 'all' | 'PPST' | 'ENBN'
+
 export interface IListItem {
   eventId: number
   eventNm: string
@@ -8,4 +10,10 @@ export interface IListItem {
   likeYn: string
   imageUrl: string
   smallImageUrl: string
+}
+
+export const EVENT_CATEGORY_MAP: Record<string, EventCategory> = {
+  all: 'all',
+  popup: 'PPST',
+  exhibition: 'ENBN',
 }
