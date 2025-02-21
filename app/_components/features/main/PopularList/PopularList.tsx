@@ -32,16 +32,16 @@ const TITLE_MAP = {
 } as const
 
 interface PopularListProps {
-  type: 'popup' | 'exhibition' | 'all'
+  category: 'popup' | 'exhibition' | 'all'
 }
 
 const PopularList = (props: PopularListProps) => {
-  const { type } = props
+  const { category } = props
 
-  const category = EVENT_CATEGORY_MAP[type]
-  const { popularList, isLoading } = usePopularList(category)
+  const currentCategory = EVENT_CATEGORY_MAP[category]
+  const { popularList, isLoading } = usePopularList(currentCategory)
 
-  const listTitle = useMemo(() => TITLE_MAP[type] ?? ALL_TITLE, [type])
+  const listTitle = useMemo(() => TITLE_MAP[category] ?? ALL_TITLE, [category])
 
   return (
     <div className={cx('container')}>

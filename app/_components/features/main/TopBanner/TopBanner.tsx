@@ -18,7 +18,13 @@ import Skeleton from 'react-loading-skeleton'
 
 const cx = classNames.bind(styles)
 
-const TopBanner = () => {
+interface TopBannerProps {
+  category: 'all' | 'exhibition' | 'popup'
+}
+
+const TopBanner = (props: TopBannerProps) => {
+  const { category } = props
+
   const { data, isLoading } = useQuery({
     queryKey: ['banner-event'],
     queryFn: () => getBannerEvent('all'),
@@ -46,7 +52,9 @@ const TopBanner = () => {
         </Swiper>
       )}
 
-      <Chip className={cx('banner-chip')}>자세히 보기</Chip>
+      <Chip className={cx('banner-chip')} category={category}>
+        자세히 보기
+      </Chip>
     </div>
   )
 }

@@ -42,29 +42,30 @@ const TITLE_MAP = {
 // TODO: 오픈, 마감 예정과 관련한 API 완성시 수정
 
 interface PeriodListProps {
-  type: 'popup' | 'exhibition' | 'all'
+  category: 'popup' | 'exhibition' | 'all'
   periodType: 'open' | 'close'
 }
 
 const PeriodList = (props: PeriodListProps) => {
-  const { type, periodType } = props
+  const { category, periodType } = props
 
-  const category = EVENT_CATEGORY_MAP[type]
+  const currentCategory = EVENT_CATEGORY_MAP[category]
+
   const { isOpenListLoading, openList, isCloseListLoading, closeList } =
-    usePeriodList(category)
+    usePeriodList(currentCategory)
 
   const listTitle = useMemo(() => {
-    return TITLE_MAP[periodType][type]
-  }, [periodType, type])
+    return TITLE_MAP[periodType][category]
+  }, [periodType, category])
 
   const isLoading = useMemo(
     () => (periodType === 'open' ? isOpenListLoading : isCloseListLoading),
-    [type, isOpenListLoading, isCloseListLoading],
+    [category, isOpenListLoading, isCloseListLoading],
   )
 
   const listData = useMemo(
     () => (periodType === 'open' ? openList : closeList),
-    [type, openList, closeList],
+    [category, openList, closeList],
   )
 
   return (

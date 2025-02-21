@@ -1,6 +1,7 @@
 import { use } from 'react'
 import { notFound } from 'next/navigation'
 import { config } from '@/app/_lib'
+import MainPage from '../_components/features/main/MainPage'
 
 const { VALID_CATEGORIES } = config
 
@@ -16,12 +17,7 @@ const CategoryPage = ({
     notFound()
   }
 
-  return (
-    <div>
-      <h1>{category} 카테고리 게시물 목록</h1>
-      {/* 해당 카테고리의 게시물 목록을 렌더링 */}
-    </div>
-  )
+  return <MainPage category={category as 'popup' | 'exhibition'} />
 }
 
 export default CategoryPage
