@@ -8,14 +8,20 @@ import { SpeedDial } from '../../common'
 
 const cx = classNames.bind(styles)
 
-const MainPage = () => {
+interface MainPageProps {
+  category: 'all' | 'popup' | 'exhibition'
+}
+
+const MainPage = (props: MainPageProps) => {
+  const { category } = props
+
   return (
     <div className={cx('container')}>
-      <TopBanner />
-      <PopularList type="all" />
+      <TopBanner category={category} />
+      <PopularList category={category} />
       <CustomList />
-      <PeriodList type="all" periodType="open" />
-      <PeriodList type="all" periodType="close" />
+      <PeriodList category={category} periodType="open" />
+      <PeriodList category={category} periodType="close" />
       <SpeedDial />
     </div>
   )
