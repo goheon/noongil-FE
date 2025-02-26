@@ -11,7 +11,7 @@ const cx = classNames.bind(styles)
 const MainPage = () => {
   return (
     <div className={cx('container')}>
-      <TopBanner />
+      <TopBanner category={'all'} />
       <PopularList type="popup" />
       <PopularList type="exhibition" />
       <CustomList />

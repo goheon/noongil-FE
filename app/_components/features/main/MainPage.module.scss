@@ -7,6 +7,7 @@
   flex-direction: column;
   gap: 70px;
   scrollbar-width: none;
+  position: relative;
   &::-webkit-scrollbar {
     display: none;
   }
