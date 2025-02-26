@@ -1,5 +1,6 @@
 import React from 'react'
 import { NextPage } from 'next'
+import { SpeedDial } from './_components'
 import MainPage from './_components/features/main/MainPage'
 
 export const metadata = {
@@ -8,7 +9,12 @@ export const metadata = {
 }
 
 const Home: NextPage = () => {
-  return <MainPage category="all" />
+  return (
+    <>
+      <MainPage category="all" />
+      <SpeedDial />
+    </>
+  )
 }
 
 export default Home

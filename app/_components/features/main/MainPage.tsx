@@ -4,7 +4,6 @@ import TopBanner from './TopBanner/TopBanner'
 import PopularList from './PopularList/PopularList'
 import CustomList from './CustomList/CustomList'
 import PeriodList from './PeriodList/PeriodList'
-import { SpeedDial } from '../../common'
 
 const cx = classNames.bind(styles)
 
@@ -22,7 +21,6 @@ const MainPage = (props: MainPageProps) => {
       <CustomList />
       <PeriodList category={category} periodType="open" />
       <PeriodList category={category} periodType="close" />
-      <SpeedDial />
     </div>
   )
 }

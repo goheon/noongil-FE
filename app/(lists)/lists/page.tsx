@@ -2,6 +2,7 @@
 
 import { useSearchParams } from 'next/navigation'
 import SearchList from '@/app/_components/features/searchList/SearchList/SearchList'
+import { SpeedDial } from '@/app/_components'
 
 // TODO: list API 및 기획 완성시 수정
 
@@ -25,7 +26,10 @@ const ListsPage = () => {
     //   )}
     //   {/* 게시물 렌더링 (실제 데이터를 기반으로 검색 결과나 전체 목록을 표시) */}
     // </div>
-    <SearchList category="popup" />
+    <>
+      <SearchList category="popup" />
+      <SpeedDial />
+    </>
   )
 }
 
