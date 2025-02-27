@@ -11,9 +11,12 @@ const SkeletonList = () => {
     <ul className={cx('skeleton-list')}>
       {list.map((_, idx) => (
         <div className={cx('skeleton-wrapper')} key={idx}>
-          <Skeleton width={200} height={200} borderRadius={5} />
-          <Skeleton width={200} />
-          <Skeleton width={200} />
+          <Skeleton width={125} height={125} borderRadius={5} />
+
+          <div className={cx('infos')}>
+            <Skeleton width={100} />
+            <Skeleton width={100} />
+          </div>
         </div>
       ))}
     </ul>

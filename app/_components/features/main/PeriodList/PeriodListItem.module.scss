@@ -1,0 +1,42 @@
+.list-item {
+  display: flex;
+  gap: 20px;
+
+  .img-wrapper {
+    width: 125px;
+    height: 125px;
+
+    .image {
+      border-radius: 5px;
+    }
+  }
+
+  .info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .day-chip {
+      min-width: 66px;
+      height: 30px;
+      border-color: #5899ed;
+      color: #5899ed;
+
+      &--close {
+        border-color: #f24646;
+        color: #f24646;
+      }
+    }
+
+    .event-title {
+      font-weight: 500;
+      font-size: 17px;
+    }
+
+    .event-date {
+      font-weight: 400;
+      font-size: 13px;
+      color: #9c9c9c;
+    }
+  }
+}

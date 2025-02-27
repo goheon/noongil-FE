@@ -10,6 +10,7 @@ export interface IListItem {
   likeYn: string
   imageUrl: string
   smallImageUrl: string
+  dday: string
 }
 
 export const EVENT_CATEGORY_MAP: Record<string, EventCategory> = {
