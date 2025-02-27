@@ -15,14 +15,11 @@ import 'swiper/css/pagination'
 import { Pagination } from 'swiper/modules'
 import { IListItem } from '../type'
 
-import SampleImage from '@/public/free-img.jpg'
-import Image from 'next/image'
-import { Chip } from '@/app/_components/ui'
-
-import { formatDateRange } from '@/app/_utils/textFormatter'
 import Skeleton from 'react-loading-skeleton'
 
 import { EVENT_CATEGORY_MAP } from '../type'
+import PeriodListItem from './PeriodListItem'
+import SkeletonList from './SkeletonList'
 
 const cx = classNames.bind(styles)
 
@@ -72,49 +69,24 @@ const PeriodList = (props: PeriodListProps) => {
     <div className={cx('container')}>
       <div className={cx('title')}>{listTitle}</div>
 
-      {isLoading ? (
-        <div className={cx('skeleton-wrapper')}>
-          <Skeleton width={125} height={125} />
-          <div className={cx('skeleton-infos')}>
-            <Skeleton width={100} />
-            <Skeleton width={100} />
-          </div>
-        </div>
-      ) : (
-        <Swiper
-          slidesPerView={'auto'}
-          modules={[Pagination]}
-          className={cx('swiper')}
-        >
-          {listData.length > 0 &&
-            listData.map((data: IListItem) => (
-              <SwiperSlide key={data.eventId} className={cx('list-item')}>
-                <div className={cx('img-wrapper')}>
-                  <Image
-                    src={data.imageUrl ?? SampleImage}
-                    alt="image"
-                    width={125}
-                    height={125}
-                    className={cx('image')}
-                  />
-                </div>
+      {isLoading && <SkeletonList />}
 
-                <div className={cx('info-section')}>
-                  <Chip
-                    className={cx('day-chip', {
-                      'day-chip--close': periodType === 'close',
-                    })}
-                  >
-                    {data.dday}
-                  </Chip>
-                  <div className={cx('event-title')}>{data.eventNm}</div>
-                  <div className={cx('event-date')}>
-                    {formatDateRange(data.operStatDt, data.operEndDt)}
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
+      {!isLoading && listData.length > 0 && (
+        <Swiper
+          slidesPerView="auto"
+          modules={[Pagination]}
+          className={cx('list')}
+        >
+          {listData.map((data: IListItem) => (
+            <SwiperSlide key={data.eventId} className={cx('list-item-wrapper')}>
+              <PeriodListItem data={data} periodType={periodType} />
+            </SwiperSlide>
+          ))}
         </Swiper>
+      )}
+
+      {!isLoading && listData.length === 0 && (
+        <div className={cx('notice')}>컨텐츠가 없습니다.</div>
       )}
     </div>
   )
