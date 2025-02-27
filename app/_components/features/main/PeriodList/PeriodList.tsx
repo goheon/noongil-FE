@@ -105,7 +105,7 @@ const PeriodList = (props: PeriodListProps) => {
                       'day-chip--close': periodType === 'close',
                     })}
                   >
-                    D-1
+                    {data.dday}
                   </Chip>
                   <div className={cx('event-title')}>{data.eventNm}</div>
                   <div className={cx('event-date')}>
