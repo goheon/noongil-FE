@@ -9,6 +9,7 @@ export const useNaverMapSDK = ({
   mapContainerId,
   center,
   zoom = 10,
+  background,
 }: UseNaverMapOptions) => {
   const [map, setMap] = useState<naver.maps.Map | null>(null)
   const isLoaded = useRef(false)
@@ -21,7 +22,7 @@ export const useNaverMapSDK = ({
 
     // 네이버 지도 SDK 스크립트 동적 로드
     const script = document.createElement('script')
-    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`
+    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}&submodules=geocoder`
     script.async = true
 
     script.onload = () => {
@@ -29,6 +30,8 @@ export const useNaverMapSDK = ({
         const mapOptions: naver.maps.MapOptions = {
           center: new naver.maps.LatLng(center.lat, center.lng),
           zoom,
+          tileTransition: true,
+          background,
         }
 
         const naverMap = new naver.maps.Map(mapContainerId, mapOptions)

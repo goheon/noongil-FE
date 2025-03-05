@@ -1,0 +1,30 @@
+.header {
+  // 마이페이지 헤더
+  &_my {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+
+    &_text-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+
+      &_text {
+        font-weight: 500;
+        font-size: 20px;
+      }
+    }
+
+    &_icon {
+      position: absolute;
+
+      &_setting {
+        right: 0;
+      }
+    }
+  }
+}

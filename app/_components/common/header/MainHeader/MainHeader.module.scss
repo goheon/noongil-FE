@@ -1,0 +1,51 @@
+.header {
+  &_search-bar {
+    padding: 17px 25px;
+    display: flex;
+
+    &_logo-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+
+      &_icon.exhibition {
+        fill: #ffffff;
+      }
+
+      &_title {
+        font-weight: 700;
+        font-size: 15px;
+      }
+    }
+
+    &_search-box {
+      position: relative;
+      width: 100%;
+
+      &_input {
+        display: inline-block;
+        width: 70%;
+        height: 100%;
+        border: 1px solid rgba($color: #000000, $alpha: 0.15);
+        border-radius: 33px;
+        padding: 0 20% 0 10%;
+        font-weight: 400;
+        font-size: 1rem;
+
+        &_exhibition {
+          border: 1px solid #ffffff;
+          background-color: #000000;
+        }
+      }
+
+      &_button {
+        all: unset;
+        position: absolute;
+        top: 25%;
+        right: 8%;
+      }
+    }
+  }
+}

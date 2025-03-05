@@ -6,5 +6,7 @@ export interface UseNaverMapOptions {
     lat: number
     lng: number
   }
+  background?: string
   zoom?: number
+  minZoom?: number
 }

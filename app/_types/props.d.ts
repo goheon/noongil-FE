@@ -4,7 +4,7 @@ export interface HeaderProps {
 }
 
 // 메인페이지 헤더 props
-export interface MainPageHeaderProps extends HeaderProps {
+export interface MainHeaderProps extends HeaderProps {
   isSearchOpen: boolean
   setIsSearchOpen: React.Dispatch<React.SetStateAction<boolean>>
   inputRef: React.RefObject<HTMLInputElement>
