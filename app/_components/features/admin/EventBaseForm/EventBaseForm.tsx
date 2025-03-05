@@ -13,6 +13,7 @@ import { useEffect, useMemo } from 'react'
 import useEventBaseForm from './useEventBaseForm'
 import styles from './EventBaseForm.module.scss'
 import DateForm from './DateForm/DateForm'
+import { getGeoCodeInfo } from '../adminApi'
 
 interface EventBaseFormProps {
   eventId?: string
@@ -52,6 +53,16 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
       ? (EXHIBITION_CATEGORY_LABELS as Record<string, string>)
       : (POPUP_CATEGORY_LABELS as Record<string, string>)
   }, [currentEvent])
+
+  const getGeo = async () => {
+    const result = await getGeoCodeInfo('서울특별시 서초구 강남대로 465')
+
+    console.log('res :', result)
+  }
+
+  useEffect(() => {
+    getGeo()
+  }, [])
 
   return (
     <form

@@ -1,5 +1,10 @@
 import axios from 'axios'
-import { IEventListItem, EventListResponse, IEventDetail } from './type'
+import {
+  IEventListItem,
+  EventListResponse,
+  IEventDetail,
+  IGeocodingResponse,
+} from './type'
 
 export const getEventList = async (
   pageParam: number = 0,
@@ -173,6 +178,21 @@ export const deleteImage = async (imageId: string) => {
     await axios.delete(
       `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/files/${imageId}`,
     )
+  } catch (err) {
+    console.log('err :', err)
+    throw err
+  }
+}
+
+export const getGeoCodeInfo = async (
+  address: string,
+): Promise<IGeocodingResponse> => {
+  try {
+    const response = await axios.get(
+      `/api/geocoding?query=${encodeURIComponent(address)}`,
+    )
+
+    return response.data.addresses[0]
   } catch (err) {
     console.log('err :', err)
     throw err
