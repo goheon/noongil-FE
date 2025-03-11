@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 import { ICON } from '@/public'
-import styles from './BottomNavigation.module.scss'
+import styles from './bottomNavigation.module.scss'
 
 const BottomNavigation: React.FC = () => {
   const pathname = usePathname()
