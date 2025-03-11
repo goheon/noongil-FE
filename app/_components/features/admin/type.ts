@@ -92,8 +92,11 @@ export interface IEventDetail {
   ctgyId: EventCategory
   ppstEnbnTypeCd: EventOption
   ctgyNm: string
+  rads: string
+  lnad: string
   addrLttd: number
   addrLotd: number
+  ldcd: string
 }
 
 export interface EventListResponse {
