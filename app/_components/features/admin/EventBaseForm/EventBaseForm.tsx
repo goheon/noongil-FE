@@ -9,7 +9,7 @@ import {
   EXHIBITION_CATEGORY_LABELS,
 } from '../type'
 import { useForm } from 'react-hook-form'
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import useEventBaseForm from './useEventBaseForm'
 import styles from './EventBaseForm.module.scss'
 import DateForm from './DateForm/DateForm'
@@ -54,15 +54,29 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
       : (POPUP_CATEGORY_LABELS as Record<string, string>)
   }, [currentEvent])
 
-  const getGeo = async () => {
-    const result = await getGeoCodeInfo('서울특별시 서초구 강남대로 465')
+  const currentAddress = watch('eventAddr')
+  const hasAddress = useMemo(
+    () => currentAddress && currentAddress.length > 0,
+    [currentAddress],
+  )
 
-    console.log('res :', result)
-  }
+  const getAddress = useCallback(async () => {
+    if (!hasAddress) {
+      return
+    }
 
-  useEffect(() => {
-    getGeo()
-  }, [])
+    try {
+      const result = await getGeoCodeInfo(currentAddress)
+
+      const { x, y, roadAddress, jibunAddress } = result
+      setValue('lnad', jibunAddress)
+      setValue('rads', roadAddress)
+      setValue('addrLotd', Number(x))
+      setValue('addrLttd', Number(y))
+    } catch (err) {
+      console.log('error :', err)
+    }
+  }, [hasAddress])
 
   return (
     <form
@@ -126,6 +140,15 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
               <div className={`${styles['data']}`}>
                 <input {...register('eventAddr')} />
               </div>
+
+              <button
+                className={`${styles['search-button']}`}
+                type="button"
+                disabled={!hasAddress}
+                onClick={getAddress}
+              >
+                좌표 및 주소 찾기
+              </button>
             </div>
           </div>
 
@@ -151,6 +174,28 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
                 <textarea {...register('operDttmCntn')} />
               </div>
             </div>
+
+            <div className={`${styles['content']}`}>
+              <div className={`${styles['title']}`}>이벤트 내용</div>
+              <div className={`${styles['data']}`}>
+                <textarea {...register('eventCntn')} />
+              </div>
+            </div>
+          </div>
+
+          <div className={`${styles['section']}`}>
+            <div className={`${styles['content']}`}>
+              <div className={`${styles['title']}`}>도로명 주소</div>
+              <div className={`${styles['data']}`}>
+                <input {...register('rads')} />
+              </div>
+            </div>
+            <div className={`${styles['content']}`}>
+              <div className={`${styles['title']}`}>지번 주소</div>
+              <div className={`${styles['data']}`}>
+                <input {...register('lnad')} />
+              </div>
+            </div>
           </div>
 
           <div className={`${styles['section']}`}>
@@ -170,9 +215,9 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
 
           <div className={`${styles['section']}`}>
             <div className={`${styles['content']}`}>
-              <div className={`${styles['title']}`}>이벤트 내용</div>
+              <div className={`${styles['title']}`}>법정동 코드</div>
               <div className={`${styles['data']}`}>
-                <textarea {...register('eventCntn')} />
+                <input {...register('ldcd')} />
               </div>
             </div>
           </div>

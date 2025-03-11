@@ -37,6 +37,7 @@ const useEventBaseForm = (eventId?: string) => {
     mutationFn: (data: IEventDetail) =>
       updateEventDetail({ eventId: eventId!, eventDetail: data }),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['event-detail', eventId] })
       queryClient.invalidateQueries({ queryKey: ['event-list'] })
       router.push('/admin/eventlist')
     },
