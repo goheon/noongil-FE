@@ -44,12 +44,12 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
 
   const CATERGORY = useMemo(
     () =>
-      currentEvent === 'ENBN' ? EXHIBITION_OPTION_VALUES : POPUP_OPTION_VALUES,
+      currentEvent === '20' ? EXHIBITION_OPTION_VALUES : POPUP_OPTION_VALUES,
     [currentEvent],
   )
 
   const CATERGORY_LABEL = useMemo(() => {
-    return currentEvent === 'ENBN'
+    return currentEvent === '20'
       ? (EXHIBITION_CATEGORY_LABELS as Record<string, string>)
       : (POPUP_CATEGORY_LABELS as Record<string, string>)
   }, [currentEvent])
@@ -108,7 +108,7 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
                 <select {...register('ppstEnbnTypeCd')}>
                   {EVENT_OPTION_VALUES.map((value) => (
                     <option key={value} value={value}>
-                      {value === 'ENBN' ? '전시' : '팝업'}
+                      {value === '10' ? '팝업' : '전시'}
                     </option>
                   ))}
                 </select>

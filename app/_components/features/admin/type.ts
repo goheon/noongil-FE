@@ -1,6 +1,6 @@
 export const EVENT_OPTION = {
-  POPUPSTORE: 'PPST', // 팝업스토어
-  EXHIBITION: 'ENBN', // 전시
+  POPUPSTORE: '10', // 팝업스토어
+  EXHIBITION: '20', // 전시
 } as const
 
 export type EventOption = (typeof EVENT_OPTION)[keyof typeof EVENT_OPTION]
@@ -65,22 +65,6 @@ export type EventCategory =
 
 export const EVENT_OPTION_VALUES = Object.values(EVENT_OPTION)
 
-export interface IEventListItem {
-  eventId: string
-  eventNm: string
-  eventCntn: string
-  eventAddr: string
-  operStatDt: string
-  operEndDt: string
-  operDttmCntn: string
-  ctgyId: EventCategory
-  ctgyNm: string
-  ppstEnbnTypeCd: EventOption
-  ppstEnbnTypeNm: string
-  imageUrl: string
-  smallImageUrl: string
-}
-
 export interface IEventDetail {
   eventId: number
   eventNm: string
@@ -97,6 +81,15 @@ export interface IEventDetail {
   addrLttd: number
   addrLotd: number
   ldcd: string
+}
+
+export interface IEventListItem extends IEventDetail {
+  createdDate: string
+  modifiedDate: string
+  eventTypeCd: EventOption
+  deleteYn: string
+  eventTumbfile: any
+  eventFiles: any
 }
 
 export interface EventListResponse {

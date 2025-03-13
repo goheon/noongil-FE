@@ -7,7 +7,7 @@ import SampleImg from '@/public/free-img.jpg'
 import { Chip } from '@/app/_components/ui'
 import { useQuery } from '@tanstack/react-query'
 import { getBannerEvent } from '../mainApi'
-import { IListItem } from '../type'
+import { IListItem, EVENT_CATEGORY_MAP } from '../type'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -25,9 +25,11 @@ interface TopBannerProps {
 const TopBanner = (props: TopBannerProps) => {
   const { category } = props
 
+  const currentCategory = EVENT_CATEGORY_MAP[category]
+
   const { data, isLoading } = useQuery({
     queryKey: ['banner-event'],
-    queryFn: () => getBannerEvent('all'),
+    queryFn: () => getBannerEvent(currentCategory),
   })
 
   return (

@@ -21,7 +21,7 @@ const EventListItem: React.FC<EventListItemPros> = (props) => {
   return (
     <div className={`${styles['container']}`}>
       <div className={`${styles['item']}`}>
-        {item.ppstEnbnTypeCd === 'ENBN' ? '전시' : '팝업'}
+        {item.eventTypeCd === '20' ? '전시' : '팝업'}
       </div>
       <div className={`${styles['item']}`}>{item.eventNm}</div>
       <div className={`${styles['item']}`}>{CATERGORY_LABEL[item.ctgyId]}</div>
