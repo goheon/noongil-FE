@@ -28,52 +28,38 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
     inputRef?.current?.focus()
   }
 
-  console.log(pathname)
+  return (
+    <div className={`${styles.header} ${isExhibition && styles.exhibition}`}>
+      {(() => {
+        switch (true) {
+          case pathname.startsWith('/my'):
+            return <MyPageHeader />
 
-  if (pathname.startsWith('/my')) {
-    return (
-      <div className={`${styles.header} ${styles.myHeader}`}>
-        <MyPageHeader />
-      </div>
-    )
-  } else if (
-    pathname.startsWith('/lists/popup/') ||
-    pathname.startsWith('/lists/exhibition/')
-  ) {
-    return (
-      <div className={`${styles.header} ${styles.myHeader}`}>
-        상세페이지 헤더
-      </div>
-    )
-  } else if (pathname.startsWith('/map')) {
-    return (
-      <div
-        className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
-      >
-        <MapPageHeader
-          isSearchOpen={isSearchOpen}
-          setIsSearchOpen={setIsSearchOpen}
-          isExhibition={isExhibition}
-          inputRef={inputRef}
-          handleSearchClick={handleSearchClick}
-        />
-      </div>
-    )
-  } else {
-    return (
-      <div
-        className={`${styles.header} ${isExhibition && `${styles.exhibition}`}`}
-      >
-        <MainHeader
-          isSearchOpen={isSearchOpen}
-          setIsSearchOpen={setIsSearchOpen}
-          isExhibition={isExhibition}
-          inputRef={inputRef}
-          handleSearchClick={handleSearchClick}
-        />
-      </div>
-    )
-  }
+          case pathname.startsWith('/map'):
+            return (
+              <MapPageHeader
+                isSearchOpen={isSearchOpen}
+                setIsSearchOpen={setIsSearchOpen}
+                isExhibition={isExhibition}
+                inputRef={inputRef}
+                handleSearchClick={handleSearchClick}
+              />
+            )
+
+          default:
+            return (
+              <MainHeader
+                isSearchOpen={isSearchOpen}
+                setIsSearchOpen={setIsSearchOpen}
+                isExhibition={isExhibition}
+                inputRef={inputRef}
+                handleSearchClick={handleSearchClick}
+              />
+            )
+        }
+      })()}
+    </div>
+  )
 }
 
 // 검색창 인풋 박스
