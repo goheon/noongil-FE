@@ -19,6 +19,8 @@ const ICON = {
   heart_exhibition: '/icons/heart_exhibition.svg',
   heart_popup: '/icons/heart_popup.svg',
   close: '/icons/close.svg',
+  checkbox_off: '/icons/checkbox-off.svg',
+  checkbox_on: '/icons/checkbox-on.svg',
 }
 
 export { ICON }
