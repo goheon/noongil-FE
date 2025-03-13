@@ -18,6 +18,7 @@ const ICON = {
   chevron: '/icons/chevron.svg',
   heart_exhibition: '/icons/heart_exhibition.svg',
   heart_popup: '/icons/heart_popup.svg',
+  close: '/icons/close.svg',
 }
 
 export { ICON }
