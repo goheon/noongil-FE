@@ -1,0 +1,31 @@
+@import '../../../../_styles/globals.scss';
+
+.container {
+  width: 100%;
+  height: calc(100vh - #{$header-height} - #{$navigation-height});
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+
+  .popular-keyword {
+    display: flex;
+    flex-direction: column;
+    gap: 37px;
+    padding: 0px 28px;
+
+    .title {
+      font-weight: 600;
+      font-size: 22px;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .list-item {
+        font-size: 17px;
+      }
+    }
+  }
+}
