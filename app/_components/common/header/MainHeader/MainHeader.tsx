@@ -1,8 +1,9 @@
-import { LogoBox, SearchBox, RnPsearchBox } from '../Header'
+import { LogoBox, SearchBox } from '../Header'
 
 import { MainHeaderProps } from '@/app/_types'
 
 import styles from './MainHeader.module.scss'
+import SearchSuggestionBox from './SearchSuggestionBox'
 
 // 메인페이지헤더
 const MainHeader: React.FC<MainHeaderProps> = ({
@@ -31,7 +32,7 @@ const MainHeader: React.FC<MainHeaderProps> = ({
         />
       </div>
       {/* 검색 포커스 확장 최근, 인기 검색 목록 */}
-      {isSearchOpen && <RnPsearchBox />}
+      {isSearchOpen && <SearchSuggestionBox isExhibition={isExhibition} />}
     </>
   )
 }
