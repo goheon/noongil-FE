@@ -21,6 +21,9 @@ const ICON = {
   close: '/icons/close.svg',
   checkbox_off: '/icons/checkbox-off.svg',
   checkbox_on: '/icons/checkbox-on.svg',
+  naver: '/icons/naver-icon.svg',
+  kakao: '/icons/kakao-icon.svg',
+  google: '/icons/google-icon.svg',
 }
 
 export { ICON }

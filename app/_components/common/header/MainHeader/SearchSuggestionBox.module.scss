@@ -1,4 +1,4 @@
-@import '../../../../_styles/globals.scss';
+@use '../../../../_styles/globals.scss' as *;
 
 .container {
   width: 100%;

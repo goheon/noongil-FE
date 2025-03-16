@@ -1,0 +1,66 @@
+.LoginPage {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .icon {
+  }
+
+  .icon-box {
+    // margin-top: 5vh;
+
+    .eyes-icon {
+    }
+
+    .title {
+      font-weight: 600;
+      font-size: 22px;
+      text-align: center;
+    }
+  }
+
+  .button-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin-top: 8%;
+
+    .button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      margin: 10px;
+      border: none;
+      border-radius: 15px;
+      padding: 15px;
+      background-color: transparent;
+      font-weight: 500;
+      font-size: 20px;
+
+      span {
+        flex: 1;
+      }
+
+      &.naver {
+        background-color: #0ac010;
+        color: #ffffff;
+      }
+
+      &.kakao {
+        background-color: #fee500;
+        color: #000000;
+      }
+
+      &.google {
+        border: 1px solid #9c9c9c7d;
+        color: #9c9c9c;
+      }
+    }
+  }
+}
