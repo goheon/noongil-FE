@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { axiosApi } from '@/app/_lib/axios'
 import {
   IEventListItem,
   EventListResponse,
@@ -10,9 +11,9 @@ export const getEventList = async (
   pageParam: number = 0,
 ): Promise<EventListResponse> => {
   try {
-    const response = await axios.get(
+    const response = await axiosApi.get(
       // 'http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events',
-      'http://127.0.0.1:8080/api/admin/events',
+      'admin/events',
       {
         params: {
           page: pageParam,
@@ -31,9 +32,7 @@ export const getEventDetail = async (
   eventId: number,
 ): Promise<IEventDetail> => {
   try {
-    const response = await axios.get(
-      `http://127.0.0.1:8080/api/admin/events/${eventId}`,
-    )
+    const response = await axiosApi.get(`admin/events/${eventId}`)
 
     return response.data
   } catch (err) {
@@ -50,9 +49,9 @@ export const updateEventDetail = async ({
   eventDetail: IEventDetail
 }) => {
   try {
-    const response = await axios.put(
+    const response = await axiosApi.put(
       // `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/${eventId}`,
-      `http://127.0.0.1:8080/api/admin/events/${eventId}`,
+      `admin/events/${eventId}`,
       eventDetail,
     )
   } catch (err) {
@@ -66,9 +65,9 @@ export const createEvent = async ({
   eventDetail: IEventDetail
 }) => {
   try {
-    const response = await axios.post(
+    const response = await axiosApi.post(
       // `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events`,
-      `http://127.0.0.1:8080/api/admin/events`,
+      `admin/events`,
       eventDetail,
     )
   } catch (err) {
@@ -79,9 +78,9 @@ export const createEvent = async ({
 
 export const deleteEvent = async (eventId: string) => {
   try {
-    const response = await axios.delete(
+    const response = await axiosApi.delete(
       // `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/${eventId}`,
-      `http://127.0.0.1:8080/api/admin/events/${eventId}`,
+      `admin/events/${eventId}`,
     )
   } catch (err) {
     console.log('err :', err)
@@ -91,9 +90,9 @@ export const deleteEvent = async (eventId: string) => {
 
 export const getEventMainImage = async (eventId: string) => {
   try {
-    const response = await axios.get(
+    const response = await axiosApi.get(
       // `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/${eventId}/main-files`,
-      `http://127.0.0.1:8080/api/admin/events/${eventId}/main-files`,
+      `admin/events/${eventId}/main-files`,
     )
 
     return response.data
@@ -105,9 +104,9 @@ export const getEventMainImage = async (eventId: string) => {
 
 export const getEventContentImage = async (eventId: string) => {
   try {
-    const response = await axios.get(
+    const response = await axiosApi.get(
       // `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/${eventId}/files`,
-      `http://127.0.0.1:8080/api/admin/events/${eventId}/files`,
+      `admin/events/${eventId}/files`,
     )
 
     return response.data
@@ -129,15 +128,11 @@ export const registerMainImage = async ({
 
     formData.append('file', mainImage)
 
-    await axios.post(
-      `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/${eventId}/file/main`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+    await axiosApi.post(`admin/events/${eventId}/file/main`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
-    )
+    })
   } catch (err) {
     console.log('err :', err)
     throw err
@@ -158,15 +153,11 @@ export const registerContentImage = async ({
       formData.append('file', contentImage[i])
     }
 
-    await axios.post(
-      `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/${eventId}/file/detail`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+    await axiosApi.post(`admin/events/${eventId}/file/detail`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
-    )
+    })
   } catch (err) {
     console.log('err :', err)
     throw err
@@ -175,9 +166,7 @@ export const registerContentImage = async ({
 
 export const deleteImage = async (imageId: string) => {
   try {
-    await axios.delete(
-      `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/files/${imageId}`,
-    )
+    await axiosApi.delete(`admin/events/files/${imageId}`)
   } catch (err) {
     console.log('err :', err)
     throw err

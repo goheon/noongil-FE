@@ -1,14 +1,43 @@
-import Image from 'next/image'
-import { ICON } from '@/public'
+'use client'
 
+import Image from 'next/image'
+import { useQuery } from '@tanstack/react-query'
+import { getNaverLogin, getKakaoLogin, getGoogleLogin } from './loginApi'
+import { ICON } from '@/public'
 import styles from './LoginPage.module.scss'
 
-export const metadata = {
-  title: '눈길 noongil',
-  description: '...',
-}
-
 const LoginPage: React.FC = () => {
+  const {
+    data: naverLogin,
+    isLoading: naverIsLoading,
+    refetch: naverRefetch,
+  } = useQuery({
+    queryKey: ['naver-login'],
+    queryFn: () => getNaverLogin(),
+    enabled: false,
+    retry: 0,
+  })
+  const {
+    data: kakaoLogin,
+    isLoading: kakaoIsLoading,
+    refetch: kakaoRefetch,
+  } = useQuery({
+    queryKey: ['naver-login'],
+    queryFn: () => getKakaoLogin(),
+    enabled: false,
+    retry: 0,
+  })
+  const {
+    data: googleLogin,
+    isLoading: googleIsLoading,
+    refetch: googleRefetch,
+  } = useQuery({
+    queryKey: ['naver-login'],
+    queryFn: () => getGoogleLogin(),
+    enabled: false,
+    retry: 0,
+  })
+
   return (
     <div className={`${styles.LoginPage}`}>
       <div className={`${styles['icon-box']}`}>
@@ -25,6 +54,7 @@ const LoginPage: React.FC = () => {
         <button
           className={`${styles['button']} ${styles['naver']}`}
           type="button"
+          onClick={() => naverRefetch()}
         >
           <Image
             className={`${styles['icon']} ${styles['naver-icon']}`}
@@ -38,6 +68,7 @@ const LoginPage: React.FC = () => {
         <button
           className={`${styles['button']} ${styles['kakao']}`}
           type="button"
+          onClick={() => kakaoRefetch()}
         >
           <Image
             className={`${styles['icon']} ${styles['kakao-icon']}`}
@@ -51,6 +82,7 @@ const LoginPage: React.FC = () => {
         <button
           className={`${styles['button']} ${styles['google']}`}
           type="button"
+          onClick={() => googleRefetch()}
         >
           <Image
             className={`${styles['icon']} ${styles['google-icon']}`}
