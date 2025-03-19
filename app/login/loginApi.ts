@@ -1,34 +1,19 @@
-import { loginApi } from '../_lib/axios'
+import { config } from '../_lib/constants'
 
 // 네이버 로그인
-export const getNaverLogin = async () => {
-  try {
-    const response = await loginApi.get('authorization/naver')
-    return response.data
-  } catch (err) {
-    console.log('err :', err)
-    throw err
-  }
+export const getNaverLogin = () => {
+  const authUrl = `${config.API_LOGIN_BASE_URL}/authorization/naver`
+  window.location.href = authUrl
 }
 
 // 카카오 로그인
-export const getKakaoLogin = async () => {
-  try {
-    const response = await loginApi.get('authorization/kakao')
-    return response.data
-  } catch (err) {
-    console.log('err :', err)
-    throw err
-  }
+export const getKakaoLogin = () => {
+  const authUrl = `${config.API_LOGIN_BASE_URL}/authorization/kakao`
+  window.location.href = authUrl
 }
 
 // 구글 로그인
-export const getGoogleLogin = async () => {
-  try {
-    const response = await loginApi.get('authorization/google')
-    return response.data
-  } catch (err) {
-    console.log('err :', err)
-    throw err
-  }
+export const getGoogleLogin = () => {
+  const authUrl = `${config.API_LOGIN_BASE_URL}/authorization/google`
+  window.location.href = authUrl
 }
