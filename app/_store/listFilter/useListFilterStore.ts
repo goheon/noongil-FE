@@ -10,12 +10,14 @@ interface IListFilter {
   filter: Filter | null
   order: Order | null
   category: Category[]
-  date: string
+  startDate: Date | null
+  endDate: Date | null
   setFilter: (filter: Filter) => void
   setOpen: (isOpen: boolean) => void
   setOrder: (order: Order) => void
   setCategory: (catergory: Category) => void
-  setDate: (date: string) => void
+  setStartDate: (date: Date | null) => void
+  setEndDate: (date: Date | null) => void
   reset: () => void
 }
 
@@ -24,7 +26,8 @@ export const useListFilterStore = create<IListFilter>((set) => ({
   filter: null,
   order: null,
   category: [],
-  date: '',
+  startDate: null,
+  endDate: null,
   setOpen: (isOpen: boolean) => set({ isOpen: isOpen }),
   setFilter: (filter: Filter) => set({ filter: filter }),
   setOrder: (order) => set({ order: order }),
@@ -34,6 +37,8 @@ export const useListFilterStore = create<IListFilter>((set) => ({
         ? state.category.filter((c) => c !== category) // 있으면 제거
         : [...state.category, category], // 없으면 추가
     })),
-  setDate: (date: string) => set({ date: date }),
-  reset: () => set({ order: null, category: [], date: '' }),
+  setStartDate: (date: Date | null) => set({ startDate: date }),
+  setEndDate: (date: Date | null) => set({ endDate: date }),
+  reset: () =>
+    set({ order: null, category: [], startDate: null, endDate: null }),
 }))
