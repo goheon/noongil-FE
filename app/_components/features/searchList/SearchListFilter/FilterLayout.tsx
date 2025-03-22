@@ -8,7 +8,7 @@ const cx = classNames.bind(styles)
 const FilterLayout = (props: PropsWithChildren) => {
   const { children } = props
 
-  const { filter, setFilter, reset, category, date } = useListFilterStore()
+  const { filter, setFilter, reset, category, startDate } = useListFilterStore()
 
   return (
     <div className={cx('container')}>
@@ -25,7 +25,7 @@ const FilterLayout = (props: PropsWithChildren) => {
         <div
           className={cx('filter-option', {
             'filter-option--selected': filter === 'date',
-            'filter-option--active': date.length > 0,
+            'filter-option--active': startDate,
           })}
           onClick={() => setFilter('date')}
         >
