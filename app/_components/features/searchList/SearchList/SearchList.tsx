@@ -13,7 +13,8 @@ interface SearchListProps {
 const SearchList = (props: SearchListProps) => {
   const { category } = props
 
-  const { list } = useSearchList()
+  // const { list } = useSearchList()
+  const list: any[] = []
 
   return (
     <div className={cx('container')}>

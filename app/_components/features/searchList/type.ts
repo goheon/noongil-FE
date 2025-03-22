@@ -1,3 +1,8 @@
+import {
+  EXHIBITION_CATEGORY,
+  POPUP_CATEGORY,
+} from '@/app/_components/features/admin/type'
+
 export interface ISearchListItem {
   eventId: number
   eventNm: string
@@ -15,3 +20,11 @@ export interface ISearchListItem {
   imageUrl: string
   smallImageUrl: string
 }
+
+export type Filter = 'order' | 'category' | 'date' | 'region'
+
+export type Order = 'popular' | 'newest' | 'ending' | 'region' | 'distance'
+
+export type Category =
+  | (typeof EXHIBITION_CATEGORY)[keyof typeof EXHIBITION_CATEGORY]
+  | (typeof POPUP_CATEGORY)[keyof typeof POPUP_CATEGORY]

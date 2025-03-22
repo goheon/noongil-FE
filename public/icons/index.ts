@@ -21,6 +21,7 @@ const ICON = {
   close: '/icons/close.svg',
   checkbox_off: '/icons/checkbox-off.svg',
   checkbox_on: '/icons/checkbox-on.svg',
+  calendar: '/icons/calendar.svg',
 }
 
 export { ICON }
