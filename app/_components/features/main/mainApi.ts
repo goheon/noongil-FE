@@ -7,7 +7,7 @@ import { EventCategory } from './type'
 export const getBannerEvent = async (category: EventCategory) => {
   try {
     const response = await axios.get(
-      `http://127.0.0.1:8080/api/event/banner/${category}?page=0`,
+      `http://127.0.0.1:8080/api/main-event/banner/${category}`,
     )
 
     return response.data
@@ -21,7 +21,7 @@ export const getBannerEvent = async (category: EventCategory) => {
 export const getPopularList = async (category: EventCategory) => {
   try {
     const response = await axios.get(
-      `http://127.0.0.1:8080/api/event/rank/${category}?page=0`,
+      `http://127.0.0.1:8080/api/main-event/rank/${category}`,
     )
 
     return response.data
@@ -35,7 +35,7 @@ export const getPopularList = async (category: EventCategory) => {
 export const getOpenList = async (category: EventCategory) => {
   try {
     const response = await axios.get(
-      `http://127.0.0.1:8080/api/events/operStat/${category}?page=0`,
+      `http://127.0.0.1:8080/api/main-events/operStat/${category}?page=0`,
     )
 
     return response.data.data
@@ -49,7 +49,7 @@ export const getOpenList = async (category: EventCategory) => {
 export const getCloseList = async (category: EventCategory) => {
   try {
     const response = await axios.get(
-      `http://127.0.0.1:8080/api/events/operEnd/${category}?page=0`,
+      `http://127.0.0.1:8080/api/main-events/operEnd/${category}?page=0`,
     )
 
     return response.data.data
