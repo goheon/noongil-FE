@@ -1,5 +1,9 @@
+'use client'
+
+import EventList from '@/app/_components/features/admin/EventList/EventList'
+
 const AdminPage: React.FC = () => {
-  return <div>admin 개발 중</div>
+  return <EventList />
 }
 
 export default AdminPage
