@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { axiosApi } from '@/app/_lib/axios'
 import { EventCategory } from './type'
 
 // TOOD: main API 완성시 수정 필요
@@ -6,9 +7,7 @@ import { EventCategory } from './type'
 // TOP 배너 추천 리스트 가져오기
 export const getBannerEvent = async (category: EventCategory) => {
   try {
-    const response = await axios.get(
-      `http://127.0.0.1:8080/api/main-event/banner/${category}`,
-    )
+    const response = await axiosApi.get(`main-event/banner/${category}`)
 
     return response.data
   } catch (err) {
@@ -20,9 +19,7 @@ export const getBannerEvent = async (category: EventCategory) => {
 // 인기 리스트 조회
 export const getPopularList = async (category: EventCategory) => {
   try {
-    const response = await axios.get(
-      `http://127.0.0.1:8080/api/main-event/rank/${category}`,
-    )
+    const response = await axiosApi.get(`main-event/rank/${category}`)
 
     return response.data
   } catch (err) {
@@ -34,8 +31,8 @@ export const getPopularList = async (category: EventCategory) => {
 // 오픈 임박 리스트 조회
 export const getOpenList = async (category: EventCategory) => {
   try {
-    const response = await axios.get(
-      `http://127.0.0.1:8080/api/main-events/operStat/${category}?page=0`,
+    const response = await axiosApi.get(
+      `main-events/operStat/${category}?page=0`,
     )
 
     return response.data.data
@@ -48,8 +45,8 @@ export const getOpenList = async (category: EventCategory) => {
 // 마감 임박 리스트 조회
 export const getCloseList = async (category: EventCategory) => {
   try {
-    const response = await axios.get(
-      `http://127.0.0.1:8080/api/main-events/operEnd/${category}?page=0`,
+    const response = await axiosApi.get(
+      `main-events/operEnd/${category}?page=0`,
     )
 
     return response.data.data

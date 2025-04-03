@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 import { ICON } from '@/public'
-import styles from './bottomNavigation.module.scss'
+import styles from './BottomNavigation.module.scss'
 
 const BottomNavigation: React.FC = () => {
   const pathname = usePathname()
@@ -112,7 +112,7 @@ const BottomNavigation: React.FC = () => {
         className={`${styles[`bottom-navigation_button`]}`}
         onClick={() => router.push('/my')}
       >
-        {pathname.includes('/my') ? (
+        {pathname.includes('/my') || pathname.startsWith('/login') ? (
           <Image
             className={`${styles['header_search-bar_search-box_icon']}`}
             src={ICON.my_active}

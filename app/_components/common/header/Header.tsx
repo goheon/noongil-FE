@@ -8,6 +8,7 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import { MainHeader } from './MainHeader/MainHeader'
 import { MapPageHeader } from './MapPageHeader/MapPageHeader'
 import { MyPageHeader } from './MyPageHeader/MyPageHeader'
+import { LoginHeader } from './LoginPageHeader/LoginPageHeader'
 
 import { ICON } from '@/public'
 import { HeaderProps, MyPageHeaderProps, SearchBoxProps } from '@/app/_types'
@@ -45,6 +46,9 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
                 handleSearchClick={handleSearchClick}
               />
             )
+
+          case pathname.startsWith('/login'):
+            return <LoginHeader />
 
           default:
             return (
