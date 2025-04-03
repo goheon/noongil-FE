@@ -15,9 +15,9 @@ export const adminLogin = async ({
   password: string
 }) => {
   try {
-    const response = await axios.post(
+    const response = await axiosApi.post(
       // 'http://localhost:8080/api/admin/login',
-      'http://127.0.0.1:8080/api/admin/login',
+      'admin/login',
       {
         id,
         password,
@@ -34,12 +34,9 @@ export const adminLogin = async ({
 
 export const checkAdminAuth = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8080/api/admin/user-info`,
-      {
-        withCredentials: true,
-      },
-    )
+    const response = await axiosApi.get(`admin/user-info`, {
+      withCredentials: true,
+    })
 
     return response
   } catch (err) {
