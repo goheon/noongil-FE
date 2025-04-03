@@ -7,6 +7,44 @@ import {
   IGeocodingResponse,
 } from './type'
 
+export const adminLogin = async ({
+  id,
+  password,
+}: {
+  id: string
+  password: string
+}) => {
+  try {
+    const response = await axiosApi.post(
+      // 'http://localhost:8080/api/admin/login',
+      'admin/login',
+      {
+        id,
+        password,
+      },
+      {
+        withCredentials: true,
+      },
+    )
+  } catch (err) {
+    console.log('err :', err)
+    throw err
+  }
+}
+
+export const checkAdminAuth = async () => {
+  try {
+    const response = await axiosApi.get(`admin/user-info`, {
+      withCredentials: true,
+    })
+
+    return response
+  } catch (err) {
+    console.log('check admin error :', err)
+    throw err
+  }
+}
+
 export const getEventList = async (
   pageParam: number = 0,
 ): Promise<EventListResponse> => {

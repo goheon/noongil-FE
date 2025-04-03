@@ -11,12 +11,14 @@ interface BottomSheetProps {
   children?: React.ReactNode
   /** 바텀시트의 열림 상태를 외부에서 제어할 수 있도록 하는 선택 prop */
   isOpen?: boolean
+  setIsOpen?: (open: boolean) => void
 }
 
 const BottomSheet = ({
   type,
   children,
   isOpen: isOpenProp,
+  setIsOpen: setIsOpenProp,
 }: BottomSheetProps) => {
   // 내부 상태 초기값은 prop이 있으면 그 값, 없으면 false
   const [isOpen, setIsOpen] = useState<boolean>(isOpenProp ?? false)
@@ -37,6 +39,10 @@ const BottomSheet = ({
   const handleDragEnd = (e: any, info: any) => {
     if (info.point.y > window.innerHeight * 0.8) {
       setIsOpen(false)
+
+      if (setIsOpenProp) {
+        setIsOpenProp(false)
+      }
     } else if (info.point.y > window.innerHeight * 0.2) {
       setIsOpen(true)
     }
@@ -77,7 +83,9 @@ const BottomSheet = ({
           <div className={styles['handle']} />
         </motion.div>
 
-        <div className={styles['content']}>
+        <div
+          className={`${styles['content']} ${type === 'filter' && `${styles['content--filter']}`}`}
+        >
           {/* {type === 'filter' && (
             <div className={styles['header']}>
               <h3>필터 옵션</h3>

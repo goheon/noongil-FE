@@ -24,6 +24,7 @@ const ICON = {
   naver: '/icons/naver-icon.svg',
   kakao: '/icons/kakao-icon.svg',
   google: '/icons/google-icon.svg',
+  calendar: '/icons/calendar.svg',
 }
 
 export { ICON }

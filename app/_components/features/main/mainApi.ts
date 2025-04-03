@@ -7,7 +7,7 @@ import { EventCategory } from './type'
 // TOP 배너 추천 리스트 가져오기
 export const getBannerEvent = async (category: EventCategory) => {
   try {
-    const response = await axiosApi.get(`event/banner/${category}?page=0`)
+    const response = await axiosApi.get(`main-event/banner/${category}`)
 
     return response.data
   } catch (err) {
@@ -19,7 +19,7 @@ export const getBannerEvent = async (category: EventCategory) => {
 // 인기 리스트 조회
 export const getPopularList = async (category: EventCategory) => {
   try {
-    const response = await axiosApi.get(`event/rank/${category}?page=0`)
+    const response = await axiosApi.get(`main-event/rank/${category}`)
 
     return response.data
   } catch (err) {
@@ -31,7 +31,9 @@ export const getPopularList = async (category: EventCategory) => {
 // 오픈 임박 리스트 조회
 export const getOpenList = async (category: EventCategory) => {
   try {
-    const response = await axiosApi.get(`/events/operStat/${category}?page=0`)
+    const response = await axiosApi.get(
+      `main-events/operStat/${category}?page=0`,
+    )
 
     return response.data.data
   } catch (err) {
@@ -43,7 +45,9 @@ export const getOpenList = async (category: EventCategory) => {
 // 마감 임박 리스트 조회
 export const getCloseList = async (category: EventCategory) => {
   try {
-    const response = await axiosApi.get(`events/operEnd/${category}?page=0`)
+    const response = await axiosApi.get(
+      `main-events/operEnd/${category}?page=0`,
+    )
 
     return response.data.data
   } catch (err) {
