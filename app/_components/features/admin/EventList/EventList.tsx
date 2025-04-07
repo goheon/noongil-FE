@@ -23,7 +23,7 @@ const EventList: React.FC = () => {
   return (
     <div className={`${styles['container']}`}>
       <div className={`${styles['option']}`}>
-        <Link href="eventlist/new">
+        <Link href="/admin/eventlist/new">
           <button className={`${styles['add-btn']}`}>이벤트 추가</button>
         </Link>
       </div>

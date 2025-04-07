@@ -7,6 +7,7 @@ import {
   IGeocodingResponse,
 } from './type'
 
+// cookie sameSite 이슈 해결 후 수정
 export const adminLogin = async ({
   id,
   password,
@@ -15,9 +16,8 @@ export const adminLogin = async ({
   password: string
 }) => {
   try {
-    const response = await axiosApi.post(
-      // 'http://localhost:8080/api/admin/login',
-      'admin/login',
+    const response = await axios.post(
+      'http://localhost:8080/api/admin/login',
       {
         id,
         password,
@@ -32,11 +32,15 @@ export const adminLogin = async ({
   }
 }
 
+// cookie sameSite 이슈 해결 후 수정
 export const checkAdminAuth = async () => {
   try {
-    const response = await axiosApi.get(`admin/user-info`, {
-      withCredentials: true,
-    })
+    const response = await axios.get(
+      `http://localhost:8080/api/admin/user-info`,
+      {
+        withCredentials: true,
+      },
+    )
 
     return response
   } catch (err) {
@@ -49,15 +53,11 @@ export const getEventList = async (
   pageParam: number = 0,
 ): Promise<EventListResponse> => {
   try {
-    const response = await axiosApi.get(
-      // 'http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events',
-      'admin/events',
-      {
-        params: {
-          page: pageParam,
-        },
+    const response = await axiosApi.get('admin/events', {
+      params: {
+        page: pageParam,
       },
-    )
+    })
 
     return response.data
   } catch (err) {
@@ -87,11 +87,7 @@ export const updateEventDetail = async ({
   eventDetail: IEventDetail
 }) => {
   try {
-    const response = await axiosApi.put(
-      // `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/${eventId}`,
-      `admin/events/${eventId}`,
-      eventDetail,
-    )
+    const response = await axiosApi.put(`admin/events/${eventId}`, eventDetail)
   } catch (err) {
     throw err
   }
@@ -103,11 +99,7 @@ export const createEvent = async ({
   eventDetail: IEventDetail
 }) => {
   try {
-    const response = await axiosApi.post(
-      // `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events`,
-      `admin/events`,
-      eventDetail,
-    )
+    const response = await axiosApi.post(`admin/events`, eventDetail)
   } catch (err) {
     console.log('err :', err)
     throw err
@@ -116,10 +108,7 @@ export const createEvent = async ({
 
 export const deleteEvent = async (eventId: string) => {
   try {
-    const response = await axiosApi.delete(
-      // `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/${eventId}`,
-      `admin/events/${eventId}`,
-    )
+    const response = await axiosApi.delete(`admin/events/${eventId}`)
   } catch (err) {
     console.log('err :', err)
     throw err
@@ -128,10 +117,7 @@ export const deleteEvent = async (eventId: string) => {
 
 export const getEventMainImage = async (eventId: string) => {
   try {
-    const response = await axiosApi.get(
-      // `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/${eventId}/main-files`,
-      `admin/events/${eventId}/main-files`,
-    )
+    const response = await axiosApi.get(`admin/events/${eventId}/main-files`)
 
     return response.data
   } catch (err) {
@@ -142,10 +128,7 @@ export const getEventMainImage = async (eventId: string) => {
 
 export const getEventContentImage = async (eventId: string) => {
   try {
-    const response = await axiosApi.get(
-      // `http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/api/admin/events/${eventId}/files`,
-      `admin/events/${eventId}/files`,
-    )
+    const response = await axiosApi.get(`admin/events/${eventId}/files`)
 
     return response.data
   } catch (err) {
