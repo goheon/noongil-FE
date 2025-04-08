@@ -2,11 +2,13 @@ import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 
 import { ICON } from '@/public'
+import { useLoginStore } from '@/app/_lib'
 
 import styles from './MyPageHeader.module.scss'
 
 // 마이페이지 헤더
 const MyPageHeader = () => {
+  const { loadEnd } = useLoginStore()
   const pathname = usePathname()
   const router = useRouter()
 

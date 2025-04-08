@@ -8,4 +8,16 @@ const useMapStore = create((set) => ({}))
 
 const useAdminStore = create((set) => ({}))
 
-export { usePopupStore, useExhibitionStore, useMapStore, useAdminStore }
+const useLoginStore = create((set) => ({
+  loadEnd: false,
+
+  setLoadEnd: () => set({ loadEnd: true }),
+}))
+
+export {
+  usePopupStore,
+  useExhibitionStore,
+  useMapStore,
+  useAdminStore,
+  useLoginStore,
+}
