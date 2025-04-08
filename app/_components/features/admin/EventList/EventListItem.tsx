@@ -29,7 +29,7 @@ const EventListItem: React.FC<EventListItemPros> = (props) => {
       <div className={`${styles['item']}`}>{item.operStatDt}</div>
       <div className={`${styles['item']}`}>{item.operEndDt}</div>
       <div className={`${styles['item']}`}>
-        <Link href={`eventlist/${item.eventId}`}>
+        <Link href={`/admin/eventlist/${item.eventId}`}>
           <button>수정</button>
         </Link>
       </div>

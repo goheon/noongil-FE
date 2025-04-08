@@ -202,7 +202,7 @@ export const getGeoCodeInfo = async (
       `/api/geocoding?query=${encodeURIComponent(address)}`,
     )
 
-    return response.data.addresses[0]
+    return response.data
   } catch (err) {
     console.log('err :', err)
     throw err
