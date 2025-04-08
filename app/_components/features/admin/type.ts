@@ -81,6 +81,7 @@ export interface IEventDetail {
   addrLttd: number
   addrLotd: number
   ldcd: string
+  eventDetailUrl: string
 }
 
 export interface IEventListItem extends IEventDetail {
@@ -100,9 +101,11 @@ export interface EventListResponse {
 export interface IGeocodingResponse {
   roadAddress: string // 도로명 주소
   jibunAddress: string //지번 주소
-  englishAddress: string // 영어 주소
-  addressElements: any[] // 주소 구성 요소 정보
   x: string // X 좌표(경도)
   y: string // Y 좌표(위도)
-  distance: any // 중심 좌표로부터의 거리(m)
+  legalCode: {
+    id: string
+    mappingId: string
+    type: string
+  } // 법정동 코드
 }
