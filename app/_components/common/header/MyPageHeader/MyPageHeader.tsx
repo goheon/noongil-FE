@@ -36,6 +36,7 @@ const MyPageHeader = () => {
       break
   }
 
+  if (!loadEnd) return null
   return (
     <div className={`${styles['header_my']}`}>
       {pathname !== '/my' && (

@@ -8,7 +8,12 @@ const useMapStore = create((set) => ({}))
 
 const useAdminStore = create((set) => ({}))
 
-const useLoginStore = create((set) => ({
+type LoginStore = {
+  loadEnd: boolean
+  setLoadEnd: () => void
+}
+
+const useLoginStore = create<LoginStore>((set) => ({
   loadEnd: false,
 
   setLoadEnd: () => set({ loadEnd: true }),
