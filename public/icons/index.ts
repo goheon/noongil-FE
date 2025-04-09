@@ -25,6 +25,12 @@ const ICON = {
   kakao: '/icons/kakao-icon.svg',
   google: '/icons/google-icon.svg',
   calendar: '/icons/calendar.svg',
+  announce_gray: '/icons/announce_gray.svg',
+  bookmark_gray: '/icons/bookmark_gray.svg',
+  heart_gray: '/icons/heart_gray.svg',
+  information_gray: '/icons/information_gray.svg',
+  operator_gray: '/icons/operator_gray.svg',
+  terms_gray: '/icons/terms_gray.svg',
 }
 
 export { ICON }
