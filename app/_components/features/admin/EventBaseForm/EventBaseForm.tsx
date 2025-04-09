@@ -68,11 +68,12 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
     try {
       const result = await getGeoCodeInfo(currentAddress)
 
-      const { x, y, roadAddress, jibunAddress } = result
+      const { x, y, roadAddress, jibunAddress, legalCode } = result
       setValue('lnad', jibunAddress)
       setValue('rads', roadAddress)
       setValue('addrLotd', Number(x))
       setValue('addrLttd', Number(y))
+      setValue('ldcd', legalCode.id)
     } catch (err) {
       console.log('error :', err)
     }
@@ -218,6 +219,15 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
               <div className={`${styles['title']}`}>법정동 코드</div>
               <div className={`${styles['data']}`}>
                 <input {...register('ldcd')} />
+              </div>
+            </div>
+          </div>
+
+          <div className={`${styles['section']}`}>
+            <div className={`${styles['content']}`}>
+              <div className={`${styles['title']}`}>SNS 주소</div>
+              <div className={`${styles['data']}`}>
+                <input {...register('eventDetailUrl')} />
               </div>
             </div>
           </div>

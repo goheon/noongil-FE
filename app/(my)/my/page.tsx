@@ -2,10 +2,13 @@
 
 import { useState, useLayoutEffect } from 'react'
 import { useRouter } from 'next/navigation'
+
+import MyPage from '@/app/_components/features/my/MyPage'
+
 import { axiosApi } from '@/app/_lib/axios'
 import type { AxiosError } from 'axios'
 
-const MyPage: React.FC = () => {
+const Page: React.FC = () => {
   const router = useRouter()
 
   useLayoutEffect(() => {
@@ -22,7 +25,7 @@ const MyPage: React.FC = () => {
     checkLogin()
   }, [])
 
-  return <>{<span>mypage</span>}</>
+  return <MyPage />
 }
 
-export default MyPage
+export default Page
