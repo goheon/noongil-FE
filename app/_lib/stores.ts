@@ -10,13 +10,13 @@ const useAdminStore = create((set) => ({}))
 
 type LoginStore = {
   loadEnd: boolean
-  setLoadEnd: () => void
+  setLoadEnd: (value: boolean) => void
 }
 
 const useLoginStore = create<LoginStore>((set) => ({
   loadEnd: false,
 
-  setLoadEnd: () => set({ loadEnd: true }),
+  setLoadEnd: (value) => set({ loadEnd: value }),
 }))
 
 export {

@@ -16,22 +16,32 @@ const Page: React.FC = () => {
     const checkLogin = async () => {
       try {
         const res = await axiosApi.get('auth/user-info')
-        console.log(res)
-        setLoadEnd()
+        if (res?.data?.joinYn === 'N') {
+          setLoadEnd(false)
+          router.push('/register')
+          return
+        }
       } catch (err) {
         const error = err as AxiosError
         if (error.response?.status === 401) {
+          setLoadEnd(false)
           router.push('/login')
+          return
         } else {
           // 현위치 에러페이지 이동 및 에러코드 전달
+          setLoadEnd(false)
           router.replace('/')
+          return
         }
       }
+
+      setTimeout(() => setLoadEnd(true), 200)
     }
 
     checkLogin()
   }, [])
 
+  console.log(loadEnd)
   if (!loadEnd) return null
   return <MyPage />
 }
