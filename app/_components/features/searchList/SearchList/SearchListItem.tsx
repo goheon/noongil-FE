@@ -9,15 +9,29 @@ import {
   extractCityDistrict,
   formatDateRange,
 } from '@/app/_utils/textFormatter'
+import useBookmarkItem from './useBookmarkItem'
+
+const heartIconMap = {
+  exhibition: {
+    liked: ICON.heart_black,
+    unliked: ICON.heart_white,
+  },
+  popup: {
+    liked: ICON.heart_black_active,
+    unliked: ICON.heart_black,
+  },
+  all: {
+    liked: ICON.heart_black_active,
+    unliked: ICON.heart_black,
+  },
+}
 
 interface SearchListItemProps {
   data: ISearchListItem
-  category: string
+  category: 'popup' | 'exhibition' | 'all'
 }
 
 const cx = classNames.bind(styles)
-
-// TODO: image, icon 교체하기
 
 const SearchListItem = (props: SearchListItemProps) => {
   const { data, category } = props
@@ -30,7 +44,10 @@ const SearchListItem = (props: SearchListItemProps) => {
     likeYn,
     smallImageUrl,
     eventAddr,
+    imageUrl,
   } = data
+
+  const { onBookmark } = useBookmarkItem()
 
   const eventAddress = useMemo(
     () => extractCityDistrict(eventAddr),
@@ -42,18 +59,39 @@ const SearchListItem = (props: SearchListItemProps) => {
     [operStatDt, operEndDt],
   )
 
-  const heartIcon = useMemo(
-    () => (category === 'popup' ? ICON.heart_popup : ICON.heart_exhibition),
-    [category],
-  )
+  const heartIcon = useMemo(() => {
+    const state = likeYn === 'Y' ? 'liked' : 'unliked'
+
+    return heartIconMap[category][state]
+  }, [category, likeYn])
+
+  const handleClick = () => {
+    onBookmark({
+      eventId,
+      likeYn: likeYn === 'Y' ? 'N' : 'Y',
+    })
+  }
 
   return (
     <div className={cx('container')}>
-      <Image src={ExampleImg} width={215} height={235} alt="image" />
+      <Image
+        src={imageUrl ?? ExampleImg}
+        width={215}
+        height={235}
+        alt="image"
+      />
       <div className={cx('info-section')}>
         <div className={cx('top')}>
           <div className={cx('title')}>{eventNm}</div>
-          <Image src={heartIcon} alt="icon" width={20} height={20} />
+          <div className={cx('icon-wrapper')} onClick={handleClick}>
+            <Image
+              className={cx('icon')}
+              src={heartIcon}
+              alt="icon"
+              width={20}
+              height={20}
+            />
+          </div>
         </div>
 
         <div className={cx('address')}>{eventAddress}</div>
