@@ -1,4 +1,4 @@
-export type EventCategory = 'all' | '10' | '20'
+export type EventType = 'all' | '10' | '20'
 
 export interface IListItem {
   eventId: number
@@ -13,7 +13,7 @@ export interface IListItem {
   dday: string
 }
 
-export const EVENT_CATEGORY_MAP: Record<string, EventCategory> = {
+export const EVENT_CATEGORY_MAP: Record<string, EventType> = {
   all: 'all',
   popup: '10',
   exhibition: '20',

@@ -1,12 +1,12 @@
 import { getOpenList, getCloseList } from '../mainApi'
 import { useQuery } from '@tanstack/react-query'
-import { EventCategory, IListItem } from '../type'
+import { EventType, IListItem } from '../type'
 
 const filterDays = (data: IListItem[]) => {
   return data.filter((item) => Number(item.dday.replace('D-', '')) <= 14)
 }
 
-const usePeriodList = (category: EventCategory) => {
+const usePeriodList = (category: EventType) => {
   const {
     isPending: isOpenListLoading,
     error: openListError,

@@ -16,8 +16,7 @@ const API_BASE_URL_OBJ = {
 const API_LOGIN_BASE_URL_OBJ = {
   production:
     'http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/oauth2',
-  development:
-    'http://ec2-3-36-23-213.ap-northeast-2.compute.amazonaws.com:8080/oauth2',
+  development: 'http://localhost:8080/oauth2',
   test: '',
 }
 
