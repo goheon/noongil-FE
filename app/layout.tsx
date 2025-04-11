@@ -3,6 +3,7 @@
 import React, { Suspense } from 'react'
 import { usePathname } from 'next/navigation'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { queryClient } from '@/app/_lib'
 import { BottomNavigation, Header } from '@/app/_components/common'
@@ -29,6 +30,8 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
               </Suspense>
             </div>
           )}
+
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </body>
     </html>
