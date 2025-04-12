@@ -41,7 +41,6 @@ const Page: React.FC = () => {
     checkLogin()
   }, [])
 
-  console.log(loadEnd)
   if (!loadEnd) return null
   return <MyPage />
 }
