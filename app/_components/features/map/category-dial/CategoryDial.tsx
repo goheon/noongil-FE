@@ -43,8 +43,7 @@ const CategoryDial = () => {
       <motion.button
         className={`${styles['speed-dial-btn']} ${styles['main']}`}
         onClick={() => setOpen(!open)}
-        whileTap={{ scale: 0.94 }}
-        transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
+        whileTap={{ scale: 0.8 }}
       >
         {focused}
       </motion.button>
