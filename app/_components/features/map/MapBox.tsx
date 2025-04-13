@@ -26,35 +26,35 @@ export const MapBox: React.FC = () => {
       })
       setIsModalOpen(true) // 먼저 안내 모달 띄우기
 
-      // let lastZoom = map.getZoom()
-      // naver.maps.Event.addListener(map, 'zoom_changed', () => {
-      //   const currentZoom = map.getZoom()
+      let lastZoom = map.getZoom()
+      naver.maps.Event.addListener(map, 'zoom_changed', () => {
+        const currentZoom = map.getZoom()
 
-      //   // 너무 빠른 줌 변화 방지
-      //   if (Math.abs(currentZoom - lastZoom) > 2) {
-      //     map.setZoom(lastZoom + (currentZoom > lastZoom ? 2 : -2))
-      //   } else {
-      //     lastZoom = currentZoom
-      //   }
-      // })
+        // 너무 빠른 줌 변화 방지
+        if (Math.abs(currentZoom - lastZoom) > 2) {
+          map.setZoom(lastZoom + (currentZoom > lastZoom ? 2 : -2))
+        } else {
+          lastZoom = currentZoom
+        }
+      })
 
-      // let zooming = false
-      // naver.maps.Event.addListener(map, 'zoom_changed', () => {
-      //   zooming = true
-      //   setTimeout(() => (zooming = false), 500) // 0.5초 후 줌 상태 해제
-      // })
+      let zooming = false
+      naver.maps.Event.addListener(map, 'zoom_changed', () => {
+        zooming = true
+        setTimeout(() => (zooming = false), 500) // 0.5초 후 줌 상태 해제
+      })
 
-      // naver.maps.Event.addListener(map, 'dragstart', () => {
-      //   if (zooming) {
-      //     map.setOptions({ draggable: false })
-      //   }
-      // })
+      naver.maps.Event.addListener(map, 'dragstart', () => {
+        if (zooming) {
+          map.setOptions({ draggable: false })
+        }
+      })
 
-      // naver.maps.Event.addListener(map, 'dragend', () => {
-      //   map.setOptions({ draggable: true })
-      // })
+      naver.maps.Event.addListener(map, 'dragend', () => {
+        map.setOptions({ draggable: true })
+      })
 
-      // console.log(map.hasListener('dragend'))
+      console.log(map.hasListener('dragend'))
     }
   }, [map])
 
