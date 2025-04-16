@@ -8,6 +8,7 @@
     position: relative;
     padding: 20px;
     height: 88px;
+    box-sizing: border-box;
 
     &_text-box {
       display: flex;
