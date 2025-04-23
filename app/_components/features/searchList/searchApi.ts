@@ -1,18 +1,56 @@
-import axios from 'axios'
 import { axiosApi } from '@/app/_lib/axios'
+import { EventType } from '../main/type'
+import axios from 'axios'
 
-export const getAllEventList = async (
-  pageParam: number = 1,
-  sortType: 10 | 20 | 30 = 10,
-) => {
+export const bookmarkEventItem = async ({
+  eventId,
+  likeYn,
+}: {
+  eventId: number
+  likeYn: string
+}) => {
   try {
-    const response = await axiosApi.get(
-      // `http://127.0.0.1:8080/api/events/list/${sortType}`,
-      `events/list`,
+    // 쿠키 이슈 해결 후 기존의 Api endpoint 연결
+    // const response = await axiosApi.post(
+    //   'mark-events/save',
+    const response = await axios.post(
+      'http://localhost:8080/api/mark-events/save',
+      {
+        eventId,
+        likeYn,
+      },
+      {
+        withCredentials: true,
+      },
+    )
+
+    console.log('res :', response)
+  } catch (err) {
+    console.log('bookmark error :', err)
+    throw err
+  }
+}
+
+export const getAllEventList = async ({
+  pageParam = 0,
+  sortType = '20',
+  eventType = 'all',
+}: {
+  pageParam: number
+  sortType: '10' | '20' | '30'
+  eventType: EventType
+}) => {
+  try {
+    // 쿠키 이슈 해결 후 기존의 Api endpoint 연결
+    // const response = await axiosApi.get(`events/list/${eventType}`, {
+    const response = await axios.get(
+      `http://localhost:8080/api/events/list/${eventType}`,
       {
         params: {
           page: pageParam,
+          sortType,
         },
+        withCredentials: true,
       },
     )
 

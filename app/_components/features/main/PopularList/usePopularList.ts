@@ -1,8 +1,8 @@
 import { getPopularList } from '../mainApi'
 import { useQuery } from '@tanstack/react-query'
-import { EventCategory } from '../type'
+import { EventType } from '../type'
 
-const usePopularList = (category: EventCategory) => {
+const usePopularList = (category: EventType) => {
   const {
     data: popularList,
     isLoading,

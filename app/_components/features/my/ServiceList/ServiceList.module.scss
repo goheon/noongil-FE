@@ -1,0 +1,30 @@
+.section {
+  border-top: 1px solid #d9d9d9;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+
+  .title {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .list-item {
+      a {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 17px;
+        font-weight: 400;
+        font-size: 15px;
+        color: #717171;
+      }
+    }
+  }
+}

@@ -3,18 +3,20 @@ import classNames from 'classnames/bind'
 import useSearchList from './useSearchList'
 import SearchListItem from './SearchListItem'
 import SearchListHeader from '../SearchListHeader/SearchListHeader'
+import { EVENT_CATEGORY_MAP } from '../../main/type'
 
 const cx = classNames.bind(styles)
 
 interface SearchListProps {
-  category: string
+  category: 'popup' | 'exhibition' | 'all'
 }
 
 const SearchList = (props: SearchListProps) => {
   const { category } = props
 
-  // const { list } = useSearchList()
-  const list: any[] = []
+  const currentCategory = EVENT_CATEGORY_MAP[category]
+
+  const { list } = useSearchList(currentCategory)
 
   return (
     <div className={cx('container')}>

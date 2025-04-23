@@ -19,6 +19,7 @@ $navigation-height: 103px;
     position: relative;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
     width: 100%;
     max-width: 430px;
     height: 100%;

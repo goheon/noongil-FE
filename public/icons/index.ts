@@ -16,8 +16,6 @@ const ICON = {
   my_active: '/icons/my-icon_active.svg',
   cogwheel: '/icons/cogwheel-icon.svg',
   chevron: '/icons/chevron.svg',
-  heart_exhibition: '/icons/heart_exhibition.svg',
-  heart_popup: '/icons/heart_popup.svg',
   close: '/icons/close.svg',
   checkbox_off: '/icons/checkbox-off.svg',
   checkbox_on: '/icons/checkbox-on.svg',
@@ -25,6 +23,15 @@ const ICON = {
   kakao: '/icons/kakao-icon.svg',
   google: '/icons/google-icon.svg',
   calendar: '/icons/calendar.svg',
+  announce_gray: '/icons/announce_gray.svg',
+  bookmark_gray: '/icons/bookmark_gray.svg',
+  heart_gray: '/icons/heart_gray.svg',
+  information_gray: '/icons/information_gray.svg',
+  operator_gray: '/icons/operator_gray.svg',
+  terms_gray: '/icons/terms_gray.svg',
+  heart_white: '/icons/heart_white.svg',
+  heart_black: '/icons/heart_black.svg',
+  heart_black_active: '/icons/heart_black_active.svg',
 }
 
 export { ICON }
