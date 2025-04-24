@@ -33,6 +33,18 @@ export const adminLogin = async ({
 }
 
 // cookie sameSite 이슈 해결 후 수정
+export const adminLogout = async () => {
+  try {
+    await axios.delete(`http://localhost:8080/api/admin/logout`, {
+      withCredentials: true,
+    })
+  } catch (err) {
+    console.log('admin logout error :', err)
+    throw err
+  }
+}
+
+// cookie sameSite 이슈 해결 후 수정
 export const checkAdminAuth = async () => {
   try {
     const response = await axios.get(
