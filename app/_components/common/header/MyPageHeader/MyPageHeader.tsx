@@ -23,7 +23,7 @@ const MyPageHeader = () => {
       headerText = '계정정보'
       break
 
-    case '/my/interests':
+    case '/my/categories':
       headerText = '내 관심사'
       break
 
@@ -36,7 +36,8 @@ const MyPageHeader = () => {
       break
   }
 
-  if (!loadEnd) return null
+  // TODO : 에러 로직 수정
+  // if (!loadEnd) return null
   return (
     <div className={`${styles['header_my']}`}>
       {pathname !== '/my' && (

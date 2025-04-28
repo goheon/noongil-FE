@@ -3,9 +3,7 @@
 import styles from './layout.module.scss'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useRouter } from 'next/navigation'
-import useAdminAuthStatus from '@/app/_components/features/admin/Login/useAdminAuthStatus'
-import { useEffect } from 'react'
+import AdminAuthGuard from '@/app/_components/features/admin/AdminAuthGuard/AdminAuthGuard'
 
 export default function AdminLayout({
   children,
@@ -13,19 +11,6 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const router = useRouter()
-
-  const isLoginPage = pathname.includes('login')
-
-  // const { adminUser, isLoading } = useAdminAuthStatus(!isLoginPage)
-
-  // console.log('admin :', adminUser)
-
-  // useEffect(() => {
-  //   if (!isLoginPage && !isLoading && !adminUser) {
-  //     router.push('/admin/login')
-  //   }
-  // }, [isLoginPage, isLoading, adminUser, router])
 
   return (
     <section className={`${styles['container']}`}>
@@ -36,7 +21,7 @@ export default function AdminLayout({
 
           default:
             return (
-              <>
+              <AdminAuthGuard>
                 <div className={`${styles['sidebar']}`}>
                   <Link href="/admin/eventlist">
                     <div className={`${styles['tab']}`}>이벤트 관리</div>
@@ -44,7 +29,7 @@ export default function AdminLayout({
                 </div>
 
                 <div className={`${styles['content']}`}>{children}</div>
-              </>
+              </AdminAuthGuard>
             )
         }
       })()}

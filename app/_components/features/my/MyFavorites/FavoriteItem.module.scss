@@ -1,0 +1,55 @@
+.container {
+  width: 215px;
+  display: flex;
+  flex-direction: column;
+
+  .event-image {
+    &--past {
+      filter: grayscale(90%);
+    }
+  }
+
+  .info-section {
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .top {
+      display: flex;
+      gap: 4px;
+
+      .title {
+        font-weight: 500;
+        font-size: 19px;
+      }
+
+      .icon-wrapper {
+        cursor: pointer;
+      }
+    }
+
+    .address {
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .period {
+      font-weight: 400;
+      font-size: 13px;
+      color: #9c9c9c;
+    }
+
+    .past-notice {
+      width: 38px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #717171;
+      color: #ffffff;
+      font-weight: 500;
+      font-size: 10px;
+    }
+  }
+}

@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { EventCategory } from '../admin/type'
+import { ISearchListItem } from '../searchList/type'
 
 interface IUserInfoResponse {
   joinYn: string
@@ -46,7 +48,7 @@ export const deleteUserAccount = async () => {
   }
 }
 
-export const getUserCategories = async () => {
+export const getUserCategories = async (): Promise<EventCategory[]> => {
   try {
     const response = await axios.get(
       'http://localhost:8080/api/user-categories',
@@ -55,11 +57,36 @@ export const getUserCategories = async () => {
       },
     )
 
-    console.log('user res :', response)
-
-    return response.data
+    return response.data.data
   } catch (err) {
     console.log('err :', err)
+    throw err
+  }
+}
+
+export const updateUserCategories = async (data: EventCategory[]) => {
+  try {
+    await axios.put('http://localhost:8080/api/user-categories', data, {
+      withCredentials: true,
+    })
+  } catch (err) {
+    console.log('user category :', err)
+    throw err
+  }
+}
+
+export const getUserBookmarkEvent = async (): Promise<ISearchListItem[]> => {
+  try {
+    const response = await axios.get(
+      'http://localhost:8080/api/mark-events/retrieve',
+      {
+        withCredentials: true,
+      },
+    )
+
+    return response.data.data
+  } catch (err) {
+    console.log('get user books mark :', err)
     throw err
   }
 }
