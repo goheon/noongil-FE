@@ -6,11 +6,11 @@ import ServiceList, { ServiceItemProps } from './ServiceList/ServiceList'
 import useUserAuth from './useUserAuth'
 
 const usageServices: ServiceItemProps[] = [
-  { icon: ICON.heart_gray, label: '내 관심사', linkUrl: '/my/interest' },
+  { icon: ICON.heart_gray, label: '내 관심사', linkUrl: '/my/categories' },
   {
     icon: ICON.bookmark_gray,
     label: '즐겨찾기 팝업 / 전시',
-    linkUrl: '/my/bookmark',
+    linkUrl: '/my/favorites',
   },
 ]
 
