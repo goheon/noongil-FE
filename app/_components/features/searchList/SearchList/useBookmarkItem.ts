@@ -8,7 +8,9 @@ const useBookmarkItem = () => {
     mutationFn: ({ eventId, likeYn }: { eventId: number; likeYn: string }) =>
       bookmarkEventItem({ eventId, likeYn }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['search-list'] })
+      queryClient.invalidateQueries({
+        queryKey: ['search-list', 'user-favorites'],
+      })
     },
   })
 
