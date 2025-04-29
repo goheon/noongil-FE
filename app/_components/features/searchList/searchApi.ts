@@ -13,8 +13,18 @@ export const bookmarkEventItem = async ({
     // 쿠키 이슈 해결 후 기존의 Api endpoint 연결
     // const response = await axiosApi.post(
     //   'mark-events/save',
-    const response = await axios.post(
-      'http://localhost:8080/api/mark-events/save',
+    // const response = await axios.post(
+    //   'http://localhost:8080/api/mark-events/save',
+    //   {
+    //     eventId,
+    //     likeYn,
+    //   },
+    //   {
+    //     withCredentials: true,
+    //   },
+    // )
+    const response = await axiosApi.post(
+      'mark-events/save',
       {
         eventId,
         likeYn,
@@ -43,16 +53,23 @@ export const getAllEventList = async ({
   try {
     // 쿠키 이슈 해결 후 기존의 Api endpoint 연결
     // const response = await axiosApi.get(`events/list/${eventType}`, {
-    const response = await axios.get(
-      `http://localhost:8080/api/events/list/${eventType}`,
-      {
-        params: {
-          page: pageParam,
-          sortType,
-        },
-        withCredentials: true,
+    // const response = await axios.get(
+    //   `http://localhost:8080/api/events/list/${eventType}`,
+    //   {
+    //     params: {
+    //       page: pageParam,
+    //       sortType,
+    //     },
+    //     withCredentials: true,
+    //   },
+    // )
+    const response = await axiosApi.get(`events/list/${eventType}`, {
+      params: {
+        page: pageParam,
+        sortType,
       },
-    )
+      withCredentials: true,
+    })
 
     return response.data
   } catch (err) {

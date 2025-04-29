@@ -16,8 +16,10 @@ export const adminLogin = async ({
   password: string
 }) => {
   try {
-    const response = await axios.post(
-      'http://localhost:8080/api/admin/login',
+    // const response = await axios.post(
+    //   'http://localhost:8080/api/admin/login',
+    const response = await axiosApi.post(
+      `admin/login`,
       {
         id,
         password,
@@ -35,7 +37,10 @@ export const adminLogin = async ({
 // cookie sameSite 이슈 해결 후 수정
 export const adminLogout = async () => {
   try {
-    await axios.delete(`http://localhost:8080/api/admin/logout`, {
+    // await axios.delete(`http://localhost:8080/api/admin/logout`, {
+    //   withCredentials: true,
+    // })
+    await axiosApi.delete('admin/logout', {
       withCredentials: true,
     })
   } catch (err) {
@@ -47,12 +52,15 @@ export const adminLogout = async () => {
 // cookie sameSite 이슈 해결 후 수정
 export const checkAdminAuth = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8080/api/admin/user-info`,
-      {
-        withCredentials: true,
-      },
-    )
+    // const response = await axios.get(
+    //   `http://localhost:8080/api/admin/user-info`,
+    //   {
+    //     withCredentials: true,
+    //   },
+    // )
+    const response = await axiosApi.get('admin/user-info', {
+      withCredentials: true,
+    })
 
     return response
   } catch (err) {
