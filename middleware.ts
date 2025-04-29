@@ -1,7 +1,7 @@
 //  Test 를 위해 middleware 를 주석처리합니다.
 
-// import { NextResponse } from 'next/server'
-// import { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 
 // // 인증이 필요한 경로 설정
 // const protectedAdminPaths = ['/admin']
@@ -36,3 +36,6 @@
 // export const config = {
 //   matcher: '/admin/:path*', // /admin 이하에만 middleware 작동
 // }
+export default function middleware(request: NextRequest) {
+  return NextResponse.next()
+}
