@@ -10,16 +10,16 @@ const AdminAuthGuard = ({ children }: { children: React.ReactNode }) => {
 
   const { isError, isLoading } = useAdminSession()
 
-  useEffect(() => {
-    const handleLogout = async () => {
-      await adminLogout()
-      router.replace('/admin/login')
-    }
+  // useEffect(() => {
+  //   const handleLogout = async () => {
+  //     await adminLogout()
+  //     router.replace('/admin/login')
+  //   }
 
-    if (!isLoading && isError) {
-      handleLogout()
-    }
-  }, [isError, isLoading])
+  //   if (!isLoading && isError) {
+  //     handleLogout()
+  //   }
+  // }, [isError, isLoading])
 
   return <>{children}</>
 }
