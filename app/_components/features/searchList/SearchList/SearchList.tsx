@@ -1,9 +1,12 @@
+'use client'
+
 import styles from './SearchList.module.scss'
 import classNames from 'classnames/bind'
 import useSearchList from './useSearchList'
 import SearchListItem from './SearchListItem'
 import SearchListHeader from '../SearchListHeader/SearchListHeader'
 import { EVENT_CATEGORY_MAP } from '../../main/type'
+import { useSearchParams } from 'next/navigation'
 
 const cx = classNames.bind(styles)
 
@@ -13,6 +16,12 @@ interface SearchListProps {
 
 const SearchList = (props: SearchListProps) => {
   const { category } = props
+
+  const searchParams = useSearchParams()
+
+  const categories = searchParams.get('categories')?.split(',') ?? []
+  const startDate = searchParams.get('startDate') ?? null
+  const endDate = searchParams.get('endDate') ?? null
 
   const currentCategory = EVENT_CATEGORY_MAP[category]
 
