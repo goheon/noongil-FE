@@ -18,7 +18,7 @@ const ListsPage = () => {
     <>
       <SearchList category="all" />
       <SpeedDial />
-      <SearchListFilter />
+      <SearchListFilter category="all" />
     </>
   )
 }

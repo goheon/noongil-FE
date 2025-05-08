@@ -15,13 +15,19 @@ import { Checkbox } from '@/app/_components/ui'
 
 const cx = classNames.bind(styles)
 
-const CategoryFilter = () => {
+interface CategoryFilterProps {
+  isExhibitionPage?: boolean
+}
+
+const CategoryFilter = (props: CategoryFilterProps) => {
+  const { isExhibitionPage } = props
+
   const pathname = usePathname()
 
   const { setCategory, category } = useListFilterStore()
 
   return (
-    <FilterLayout>
+    <FilterLayout isExhibitionPage={isExhibitionPage}>
       <ul className={cx('list')}>
         {(() => {
           switch (true) {
@@ -35,6 +41,7 @@ const CategoryFilter = () => {
                         label={POPUP_CATEGORY_LABELS[option]}
                         onChange={() => setCategory(option)}
                         checked={category.includes(option)}
+                        isExhibitionPage={isExhibitionPage}
                       />
                     </li>
                   ))}
@@ -51,6 +58,7 @@ const CategoryFilter = () => {
                         label={EXHIBITION_CATEGORY_LABELS[option]}
                         onChange={() => setCategory(option)}
                         checked={category.includes(option)}
+                        isExhibitionPage={isExhibitionPage}
                       />
                     </li>
                   ))}
@@ -67,6 +75,7 @@ const CategoryFilter = () => {
                         label={POPUP_CATEGORY_LABELS[option]}
                         onChange={() => setCategory(option)}
                         checked={category.includes(option)}
+                        isExhibitionPage={isExhibitionPage}
                       />
                     </li>
                   ))}
@@ -78,6 +87,7 @@ const CategoryFilter = () => {
                         label={EXHIBITION_CATEGORY_LABELS[option]}
                         onChange={() => setCategory(option)}
                         checked={category.includes(option)}
+                        isExhibitionPage={isExhibitionPage}
                       />
                     </li>
                   ))}
