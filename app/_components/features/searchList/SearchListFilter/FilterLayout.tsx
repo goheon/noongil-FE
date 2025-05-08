@@ -13,8 +13,12 @@ import { format } from 'date-fns'
 
 const cx = classNames.bind(styles)
 
-const FilterLayout = (props: PropsWithChildren) => {
-  const { children } = props
+interface FilterLayoutProps {
+  isExhibitionPage?: boolean
+}
+
+const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
+  const { children, isExhibitionPage } = props
 
   const router = useRouter()
   const pathname = usePathname()
@@ -61,6 +65,8 @@ const FilterLayout = (props: PropsWithChildren) => {
         <div
           className={cx('filter-option', {
             'filter-option--selected': filter === 'category',
+            'filter-option--selected--exhibition':
+              filter === 'category' && isExhibitionPage,
             'filter-option--active': category.length > 0,
           })}
           onClick={() => setFilter('category')}
@@ -70,6 +76,8 @@ const FilterLayout = (props: PropsWithChildren) => {
         <div
           className={cx('filter-option', {
             'filter-option--selected': filter === 'date',
+            'filter-option--selected--exhibition':
+              filter === 'date' && isExhibitionPage,
             'filter-option--active': startDate,
           })}
           onClick={() => setFilter('date')}
@@ -110,10 +118,20 @@ const FilterLayout = (props: PropsWithChildren) => {
           )}
         </div>
         <div className={cx('filter-btn-box')}>
-          <button className={cx('btn', 'btn--reset')} onClick={() => reset()}>
+          <button
+            className={cx('btn', 'btn--reset', {
+              'btn--reset--exhibition': isExhibitionPage,
+            })}
+            onClick={() => reset()}
+          >
             초기화
           </button>
-          <button className={cx('btn', 'btn--active')} onClick={applyFilter}>
+          <button
+            className={cx('btn', 'btn--active', {
+              'btn--active--exhibition': isExhibitionPage,
+            })}
+            onClick={applyFilter}
+          >
             적용하기
           </button>
         </div>
