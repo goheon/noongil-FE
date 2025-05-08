@@ -8,20 +8,33 @@ import CategoryFilter from './CategoryFilter'
 
 const cx = classNames.bind(styles)
 
-const SearchListFilter = () => {
+interface SearchListFilterProps {
+  category: 'popup' | 'exhibition' | 'all'
+}
+
+const SearchListFilter = (props: SearchListFilterProps) => {
+  const { category } = props
+
   const { isOpen, filter, setOpen } = useListFilterStore()
 
   return (
-    <BottomSheet type="filter" isOpen={isOpen} setIsOpen={setOpen}>
+    <BottomSheet
+      type="filter"
+      isOpen={isOpen}
+      setIsOpen={setOpen}
+      isExhibitionPage={category === 'exhibition'}
+    >
       <div className={cx('filter-container')}>
         {(() => {
           switch (filter) {
             case 'order':
               return <OrderFilter />
             case 'category':
-              return <CategoryFilter />
+              return (
+                <CategoryFilter isExhibitionPage={category === 'exhibition'} />
+              )
             case 'date':
-              return <DateFilter />
+              return <DateFilter isExhibitionPage={category === 'exhibition'} />
             case 'region':
               return <div>지역 필터</div>
             default:

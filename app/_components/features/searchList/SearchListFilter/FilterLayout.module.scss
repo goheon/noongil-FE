@@ -24,6 +24,11 @@
         text-decoration-color: #000000;
         text-underline-offset: 10px;
         text-decoration-thickness: 3px;
+
+        &--exhibition {
+          color: #ffffff;
+          text-decoration-color: #ffffff;
+        }
       }
 
       &--active {
@@ -55,6 +60,7 @@
       box-sizing: border-box;
       width: 100%;
       max-height: 70px;
+      min-height: 70px;
       background-color: #f5f5f5;
       display: flex;
       gap: 30px;
@@ -103,6 +109,12 @@
           font-weight: 400;
           font-size: 17px;
           background-color: #ffffff;
+
+          &--exhibition {
+            border-color: white;
+            color: white;
+            background-color: black;
+          }
         }
 
         &--active {
@@ -110,6 +122,12 @@
           font-weight: 400;
           font-size: 17px;
           color: #ffffff;
+
+          &--exhibition {
+            background-color: white;
+            color: black;
+            border: none;
+          }
         }
       }
     }
