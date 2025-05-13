@@ -3,6 +3,7 @@ import Image from 'next/image'
 import styles from './Chip.module.scss'
 import classNames from 'classnames/bind'
 import { ICON } from '@/public'
+import { TEventCodeName } from '@/app/_types'
 
 const cx = classNames.bind(styles)
 
@@ -13,7 +14,7 @@ interface ChipProps
   > {
   onClick?: () => void
   suffixIcon?: keyof typeof ICON
-  category?: string
+  eventCode?: TEventCodeName
   iconSize?: number
 }
 
@@ -24,7 +25,7 @@ const Chip = (props: ChipProps) => {
     style,
     onClick,
     suffixIcon,
-    category = 'popup',
+    eventCode = 'popup',
     iconSize = 20,
     ...rest
   } = props
@@ -34,7 +35,7 @@ const Chip = (props: ChipProps) => {
       className={cx(
         'chip',
         {
-          'chip--exhibition': category === 'exhibition',
+          'chip--exhibition': eventCode === 'exhibition',
         },
         className,
       )}

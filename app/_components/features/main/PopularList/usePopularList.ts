@@ -1,8 +1,8 @@
 import { getPopularList } from '../mainApi'
 import { useQuery } from '@tanstack/react-query'
-import { EventType } from '../type'
+import { TAllEventCode } from '@/app/_types'
 
-const usePopularList = (category: EventType) => {
+const usePopularList = (category: TAllEventCode) => {
   const {
     data: popularList,
     isLoading,

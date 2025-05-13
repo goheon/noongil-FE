@@ -10,6 +10,7 @@ import {
   formatDateRange,
 } from '@/app/_utils/textFormatter'
 import useBookmarkItem from './useBookmarkItem'
+import { TEventCodeName } from '@/app/_types'
 
 const heartIconMap = {
   exhibition: {
@@ -28,13 +29,13 @@ const heartIconMap = {
 
 interface SearchListItemProps {
   data: ISearchListItem
-  category: 'popup' | 'exhibition' | 'all'
+  eventCode: TEventCodeName
 }
 
 const cx = classNames.bind(styles)
 
 const SearchListItem = (props: SearchListItemProps) => {
-  const { data, category } = props
+  const { data, eventCode } = props
 
   const {
     eventId,
@@ -62,8 +63,8 @@ const SearchListItem = (props: SearchListItemProps) => {
   const heartIcon = useMemo(() => {
     const state = likeYn === 'Y' ? 'liked' : 'unliked'
 
-    return heartIconMap[category][state]
-  }, [category, likeYn])
+    return heartIconMap[eventCode][state]
+  }, [eventCode, likeYn])
 
   const handleClick = () => {
     onBookmark({

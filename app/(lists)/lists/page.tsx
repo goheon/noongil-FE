@@ -16,9 +16,9 @@ const ListsPage = () => {
 
   return (
     <>
-      <SearchList category="all" />
+      <SearchList eventCode="all" />
       <SpeedDial />
-      <SearchListFilter category="all" />
+      <SearchListFilter eventCode="all" />
     </>
   )
 }

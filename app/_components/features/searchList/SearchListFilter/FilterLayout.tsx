@@ -4,12 +4,12 @@ import styles from './FilterLayout.module.scss'
 import classNames from 'classnames/bind'
 import { PropsWithChildren, useCallback, useMemo } from 'react'
 import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
-import { CATEGORY_LABELS } from '../type'
 import Image from 'next/image'
 import { ICON } from '@/public'
 import { getDateLabel } from '@/app/_utils/date'
 import { usePathname, useRouter } from 'next/navigation'
 import { format } from 'date-fns'
+import { ALL_CATEGORY_LABELS } from '@/app/_constants/event'
 
 const cx = classNames.bind(styles)
 
@@ -57,7 +57,7 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
     }
 
     router.push(`${pathname}?${newParams.toString()}`)
-  }, [category, startDate, endDate])
+  }, [category, startDate, endDate, pathname, router])
 
   return (
     <div className={cx('container')}>
@@ -101,7 +101,7 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
           {category &&
             category.map((categoryValue) => (
               <div className={cx('filter-list-item')} key={categoryValue}>
-                <div>{CATEGORY_LABELS[categoryValue]}</div>
+                <div>{ALL_CATEGORY_LABELS[categoryValue]}</div>
                 <div onClick={() => setCategory(categoryValue)}>
                   <Image src={ICON.x_icon} alt="close" width={18} height={18} />
                 </div>

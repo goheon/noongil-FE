@@ -1,21 +1,18 @@
 import { create } from 'zustand'
-import {
-  Filter,
-  Order,
-  Category,
-} from '@/app/_components/features/searchList/type'
+import { TFilter, TOrder } from '@/app/_components/features/searchList/type'
+import { TEventCategory } from '@/app/_types'
 
 interface IListFilter {
   isOpen: boolean
-  filter: Filter | null
-  order: Order | null
-  category: Category[]
+  filter: TFilter | null
+  order: TOrder | null
+  category: TEventCategory[]
   startDate: Date | null
   endDate: Date | null
-  setFilter: (filter: Filter) => void
+  setFilter: (filter: TFilter) => void
   setOpen: (isOpen: boolean) => void
-  setOrder: (order: Order) => void
-  setCategory: (catergory: Category) => void
+  setOrder: (order: TOrder) => void
+  setCategory: (catergory: TEventCategory) => void
   setStartDate: (date: Date | null) => void
   setEndDate: (date: Date | null) => void
   reset: () => void
@@ -29,9 +26,9 @@ export const useListFilterStore = create<IListFilter>((set) => ({
   startDate: null,
   endDate: null,
   setOpen: (isOpen: boolean) => set({ isOpen: isOpen }),
-  setFilter: (filter: Filter) => set({ filter: filter }),
+  setFilter: (filter: TFilter) => set({ filter: filter }),
   setOrder: (order) => set({ order: order }),
-  setCategory: (category: Category) =>
+  setCategory: (category: TEventCategory) =>
     set((state) => ({
       category: state.category.includes(category)
         ? state.category.filter((c) => c !== category) // 있으면 제거

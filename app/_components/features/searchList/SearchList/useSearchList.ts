@@ -2,15 +2,15 @@ import { getAllEventList } from '../searchApi'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { ISearchListItem } from '../type'
-import { EventType } from '../../main/type'
+import { TAllEventCode } from '@/app/_types'
 
 // TODO : list 관련 API 완성시 로직 수정
 
-const useSearchList = (category: EventType) => {
+const useSearchList = (eventCode: TAllEventCode) => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['search-list'],
     queryFn: ({ pageParam }) =>
-      getAllEventList({ pageParam, sortType: '20', eventType: category }),
+      getAllEventList({ pageParam, sortType: '20', eventCode: eventCode }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
       const totalPages = lastPage.total

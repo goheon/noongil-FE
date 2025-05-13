@@ -11,7 +11,7 @@ export const metadata = {
 const Home: NextPage = () => {
   return (
     <>
-      <MainPage category="all" />
+      <MainPage eventCode="all" />
       <SpeedDial />
     </>
   )

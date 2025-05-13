@@ -5,15 +5,16 @@ import DateFilter from './DateFilter'
 import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 import OrderFilter from './OrderFilter'
 import CategoryFilter from './CategoryFilter'
+import { TEventCodeName } from '@/app/_types'
 
 const cx = classNames.bind(styles)
 
 interface SearchListFilterProps {
-  category: 'popup' | 'exhibition' | 'all'
+  eventCode: TEventCodeName
 }
 
 const SearchListFilter = (props: SearchListFilterProps) => {
-  const { category } = props
+  const { eventCode } = props
 
   const { isOpen, filter, setOpen } = useListFilterStore()
 
@@ -22,7 +23,7 @@ const SearchListFilter = (props: SearchListFilterProps) => {
       type="filter"
       isOpen={isOpen}
       setIsOpen={setOpen}
-      isExhibitionPage={category === 'exhibition'}
+      isExhibitionPage={eventCode === 'exhibition'}
     >
       <div className={cx('filter-container')}>
         {(() => {
@@ -31,10 +32,12 @@ const SearchListFilter = (props: SearchListFilterProps) => {
               return <OrderFilter />
             case 'category':
               return (
-                <CategoryFilter isExhibitionPage={category === 'exhibition'} />
+                <CategoryFilter isExhibitionPage={eventCode === 'exhibition'} />
               )
             case 'date':
-              return <DateFilter isExhibitionPage={category === 'exhibition'} />
+              return (
+                <DateFilter isExhibitionPage={eventCode === 'exhibition'} />
+              )
             case 'region':
               return <div>지역 필터</div>
             default:
