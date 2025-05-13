@@ -1,12 +1,13 @@
 'use client'
 import { useState, useEffect } from 'react'
 
-import { useNaverMapSDK, config } from '@/app/_lib'
+import { useNaverMapSDK, useVhUnit, config } from '@/app/_lib'
 
 import styles from './MapBox.module.scss'
 
 export const MapBox: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  useVhUnit()
 
   const clientId = config.NAVER_MAP_CLIENT_ID || 'null' // 네이버 클라우드 플랫폼에서 발급받은 클라이언트 ID
   const map = useNaverMapSDK({

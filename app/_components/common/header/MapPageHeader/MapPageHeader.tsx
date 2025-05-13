@@ -53,7 +53,17 @@ const MapPageHeader: React.FC<HeaderProps> = () => {
 }
 
 const MapSearchBox = () => {
-  return <div className={`${styles['search-box']}`}>asd</div>
+  return (
+    <div className={`${styles['search-box']}`}>
+      <div className={`${styles['search-empty-box']}`}>
+        <p className={`${styles['search-empty-box_p']}`}>
+          검색결과가 없습니다.
+          <br />
+          검색어를 변경해 보세요.
+        </p>
+      </div>
+    </div>
+  )
 }
 
 export { MapPageHeader }

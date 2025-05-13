@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useState, useRef } from 'react'
+import { useLayoutEffect, useEffect, useState, useRef } from 'react'
 import { UseNaverMapOptions } from '@/app/_types'
 
 // 네이버 지도 부착 SDK 훅
@@ -48,4 +48,20 @@ export const useNaverMapSDK = ({
   }, [center.lat, center.lng, clientId, mapContainerId, zoom])
 
   return map // 초기화된 네이버 지도 객체 반환
+}
+
+export const useVhUnit = () => {
+  useEffect(() => {
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01
+      document.documentElement.style.setProperty('--vh', `${vh}px`)
+    }
+
+    setVh()
+
+    window.addEventListener('resize', setVh)
+    return () => {
+      window.removeEventListener('resize', setVh)
+    }
+  }, [])
 }

@@ -7,7 +7,6 @@ $navigation-height: 103px;
   justify-content: center;
   margin: 0;
   padding: 0;
-  height: 100vh;
   box-sizing: border-box;
 
   .content {
@@ -16,7 +15,6 @@ $navigation-height: 103px;
   }
 
   &_wrapper {
-    position: relative;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -25,8 +23,10 @@ $navigation-height: 103px;
     height: 100%;
 
     .content {
+      position: relative;
       width: 100%;
-      height: calc(100vh - #{$header-height} - #{$navigation-height});
+      // height: calc(100vh - #{$header-height} - #{$navigation-height});
+      height: calc(var(--vh, 1vh) * 100 - 191px);
       margin-top: $header-height;
     }
 
