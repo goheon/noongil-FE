@@ -1,8 +1,8 @@
+import { IEventListItem } from '../type'
 import {
-  IEventListItem,
   POPUP_CATEGORY_LABELS,
   EXHIBITION_CATEGORY_LABELS,
-} from '../type'
+} from '@/app/_constants/event'
 import styles from './EventListItem.module.scss'
 import Link from 'next/link'
 

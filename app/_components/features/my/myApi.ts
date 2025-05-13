@@ -1,7 +1,6 @@
-import axios from 'axios'
-import { EventCategory } from '../admin/type'
 import { ISearchListItem } from '../searchList/type'
 import { axiosApi } from '@/app/_lib'
+import { TEventCategory } from '@/app/_types'
 
 interface IUserInfoResponse {
   joinYn: string
@@ -58,7 +57,7 @@ export const deleteUserAccount = async () => {
   }
 }
 
-export const getUserCategories = async (): Promise<EventCategory[]> => {
+export const getUserCategories = async (): Promise<TEventCategory[]> => {
   try {
     // const response = await axios.get(
     //   'http://localhost:8080/api/user-categories',
@@ -77,7 +76,7 @@ export const getUserCategories = async (): Promise<EventCategory[]> => {
   }
 }
 
-export const updateUserCategories = async (data: EventCategory[]) => {
+export const updateUserCategories = async (data: TEventCategory[]) => {
   try {
     // await axios.put('http://localhost:8080/api/user-categories', data, {
     //   withCredentials: true,

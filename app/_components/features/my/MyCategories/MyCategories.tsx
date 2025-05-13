@@ -4,11 +4,11 @@ import styles from './MyCategories.module.scss'
 import classNames from 'classnames/bind'
 import useMyCategories from '../useMyCategories'
 import {
-  POPUP_OPTION_VALUES,
-  EXHIBITION_OPTION_VALUES,
+  POPUP_CATEGORY_VALUES,
   POPUP_CATEGORY_LABELS,
+  EXHIBITION_CATEGORY_VALUES,
   EXHIBITION_CATEGORY_LABELS,
-} from '../../admin/type'
+} from '@/app/_constants/event'
 
 const cx = classNames.bind(styles)
 
@@ -22,7 +22,7 @@ const MyCategories = () => {
         <div className={cx('title')}>팝업</div>
 
         <ul className={cx('list')}>
-          {POPUP_OPTION_VALUES.map((value) => (
+          {POPUP_CATEGORY_VALUES.map((value) => (
             <li className={cx('list-item')} key={value}>
               <label className={cx('name')}>
                 {POPUP_CATEGORY_LABELS[value]}
@@ -41,7 +41,7 @@ const MyCategories = () => {
         <div className={cx('title')}>전시</div>
 
         <ul className={cx('list')}>
-          {EXHIBITION_OPTION_VALUES.map((value) => (
+          {EXHIBITION_CATEGORY_VALUES.map((value) => (
             <li className={cx('list-item')} key={value}>
               <label className={cx('name')}>
                 {EXHIBITION_CATEGORY_LABELS[value]}

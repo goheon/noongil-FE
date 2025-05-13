@@ -20,7 +20,7 @@ const CategoryPage = ({
 
   return (
     <>
-      <MainPage category={category as 'popup' | 'exhibition'} />
+      <MainPage eventCode={category as 'popup' | 'exhibition'} />
       <SpeedDial />
     </>
   )

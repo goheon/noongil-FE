@@ -6,11 +6,11 @@ import FilterLayout from './FilterLayout'
 import { usePathname } from 'next/navigation'
 import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 import {
-  POPUP_OPTION_VALUES,
+  POPUP_CATEGORY_VALUES,
   POPUP_CATEGORY_LABELS,
+  EXHIBITION_CATEGORY_VALUES,
   EXHIBITION_CATEGORY_LABELS,
-  EXHIBITION_OPTION_VALUES,
-} from '../../admin/type'
+} from '@/app/_constants/event'
 import { Checkbox } from '@/app/_components/ui'
 
 const cx = classNames.bind(styles)
@@ -34,7 +34,7 @@ const CategoryFilter = (props: CategoryFilterProps) => {
             case pathname.includes('popup'):
               return (
                 <>
-                  {POPUP_OPTION_VALUES.map((option) => (
+                  {POPUP_CATEGORY_VALUES.map((option) => (
                     <li key={option}>
                       <Checkbox
                         value={option}
@@ -51,7 +51,7 @@ const CategoryFilter = (props: CategoryFilterProps) => {
             case pathname.includes('exhibition'):
               return (
                 <>
-                  {EXHIBITION_OPTION_VALUES.map((option) => (
+                  {EXHIBITION_CATEGORY_VALUES.map((option) => (
                     <li key={option}>
                       <Checkbox
                         value={option}
@@ -68,7 +68,7 @@ const CategoryFilter = (props: CategoryFilterProps) => {
             default:
               return (
                 <>
-                  {POPUP_OPTION_VALUES.map((option) => (
+                  {POPUP_CATEGORY_VALUES.map((option) => (
                     <li key={option}>
                       <Checkbox
                         value={option}
@@ -80,7 +80,7 @@ const CategoryFilter = (props: CategoryFilterProps) => {
                     </li>
                   ))}
 
-                  {EXHIBITION_OPTION_VALUES.map((option) => (
+                  {EXHIBITION_CATEGORY_VALUES.map((option) => (
                     <li key={option}>
                       <Checkbox
                         value={option}

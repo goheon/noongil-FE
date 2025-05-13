@@ -13,8 +13,9 @@ import { Pagination } from 'swiper/modules'
 
 import usePopularList from './usePopularList'
 import { IListItem } from '../type'
+import { TEventCodeName } from '@/app/_types'
 import { useMemo } from 'react'
-import { EVENT_CATEGORY_MAP } from '../type'
+import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
 
 import PopularListItem from './PopularListItem'
 import SkeletonList from './SkeletonList'
@@ -32,16 +33,19 @@ const TITLE_MAP = {
 } as const
 
 interface PopularListProps {
-  category: 'popup' | 'exhibition' | 'all'
+  eventCode: TEventCodeName
 }
 
 const PopularList = (props: PopularListProps) => {
-  const { category } = props
+  const { eventCode } = props
 
-  const currentCategory = EVENT_CATEGORY_MAP[category]
-  const { popularList, isLoading } = usePopularList(currentCategory)
+  const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
+  const { popularList, isLoading } = usePopularList(currentEventCode)
 
-  const listTitle = useMemo(() => TITLE_MAP[category] ?? ALL_TITLE, [category])
+  const listTitle = useMemo(
+    () => TITLE_MAP[eventCode] ?? ALL_TITLE,
+    [eventCode],
+  )
 
   return (
     <div className={cx('container')}>

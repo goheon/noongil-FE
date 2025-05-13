@@ -1,14 +1,14 @@
 import { getUserCategories, updateUserCategories } from './myApi'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { EventCategory } from '../admin/type'
+import { TEventCategory } from '@/app/_types'
 
 const useMyCategories = () => {
   const queryClient = useQueryClient()
 
-  const [selectedCategories, setSelectedCategories] = useState<EventCategory[]>(
-    [],
-  )
+  const [selectedCategories, setSelectedCategories] = useState<
+    TEventCategory[]
+  >([])
 
   const { data } = useQuery({
     queryKey: ['user-interest'],
@@ -30,7 +30,7 @@ const useMyCategories = () => {
     }
   }, [data])
 
-  const handleCategories = (category: EventCategory) => {
+  const handleCategories = (category: TEventCategory) => {
     setSelectedCategories((prev) =>
       prev.includes(category)
         ? prev.filter((c) => c !== category)

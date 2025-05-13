@@ -4,23 +4,24 @@ import TopBanner from './TopBanner/TopBanner'
 import PopularList from './PopularList/PopularList'
 import CustomList from './CustomList/CustomList'
 import PeriodList from './PeriodList/PeriodList'
+import { TEventCodeName } from '@/app/_types'
 
 const cx = classNames.bind(styles)
 
 interface MainPageProps {
-  category: 'all' | 'popup' | 'exhibition'
+  eventCode: TEventCodeName
 }
 
 const MainPage = (props: MainPageProps) => {
-  const { category } = props
+  const { eventCode } = props
 
   return (
     <div className={cx('container')}>
-      <TopBanner category={category} />
-      <PopularList category={category} />
+      <TopBanner eventCode={eventCode} />
+      <PopularList eventCode={eventCode} />
       <CustomList />
-      <PeriodList category={category} periodType="open" />
-      <PeriodList category={category} periodType="close" />
+      <PeriodList eventCode={eventCode} periodType="open" />
+      <PeriodList eventCode={eventCode} periodType="close" />
     </div>
   )
 }
