@@ -1,16 +1,35 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import { LogoBox, SearchBox } from '../Header'
 
-import { MainHeaderProps } from '@/app/_types'
+import { useMapStore } from '@/app/_store/map/useMapStore'
+import { HeaderProps } from '@/app/_types'
 import styles from './MapPageHeader.module.scss'
 
 // 지도페이지헤더
-const MapPageHeader: React.FC<MainHeaderProps> = ({
-  isSearchOpen,
-  setIsSearchOpen,
-  isExhibition,
-  inputRef,
-  handleSearchClick,
-}) => {
+const MapPageHeader: React.FC<HeaderProps> = () => {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const isSearchOpen = useMapStore((state) => state.isSearchOpen)
+  const setIsSearchOpen = useMapStore.getState().setIsSearchOpen
+  const setCategoryStatus = useMapStore.getState().setCategoryStatus
+  const pathname = usePathname()
+
+  useEffect(() => {
+    setIsSearchOpen(false)
+    setCategoryStatus('all')
+    if (inputRef.current) {
+      inputRef.current.value = ''
+    }
+  }, [pathname, setCategoryStatus, setIsSearchOpen])
+
+  // 검색창 클릭 및 터치 핸들러 함수
+  const handleSearchClick = () => {
+    setIsSearchOpen(true)
+    inputRef?.current?.focus()
+  }
+
   return (
     <>
       {/* 헤더 검색 바 */}
@@ -19,13 +38,11 @@ const MapPageHeader: React.FC<MainHeaderProps> = ({
         <LogoBox
           isSearchOpen={isSearchOpen}
           setIsSearchOpen={setIsSearchOpen}
-          isExhibition={isExhibition}
         />
         {/* 검색창 박스 */}
         <SearchBox
           handleSearchClick={handleSearchClick}
           inputRef={inputRef}
-          isExhibition={isExhibition}
           isSearchOpen={isSearchOpen}
         />
       </div>
@@ -36,7 +53,7 @@ const MapPageHeader: React.FC<MainHeaderProps> = ({
 }
 
 const MapSearchBox = () => {
-  return <div className={`${styles['search-box']}`}></div>
+  return <div className={`${styles['search-box']}`}>asd</div>
 }
 
 export { MapPageHeader }

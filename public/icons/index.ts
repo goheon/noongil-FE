@@ -33,6 +33,7 @@ const ICON = {
   heart_black: '/icons/heart_black.svg',
   heart_black_active: '/icons/heart_black_active.svg',
   target: '/icons/target.svg',
+  delete: 'icons/delete-input.svg',
 }
 
 export { ICON }
