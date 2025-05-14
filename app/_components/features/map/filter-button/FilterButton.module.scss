@@ -1,0 +1,28 @@
+.speed-dial {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 99;
+  width: fit-content;
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 100%;
+}
+
+.speed-dial-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  z-index: 99;
+  padding: 5px;
+  width: 60px;
+  height: 60px;
+  background-color: transparent;
+  font-size: 17px;
+  line-height: 17px;
+  cursor: pointer;
+}

@@ -34,6 +34,7 @@ const ICON = {
   heart_black_active: '/icons/heart_black_active.svg',
   target: '/icons/target.svg',
   delete: 'icons/delete-input.svg',
+  filter: '/icons/filter-icon_map.svg',
 }
 
 export { ICON }
