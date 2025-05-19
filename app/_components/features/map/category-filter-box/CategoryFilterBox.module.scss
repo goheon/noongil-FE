@@ -1,0 +1,32 @@
+.map-category-filter-box {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  position: absolute;
+  top: 0;
+  left: 10px;
+  width: calc(100% - 60px);
+  height: 60px;
+  scrollbar-width: none;
+
+  .category-chip-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    border: 1px solid #d9d9d9;
+    min-width: 80px;
+    height: 35px;
+    background-color: white;
+    border-radius: 30px;
+
+    .chip-label {
+      font-size: 15px;
+      line-height: 15px;
+    }
+  }
+
+  > :last-child {
+    margin-right: 0;
+  }
+}
