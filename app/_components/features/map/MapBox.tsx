@@ -62,13 +62,19 @@ export const MapBox: React.FC = () => {
         id: 'popup1',
         position: { lat: 37.5665, lng: 126.978 },
         title: '서울시청 팝업스토어',
-        type: 'popup'
+        type: 'popup',
+        onClick: () => {
+          console.log('팝업 마커 클릭됨')
+        },
       })
       addMarker({
         id: 'popup2',
         position: { lat: 37.5645, lng: 126.975 },
         title: '광화문 팝업스토어',
-        type: 'popup'
+        type: 'popup',
+        onClick: () => {
+          console.log('광화문 팝업 마커 클릭됨')
+        },
       })
     }, 3000)
 
@@ -78,13 +84,19 @@ export const MapBox: React.FC = () => {
         id: 'exhibition1',
         position: { lat: 37.5685, lng: 126.981 },
         title: '덕수궁 전시회',
-        type: 'exhibition'
+        type: 'exhibition',
+        onClick: () => {
+          console.log('덕수궁 전시회 마커 클릭됨')
+        },
       })
       addMarker({
         id: 'exhibition2',
         position: { lat: 37.5625, lng: 126.973 },
         title: '경복궁 전시회',
-        type: 'exhibition'
+        type: 'exhibition',
+        onClick: () => {
+          console.log('경복궁 전시회 마커 클릭됨')
+        },
       })
     }, 6000)
 

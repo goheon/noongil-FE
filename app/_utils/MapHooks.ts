@@ -25,12 +25,15 @@ interface Marker {
   title?: string
   isSelected?: boolean
   type: MarkerType
+  onClick?: (marker: Marker) => void
 }
 
 interface MarkerInstance {
   id: string
   instance: naver.maps.Marker
   labelMarker?: naver.maps.Marker
+  clickListener?: naver.maps.MapEventListener | null
+  labelClickListener?: naver.maps.MapEventListener | null
 }
 
 interface UseNaverMapSDKProps {
@@ -348,6 +351,21 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
       })
 
       const currentZoom = map.getZoom()
+      let clickListener: naver.maps.MapEventListener | null = null
+      let labelClickListener: naver.maps.MapEventListener | null = null
+
+      // 클릭 이벤트 핸들러 등록
+      if (marker.onClick) {
+        const handleClick = () => {
+          // 현재 줌 레벨이 라벨이 보이는 레벨 이상일 때만 클릭 이벤트 실행
+          if (map.getZoom() >= MIN_ZOOM_FOR_LABELS) {
+            marker.onClick?.(marker)
+          }
+        }
+
+        // 메인 마커 클릭 이벤트
+        clickListener = naver.maps.Event.addListener(markerInstance, 'click', handleClick)
+      }
 
       // 라벨 마커 생성
       const labelMarker = new naver.maps.Marker({
@@ -360,7 +378,22 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
         }
       })
 
-      setMarkers(prev => [...prev, { id: marker.id, instance: markerInstance, labelMarker }])
+      // 라벨 마커 클릭 이벤트
+      if (marker.onClick) {
+        labelClickListener = naver.maps.Event.addListener(labelMarker, 'click', () => {
+          if (map.getZoom() >= MIN_ZOOM_FOR_LABELS) {
+            marker.onClick?.(marker)
+          }
+        })
+      }
+
+      setMarkers(prev => [...prev, { 
+        id: marker.id, 
+        instance: markerInstance, 
+        labelMarker,
+        clickListener,
+        labelClickListener // 라벨 클릭 리스너 참조 저장
+      }])
     } catch (error) {
       console.error('Failed to add marker:', error)
     }
@@ -373,6 +406,13 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
       if (markerToRemove) {
         markerToRemove.instance.setMap(null)
         markerToRemove.labelMarker?.setMap(null)
+        // 클릭 리스너 제거
+        if (markerToRemove.clickListener) {
+          naver.maps.Event.removeListener(markerToRemove.clickListener)
+        }
+        if (markerToRemove.labelClickListener) {
+          naver.maps.Event.removeListener(markerToRemove.labelClickListener)
+        }
       }
       return prev.filter((m) => m.id !== markerId)
     })
@@ -384,6 +424,13 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
       prev.forEach((marker) => {
         marker.instance.setMap(null)
         marker.labelMarker?.setMap(null)
+        // 클릭 리스너 제거
+        if (marker.clickListener) {
+          naver.maps.Event.removeListener(marker.clickListener)
+        }
+        if (marker.labelClickListener) {
+          naver.maps.Event.removeListener(marker.labelClickListener)
+        }
       })
       return []
     })
