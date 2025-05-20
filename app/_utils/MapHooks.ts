@@ -228,12 +228,23 @@ export const useMapInitializer = ({
   useLayoutEffect(() => {
     if (!map || isInitialized.current) return
 
-    // 위치 권한 확인
+    // 위치 권한 확인 및 변경 감지
     const initLocationPermission = async () => {
       const hasPermission = await checkLocationPermission()
       if (!hasPermission) {
         setIsModalOpen(true)
       }
+
+      // 권한 상태 변경 감지
+      navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus) => {
+        permissionStatus.onchange = () => {
+          if (permissionStatus.state === 'granted') {
+            setIsModalOpen(false)
+          } else if (permissionStatus.state === 'denied') {
+            setIsModalOpen(true)
+          }
+        }
+      })
     }
 
     initLocationPermission()

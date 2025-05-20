@@ -59,6 +59,11 @@ export const MapBox: React.FC = () => {
     },
   })
 
+  // permissionModalOpen 값이 변경될 때 isModalOpen 상태 업데이트
+  useEffect(() => {
+    setIsModalOpen(permissionModalOpen)
+  }, [permissionModalOpen])
+
   // 테스트용 마커 추가
   useEffect(() => {
     if (!map) return
@@ -113,19 +118,15 @@ export const MapBox: React.FC = () => {
     }
   }, [map, addMarker])
 
-  const handleModalClose = useCallback(() => {
-    setIsModalOpen(false)
-  }, [])
-
   return (
     <div className={`${styles['map-box']}`}>
       <div
         id="map"
         className={`${styles['map-box_map']} ${styles['full-height']}`}
       />
-      {permissionModalOpen && (
+      {isModalOpen && (
         <LocationPermissionModal
-          setIsModalOpen={handleModalClose}
+          setIsModalOpen={setIsModalOpen}
           getCurrentLocation={async () => {
             return new Promise((resolve, reject) => {
               if (!navigator.geolocation) {

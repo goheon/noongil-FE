@@ -85,6 +85,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
         ref={inputRef}
         onChange={(evt) => setSearchValue(evt.target.value)}
         placeholder={isSearchOpen ? '장소, 테마를 검색해보세요.' : undefined}
+        autoComplete="off"
       />
       {searchValue.length > 0 && (
         <button
