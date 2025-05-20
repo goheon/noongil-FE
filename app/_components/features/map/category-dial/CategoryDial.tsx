@@ -13,8 +13,6 @@ const CategoryDial = () => {
   const { selectedType, setSelectedType } = useMapFilterStore()
   const isSearchOpen = useMapStore((state) => state.isSearchOpen)
 
-  console.log(selectedType)
-  
   const { focused, buttons } = useMemo(() => {
     if (selectedType === 'POPUP') {
       return { focused: '팝업', buttons: ['전시', '전체'] }

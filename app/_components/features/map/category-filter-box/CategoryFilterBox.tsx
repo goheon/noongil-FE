@@ -1,6 +1,7 @@
-'use Client'
+'use client'
 
 import classNames from 'classnames/bind'
+import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
 
 import styles from './CategoryFilterBox.module.scss'
 
@@ -30,7 +31,23 @@ export const CategoryFilterBox = () => {
 
 // 사용자 선호 카테고리 버튼
 const CategoryChipButton = ({ category }: { category: string }) => {
-  return <div className={cx('category-chip-button')} >
-  <p className={cx('chip-label')}>{category}</p>
-</div>
+  const { selectedCategories, addCategory, removeCategory } = useMapFilterStore()
+  const isActive = selectedCategories.includes(category)
+
+  const handleClick = () => {
+    if (isActive) {
+      removeCategory(category)
+    } else {
+      addCategory(category)
+    }
+  }
+
+  return (
+    <div 
+      className={cx('category-chip-button', { active: isActive })} 
+      onClick={handleClick}
+    >
+      <p className={cx('chip-label')}>{category}</p>
+    </div>
+  )
 }
