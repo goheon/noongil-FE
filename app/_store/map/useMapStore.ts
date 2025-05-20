@@ -1,11 +1,16 @@
 import { create } from 'zustand'
+import { MapType } from '@/app/_utils/MapHooks'
 
-export interface IMapStore {
+interface MapState {
   isSearchOpen: boolean
-  setIsSearchOpen: (isSearchOpen: boolean) => void
+  map: MapType | null
+  setMap: (map: MapType | null) => void
+  setIsSearchOpen: (isOpen: boolean) => void
 }
 
-export const useMapStore = create<IMapStore>((set) => ({
+export const useMapStore = create<MapState>((set) => ({
   isSearchOpen: false,
-  setIsSearchOpen: (isOpen: boolean) => set({ isSearchOpen: isOpen }),
+  map: null,
+  setMap: (map) => set({ map }),
+  setIsSearchOpen: (isOpen) => set({ isSearchOpen: isOpen }),
 }))

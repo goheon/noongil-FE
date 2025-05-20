@@ -1,0 +1,27 @@
+.snackbar {
+  padding: 12px 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 110px;
+  z-index: 1000;
+  min-width: 200px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: white;
+  text-align: center;
+  white-space: pre-line;
+  transform: translateX(-50%);
+  border-radius: 8px;
+}
+
+.success {
+  background-color: #4caf50;
+}
+
+.error {
+  background-color: #f44336;
+}
+
+.info {
+  background-color: #2196f3;
+} 

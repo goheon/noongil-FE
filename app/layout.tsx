@@ -4,6 +4,7 @@ import React, { useLayoutEffect, Suspense } from 'react'
 import { usePathname } from 'next/navigation'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { SnackbarProvider } from './_components/common/snackbar/SnackbarProvider'
 
 import { queryClient } from '@/app/_lib'
 import { BottomNavigation, Header } from '@/app/_components/common'
@@ -34,23 +35,25 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
     <html lang="ko">
       <body className={`pages ${isExhibition ? 'exhibition' : ''}`}>
         <QueryClientProvider client={queryClient}>
-          {isAdmin ? (
-            <main className="content">{children}</main>
-          ) : (
-            <div className="pages_wrapper">
-              <Suspense>
-                {isRegister ? (
-                  children
-                ) : (
-                  <>
-                    <Header isExhibition={isExhibition} />
-                    <main className="content">{children}</main>
-                    <BottomNavigation />
-                  </>
-                )}
-              </Suspense>
-            </div>
-          )}
+          <SnackbarProvider>
+            {isAdmin ? (
+              <main className="content">{children}</main>
+            ) : (
+              <div className="pages_wrapper">
+                <Suspense>
+                  {isRegister ? (
+                    children
+                  ) : (
+                    <>
+                      <Header isExhibition={isExhibition} />
+                      <main className="content">{children}</main>
+                      <BottomNavigation />
+                    </>
+                  )}
+                </Suspense>
+              </div>
+            )}
+          </SnackbarProvider>
 
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

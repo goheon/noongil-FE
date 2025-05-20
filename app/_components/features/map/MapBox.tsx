@@ -4,21 +4,23 @@ import { useState, useEffect, useCallback } from 'react'
 
 import { useVhUnit, config } from '@/app/_lib'
 import { useNaverMapSDK, useMapInitializer, useMarkerManager } from '@/app/_utils/MapHooks'
+import { useMapStore } from '@/app/_store/map/useMapStore'
 
 import styles from './MapBox.module.scss'
 import { LocationPermissionModal } from './LocationPermissionModal'
 
 export const MapBox: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const setMap = useMapStore((state) => state.setMap)
   useVhUnit()
 
   const clientId = config.NAVER_MAP_CLIENT_ID || 'null'
   const map = useNaverMapSDK({
-    clientId,
+    clientId: process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || '',
     mapContainerId: 'map',
-    center: { lat: 37.5665, lng: 126.978 },
-    zoom: 13,
-    background: '#ffffff',
+    center: { lat: 37.5665, lng: 126.9780 },
+    zoom: 15,
+    background: '#f8f9fa',
   })
 
   const {
@@ -26,6 +28,11 @@ export const MapBox: React.FC = () => {
     markers,
     updateMarkerLabels,
   } = useMarkerManager({ map })
+
+  // 지도 인스턴스를 전역 상태에 저장
+  useEffect(() => {
+    setMap(map)
+  }, [map, setMap])
 
   // 줌 레벨 변경 감지
   useEffect(() => {

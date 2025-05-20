@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-type MapType = naver.maps.Map
+export type MapType = naver.maps.Map
 
 // ===== Types =====
 interface Position {
