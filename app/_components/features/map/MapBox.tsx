@@ -1,64 +1,102 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
-import { useNaverMapSDK, useVhUnit, config } from '@/app/_lib'
+import { useVhUnit, config } from '@/app/_lib'
+import { useNaverMapSDK, useMapInitializer, useMarkerManager } from '@/app/_utils/MapHooks'
 
 import styles from './MapBox.module.scss'
+import { LocationPermissionModal } from './LocationPermissionModal'
 
 export const MapBox: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   useVhUnit()
 
-  const clientId = config.NAVER_MAP_CLIENT_ID || 'null' // 네이버 클라우드 플랫폼에서 발급받은 클라이언트 ID
+  const clientId = config.NAVER_MAP_CLIENT_ID || 'null'
   const map = useNaverMapSDK({
     clientId,
     mapContainerId: 'map',
-    center: { lat: 37.5665, lng: 126.978 }, // 서울 중심
-    zoom: 10,
+    center: { lat: 37.5665, lng: 126.978 },
+    zoom: 13,
     background: '#ffffff',
   })
 
+  const {
+    addMarker,
+    markers,
+    updateMarkerLabels,
+  } = useMarkerManager({ map })
+
+  // 줌 레벨 변경 감지
   useEffect(() => {
-    if (map) {
-      // 지도에 마커 추가
-      new naver.maps.Marker({
-        position: new naver.maps.LatLng(37.5665, 126.978),
-        map,
-      })
-      setIsModalOpen(true) // 먼저 안내 모달 띄우기
+    if (!map) return
 
-      let lastZoom = map.getZoom()
-      naver.maps.Event.addListener(map, 'zoom_changed', () => {
-        const currentZoom = map.getZoom()
+    const zoomListener = naver.maps.Event.addListener(map, 'zoom_changed', () => {
+      const currentZoom = map.getZoom()
+      console.log('현재 줌 레벨:', currentZoom)
+      updateMarkerLabels(currentZoom)
+    })
 
-        // 너무 빠른 줌 변화 방지
-        if (Math.abs(currentZoom - lastZoom) > 2) {
-          map.setZoom(lastZoom + (currentZoom > lastZoom ? 2 : -2))
-        } else {
-          lastZoom = currentZoom
-        }
-      })
-
-      let zooming = false
-      naver.maps.Event.addListener(map, 'zoom_changed', () => {
-        zooming = true
-        setTimeout(() => (zooming = false), 500) // 0.5초 후 줌 상태 해제
-      })
-
-      naver.maps.Event.addListener(map, 'dragstart', () => {
-        if (zooming) {
-          map.setOptions({ draggable: false })
-        }
-      })
-
-      naver.maps.Event.addListener(map, 'dragend', () => {
-        map.setOptions({ draggable: true })
-      })
-
-      console.log(map.hasListener('dragend'))
+    return () => {
+      naver.maps.Event.removeListener(zoomListener)
     }
-  }, [map])
+  }, [map, updateMarkerLabels])
+
+  const { isModalOpen: permissionModalOpen } = useMapInitializer({
+    map,
+    checkLocationPermission: async () => {
+      const { state } = await navigator.permissions.query({
+        name: 'geolocation',
+      })
+      return state === 'granted'
+    },
+  })
+
+  // 테스트용 마커 추가
+  useEffect(() => {
+    if (!map) return
+
+    // 팝업 마커 추가 (3초 후)
+    const popupTimer = setTimeout(() => {
+      addMarker({
+        id: 'popup1',
+        position: { lat: 37.5665, lng: 126.978 },
+        title: '서울시청 팝업스토어',
+        type: 'popup'
+      })
+      addMarker({
+        id: 'popup2',
+        position: { lat: 37.5645, lng: 126.975 },
+        title: '광화문 팝업스토어',
+        type: 'popup'
+      })
+    }, 3000)
+
+    // 전시 마커 추가 (6초 후)
+    const exhibitionTimer = setTimeout(() => {
+      addMarker({
+        id: 'exhibition1',
+        position: { lat: 37.5685, lng: 126.981 },
+        title: '덕수궁 전시회',
+        type: 'exhibition'
+      })
+      addMarker({
+        id: 'exhibition2',
+        position: { lat: 37.5625, lng: 126.973 },
+        title: '경복궁 전시회',
+        type: 'exhibition'
+      })
+    }, 6000)
+
+    return () => {
+      clearTimeout(popupTimer)
+      clearTimeout(exhibitionTimer)
+    }
+  }, [map, addMarker])
+
+  const handleModalClose = useCallback(() => {
+    setIsModalOpen(false)
+  }, [])
 
   return (
     <div className={`${styles['map-box']}`}>
@@ -66,60 +104,33 @@ export const MapBox: React.FC = () => {
         id="map"
         className={`${styles['map-box_map']} ${styles['full-height']}`}
       />
-      <LocationPermissionModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-      />
-    </div>
-  )
-}
+      {permissionModalOpen && (
+        <LocationPermissionModal
+          setIsModalOpen={handleModalClose}
+          getCurrentLocation={async () => {
+            return new Promise((resolve, reject) => {
+              if (!navigator.geolocation) {
+                return reject(new Error('Geolocation is not supported by this browser.'))
+              }
 
-interface LocationModalProps {
-  isModalOpen: boolean
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-const LocationPermissionModal: React.FC<LocationModalProps> = ({
-  isModalOpen,
-  setIsModalOpen,
-}) => {
-  const getCurrentLocation = () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords
-        console.log(`현재 위치: ${latitude}, ${longitude}`)
-        setIsModalOpen(false) // 모달 닫기
-      },
-      (error) => {
-        console.error('위치 정보를 가져올 수 없습니다:', error)
-        setIsModalOpen(false)
-      },
-    )
-  }
-  return (
-    <>
-      {isModalOpen && (
-        <div className={`${styles['modal']}`}>
-          <p className={`${styles['description']}`}>
-            눈길.co.kr이 사용자의 <br />
-            현재 위치를 사용하려고 합니다.
-          </p>
-          <div className={`${styles['button-box']}`}>
-            <button
-              className={`${styles['button']}`}
-              onClick={() => setIsModalOpen(false)}
-            >
-              허용안함
-            </button>
-            <button
-              className={`${styles['button']}`}
-              onClick={getCurrentLocation}
-            >
-              허용
-            </button>
-          </div>
-        </div>
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  const { latitude, longitude } = position.coords
+                  resolve({ latitude, longitude })
+                },
+                (error) => {
+                  reject(error)
+                },
+                {
+                  enableHighAccuracy: false,
+                  timeout: 3000,
+                  maximumAge: 1000 * 60 * 1,
+                },
+              )
+            })
+          }}
+        />
       )}
-    </>
+    </div>
   )
 }
