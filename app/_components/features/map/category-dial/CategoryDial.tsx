@@ -3,37 +3,39 @@
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+import { useMapFilterStore, EventType } from '@/app/_store/map/useMapFilterStore'
 import { useMapStore } from '@/app/_store/map/useMapStore'
 
 import styles from './CategoryDial.module.scss'
 
 const CategoryDial = () => {
   const [open, setOpen] = useState(false)
-  const setCategoryStatus = useMapStore.getState().setCategoryStatus
-  const categoryStatus = useMapStore((state) => state.categoryStatus)
+  const { selectedType, setSelectedType } = useMapFilterStore()
   const isSearchOpen = useMapStore((state) => state.isSearchOpen)
 
+  console.log(selectedType)
+  
   const { focused, buttons } = useMemo(() => {
-    if (categoryStatus == 'popup') {
+    if (selectedType === 'POPUP') {
       return { focused: '팝업', buttons: ['전시', '전체'] }
-    } else if (categoryStatus == 'exhibition') {
+    } else if (selectedType === 'EXHIBITION') {
       return { focused: '전시', buttons: ['팝업', '전체'] }
     } else {
       return { focused: '전체', buttons: ['팝업', '전시'] }
     }
-  }, [categoryStatus])
+  }, [selectedType])
 
   const handleButtonClick = (button: string) => {
     if (!open) return
 
     if (button === '팝업') {
-      setCategoryStatus('popup')
+      setSelectedType('POPUP')
       setOpen(false)
     } else if (button === '전시') {
-      setCategoryStatus('exhibition')
+      setSelectedType('EXHIBITION')
       setOpen(false)
     } else {
-      setCategoryStatus('all')
+      setSelectedType('ALL')
       setOpen(false)
     }
   }

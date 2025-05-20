@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { LogoBox, SearchBox } from '../Header'
 
 import { useMapStore } from '@/app/_store/map/useMapStore'
+import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
 import { HeaderProps } from '@/app/_types'
 import styles from './MapPageHeader.module.scss'
 
@@ -13,16 +14,16 @@ const MapPageHeader: React.FC<HeaderProps> = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const isSearchOpen = useMapStore((state) => state.isSearchOpen)
   const setIsSearchOpen = useMapStore.getState().setIsSearchOpen
-  const setCategoryStatus = useMapStore.getState().setCategoryStatus
+  const setSelectedType = useMapFilterStore.getState().setSelectedType
   const pathname = usePathname()
 
   useEffect(() => {
     setIsSearchOpen(false)
-    setCategoryStatus('all')
+    setSelectedType('ALL')
     if (inputRef.current) {
       inputRef.current.value = ''
     }
-  }, [pathname, setCategoryStatus, setIsSearchOpen])
+  }, [pathname, setSelectedType, setIsSearchOpen])
 
   // 검색창 클릭 및 터치 핸들러 함수
   const handleSearchClick = () => {
