@@ -1,3 +1,5 @@
+//  Test 를 위해 middleware 를 주석처리합니다.
+
 import { NextResponse } from 'next/server'
 import { NextRequest } from 'next/server'
 
@@ -6,7 +8,10 @@ const protectedAdminPaths = ['/admin']
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const token = request.cookies.get('refresh_token')?.value // 예: 로그인 시 발급한 쿠키 이름
+  const token = request.cookies.get('refresh_token_admin')?.value // 예: 로그인 시 발급한 쿠키 이름
+
+  console.log('미들웨어 작동함. 현재 경로:', pathname)
+  console.log('토큰:', token)
 
   // 로그인 상태에서 로그인 페이지 접근 시 홈으로 리다이렉트
   if (pathname.startsWith('/admin/login') && token) {

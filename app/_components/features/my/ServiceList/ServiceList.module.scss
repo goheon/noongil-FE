@@ -16,12 +16,15 @@
     gap: 20px;
 
     .list-item {
-      display: flex;
-      align-items: center;
-      gap: 17px;
-      font-weight: 400;
-      font-size: 15px;
-      color: #717171;
+      a {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 17px;
+        font-weight: 400;
+        font-size: 15px;
+        color: #717171;
+      }
     }
   }
 }

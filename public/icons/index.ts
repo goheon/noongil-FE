@@ -35,6 +35,8 @@ const ICON = {
   target: '/icons/target.svg',
   marker_exhibition: '/icons/exhibition-marker.png',
   popup_exhibition: '/icons/popup-marker.png',
+  x_icon: '/icons/x-icon.svg',
+  checkbox_off_black: '/icons/checkbox-off-black.svg',
 }
 
 export { ICON }

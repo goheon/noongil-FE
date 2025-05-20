@@ -1,10 +1,10 @@
 import styles from './OrderFilter.module.scss'
 import classNames from 'classnames/bind'
-import { Order } from '../type'
+import { TOrder } from '../type'
 
 const cx = classNames.bind(styles)
 
-const ORDER_FILTER: Order[] = [
+const ORDER_FILTER: TOrder[] = [
   'popular',
   'newest',
   'ending',
@@ -12,7 +12,7 @@ const ORDER_FILTER: Order[] = [
   'distance',
 ]
 
-const ORDER_FILTER_TITLE_MAP: Record<Order, string> = {
+const ORDER_FILTER_TITLE_MAP: Record<TOrder, string> = {
   popular: '인기순',
   newest: '최신순',
   ending: '마감순',

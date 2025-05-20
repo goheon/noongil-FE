@@ -31,9 +31,12 @@ const CategoryPage = ({
 
   return (
     <>
-      <SearchList category={category} />
+      {/* fix categort type */}
+      <SearchList eventCode={category as 'popup' | 'exhibition' | 'all'} />
       <SpeedDial />
-      <SearchListFilter />
+      <SearchListFilter
+        eventCode={category as 'popup' | 'exhibition' | 'all'}
+      />
     </>
   )
 }

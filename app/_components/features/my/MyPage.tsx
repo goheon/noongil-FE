@@ -3,10 +3,15 @@ import classNames from 'classnames/bind'
 import UserInfo from './UserInfo/UserInfo'
 import { ICON } from '@/public'
 import ServiceList, { ServiceItemProps } from './ServiceList/ServiceList'
+import useUserAuth from './useUserAuth'
 
 const usageServices: ServiceItemProps[] = [
-  { icon: ICON.heart_gray, label: '내 관심사' },
-  { icon: ICON.bookmark_gray, label: '즐겨찾기 팝업 / 전시' },
+  { icon: ICON.heart_gray, label: '내 관심사', linkUrl: '/my/categories' },
+  {
+    icon: ICON.bookmark_gray,
+    label: '즐겨찾기 팝업 / 전시',
+    linkUrl: '/my/favorites',
+  },
 ]
 
 const infoServices: ServiceItemProps[] = [
@@ -19,6 +24,8 @@ const infoServices: ServiceItemProps[] = [
 const cx = classNames.bind(styles)
 
 const MyPage = () => {
+  const { userLogout } = useUserAuth()
+
   return (
     <div className={cx('container')}>
       <UserInfo />
@@ -26,7 +33,9 @@ const MyPage = () => {
       <ServiceList title="서비스 이용" items={usageServices} />
       <ServiceList title="서비스 안내" items={infoServices} />
 
-      <button className={cx('logout-btn')}>로그아웃</button>
+      <button className={cx('logout-btn')} onClick={() => userLogout()}>
+        로그아웃
+      </button>
     </div>
   )
 }

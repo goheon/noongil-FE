@@ -1,13 +1,13 @@
 'use client'
 
+import { IEventDetail } from '../type'
 import {
-  IEventDetail,
-  EVENT_OPTION_VALUES,
-  POPUP_OPTION_VALUES,
+  EVENT_CODE_VALUES,
+  POPUP_CATEGORY_VALUES,
   POPUP_CATEGORY_LABELS,
-  EXHIBITION_OPTION_VALUES,
+  EXHIBITION_CATEGORY_VALUES,
   EXHIBITION_CATEGORY_LABELS,
-} from '../type'
+} from '@/app/_constants/event'
 import { useForm } from 'react-hook-form'
 import { useCallback, useEffect, useMemo } from 'react'
 import useEventBaseForm from './useEventBaseForm'
@@ -44,7 +44,9 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
 
   const CATERGORY = useMemo(
     () =>
-      currentEvent === '20' ? EXHIBITION_OPTION_VALUES : POPUP_OPTION_VALUES,
+      currentEvent === '20'
+        ? EXHIBITION_CATEGORY_VALUES
+        : POPUP_CATEGORY_VALUES,
     [currentEvent],
   )
 
@@ -77,7 +79,7 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
     } catch (err) {
       console.log('error :', err)
     }
-  }, [hasAddress])
+  }, [hasAddress, currentAddress])
 
   return (
     <form
@@ -107,7 +109,7 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
               <div className={`${styles['title']}`}>팝업/전시구분</div>
               <div className={`${styles['data']}`}>
                 <select {...register('ppstEnbnTypeCd')}>
-                  {EVENT_OPTION_VALUES.map((value) => (
+                  {EVENT_CODE_VALUES.map((value) => (
                     <option key={value} value={value}>
                       {value === '10' ? '팝업' : '전시'}
                     </option>
