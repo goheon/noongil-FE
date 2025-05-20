@@ -54,6 +54,11 @@
         position: absolute;
         top: 25%;
         right: 8%;
+
+        &.delete-button {
+          top: 33%;
+          right: 22%;
+        }
       }
     }
   }

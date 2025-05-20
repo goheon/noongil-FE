@@ -4,15 +4,6 @@ const usePopupStore = create((set) => ({}))
 
 const useExhibitionStore = create((set) => ({}))
 
-type MapStore = {
-  category: string
-  setCategory: (value: string) => void
-}
-const useMapStore = create<MapStore>((set) => ({
-  category: 'all',
-  setCategory: (value) => set({ category: value }),
-}))
-
 type LoginStore = {
   loadEnd: boolean
   setLoadEnd: (value: boolean) => void
@@ -39,10 +30,4 @@ const useRegisterStore = create<RegisterStore>((set) => ({
   resetAll: () => set({ selectedFavPU: [], selectedFavEHB: [] }),
 }))
 
-export {
-  usePopupStore,
-  useExhibitionStore,
-  useMapStore,
-  useLoginStore,
-  useRegisterStore,
-}
+export { usePopupStore, useExhibitionStore, useLoginStore, useRegisterStore }

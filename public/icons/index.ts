@@ -37,6 +37,8 @@ const ICON = {
   popup_exhibition: '/icons/popup-marker.png',
   x_icon: '/icons/x-icon.svg',
   checkbox_off_black: '/icons/checkbox-off-black.svg',
+  delete: 'icons/delete-input.svg',
+  filter: '/icons/filter-icon_map.svg',
 }
 
 export { ICON }

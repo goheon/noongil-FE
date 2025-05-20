@@ -32,7 +32,9 @@ const MainHeader: React.FC<MainHeaderProps> = ({
         />
       </div>
       {/* 검색 포커스 확장 최근, 인기 검색 목록 */}
-      {isSearchOpen && <SearchSuggestionBox isExhibition={isExhibition} />}
+      {isSearchOpen && (
+        <SearchSuggestionBox isExhibition={isExhibition ?? false} />
+      )}
     </>
   )
 }

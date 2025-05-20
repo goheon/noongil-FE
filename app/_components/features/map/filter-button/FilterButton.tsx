@@ -1,14 +1,13 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ICON } from '@/public'
 import Image from 'next/image'
 
 import { useMapStore } from '@/app/_store/map/useMapStore'
-import styles from './CurrentButton.module.scss'
+import styles from './FilterButton.module.scss'
 
-const CurrentButton = () => {
+const FilterButton = () => {
   const handleButtonClick = () => {}
   const isSearchOpen = useMapStore((state) => state.isSearchOpen)
 
@@ -16,15 +15,15 @@ const CurrentButton = () => {
     <div className={styles['speed-dial']}>
       {!isSearchOpen && (
         <motion.button
-          className={`${styles['speed-dial-btn']} ${styles['main']}`}
+          className={`${styles['speed-dial-btn']}`}
           onClick={() => handleButtonClick()}
           whileTap={{ scale: 0.8 }}
         >
-          <Image src={ICON.target} alt="target Icon" width={30} height={30} />
+          <Image src={ICON.filter} alt="filter Icon" width={30} height={30} />
         </motion.button>
       )}
     </div>
   )
 }
 
-export { CurrentButton }
+export { FilterButton }

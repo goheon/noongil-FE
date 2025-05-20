@@ -2,20 +2,15 @@
 
 import { useState, useEffect } from 'react'
 
-import { useNaverMapSDK, config } from '@/app/_lib'
-import {
-  checkLocationPermission,
-  getCurrentLocation,
-  useMapInitializer,
-} from '@/app/_utils/mapFunctions'
-
-import { ICON } from '@/public'
+import { useNaverMapSDK, useVhUnit, config } from '@/app/_lib'
 
 import styles from './MapBox.module.scss'
 
 export const MapBox: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const clientId = config.NAVER_MAP_CLIENT_ID || 'null'
+  useVhUnit()
+
+  const clientId = config.NAVER_MAP_CLIENT_ID || 'null' // 네이버 클라우드 플랫폼에서 발급받은 클라이언트 ID
   const map = useNaverMapSDK({
     clientId,
     mapContainerId: 'map',
@@ -24,25 +19,45 @@ export const MapBox: React.FC = () => {
     background: '#ffffff',
   })
 
-  useMapInitializer({ map, checkLocationPermission })
-
   useEffect(() => {
-    if (!map) return
+    if (map) {
+      // 지도에 마커 추가
+      new naver.maps.Marker({
+        position: new naver.maps.LatLng(37.5665, 126.978),
+        map,
+      })
+      setIsModalOpen(true) // 먼저 안내 모달 띄우기
 
-    const marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(37.5665, 126.975),
-      map,
-      icon: {
-        url: ICON.marker_exhibition,
-        size: new naver.maps.Size(37, 37),
-        anchor: new naver.maps.Point(20, 40),
-      },
-    })
+      let lastZoom = map.getZoom()
+      naver.maps.Event.addListener(map, 'zoom_changed', () => {
+        const currentZoom = map.getZoom()
 
-    naver.maps.Event.addListener(marker, 'click', (e) => {
-      console.log('마커 클릭됨!', e)
-      alert('마커 클릭')
-    })
+        // 너무 빠른 줌 변화 방지
+        if (Math.abs(currentZoom - lastZoom) > 2) {
+          map.setZoom(lastZoom + (currentZoom > lastZoom ? 2 : -2))
+        } else {
+          lastZoom = currentZoom
+        }
+      })
+
+      let zooming = false
+      naver.maps.Event.addListener(map, 'zoom_changed', () => {
+        zooming = true
+        setTimeout(() => (zooming = false), 500) // 0.5초 후 줌 상태 해제
+      })
+
+      naver.maps.Event.addListener(map, 'dragstart', () => {
+        if (zooming) {
+          map.setOptions({ draggable: false })
+        }
+      })
+
+      naver.maps.Event.addListener(map, 'dragend', () => {
+        map.setOptions({ draggable: true })
+      })
+
+      console.log(map.hasListener('dragend'))
+    }
   }, [map])
 
   return (
@@ -68,6 +83,19 @@ const LocationPermissionModal: React.FC<LocationModalProps> = ({
   isModalOpen,
   setIsModalOpen,
 }) => {
+  const getCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords
+        console.log(`현재 위치: ${latitude}, ${longitude}`)
+        setIsModalOpen(false) // 모달 닫기
+      },
+      (error) => {
+        console.error('위치 정보를 가져올 수 없습니다:', error)
+        setIsModalOpen(false)
+      },
+    )
+  }
   return (
     <>
       {isModalOpen && (
