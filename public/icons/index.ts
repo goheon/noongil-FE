@@ -33,6 +33,8 @@ const ICON = {
   heart_black: '/icons/heart_black.svg',
   heart_black_active: '/icons/heart_black_active.svg',
   target: '/icons/target.svg',
+  marker_exhibition: '/icons/exhibition-marker.png',
+  popup_exhibition: '/icons/popup-marker.png',
 }
 
 export { ICON }

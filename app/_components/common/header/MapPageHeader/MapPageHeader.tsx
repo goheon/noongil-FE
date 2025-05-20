@@ -36,7 +36,7 @@ const MapPageHeader: React.FC<MainHeaderProps> = ({
 }
 
 const MapSearchBox = () => {
-  return <div className={`${styles['search-box']}`}></div>
+  return <div className={`${styles['search-box']}`}>asd</div>
 }
 
 export { MapPageHeader }
