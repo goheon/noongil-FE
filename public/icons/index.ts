@@ -32,8 +32,13 @@ const ICON = {
   heart_white: '/icons/heart_white.svg',
   heart_black: '/icons/heart_black.svg',
   heart_black_active: '/icons/heart_black_active.svg',
+  target: '/icons/target.svg',
+  marker_exhibition: '/icons/exhibition-marker.png',
+  popup_exhibition: '/icons/popup-marker.png',
   x_icon: '/icons/x-icon.svg',
   checkbox_off_black: '/icons/checkbox-off-black.svg',
+  delete: 'icons/delete-input.svg',
+  filter: '/icons/filter-icon_map.svg',
 }
 
 export { ICON }

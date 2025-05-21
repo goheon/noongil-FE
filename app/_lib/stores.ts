@@ -4,15 +4,10 @@ const usePopupStore = create((set) => ({}))
 
 const useExhibitionStore = create((set) => ({}))
 
-const useMapStore = create((set) => ({}))
-
-const useAdminStore = create((set) => ({}))
-
 type LoginStore = {
   loadEnd: boolean
   setLoadEnd: (value: boolean) => void
 }
-
 const useLoginStore = create<LoginStore>((set) => ({
   loadEnd: false,
 
@@ -26,7 +21,6 @@ type RegisterStore = {
   setSelectedFavEHB: (value: string[]) => void
   resetAll: () => void
 }
-
 const useRegisterStore = create<RegisterStore>((set) => ({
   selectedFavPU: [],
   selectedFavEHB: [],
@@ -36,11 +30,4 @@ const useRegisterStore = create<RegisterStore>((set) => ({
   resetAll: () => set({ selectedFavPU: [], selectedFavEHB: [] }),
 }))
 
-export {
-  usePopupStore,
-  useExhibitionStore,
-  useMapStore,
-  useAdminStore,
-  useLoginStore,
-  useRegisterStore,
-}
+export { usePopupStore, useExhibitionStore, useLoginStore, useRegisterStore }

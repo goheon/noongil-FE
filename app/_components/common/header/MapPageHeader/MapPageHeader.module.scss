@@ -1,13 +1,13 @@
 .header {
   &_search-bar {
-    padding: 17px 25px;
     display: flex;
+    padding: 17px 25px;
 
     &_logo-box {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      flex-direction: column;
       margin-right: 15px;
 
       &_icon.exhibition {
@@ -15,8 +15,8 @@
       }
 
       &_title {
-        font-weight: 700;
         font-size: 15px;
+        font-weight: 700;
       }
     }
 
@@ -26,13 +26,13 @@
 
       &_input {
         display: inline-block;
+        padding: 0 20% 0 10%;
+        border: 1px solid rgba($color: #000000, $alpha: 0.15);
         width: 70%;
         height: 100%;
-        border: 1px solid rgba($color: #000000, $alpha: 0.15);
-        border-radius: 33px;
-        padding: 0 20% 0 10%;
-        font-weight: 400;
         font-size: 1rem;
+        font-weight: 400;
+        border-radius: 33px;
 
         &_exhibition {
           border: 1px solid #ffffff;
@@ -41,16 +41,31 @@
       }
 
       &_button {
-        all: unset;
         position: absolute;
         top: 25%;
         right: 8%;
+        all: unset;
       }
     }
   }
 }
 
 .search-box {
-  box-sizing: border-box;
+  height: 90vh;
+  background-color: #ffffff;
   border-top: 4px solid #d9d9d9;
+  height: 79vh;
+  box-sizing: border-box;
+
+  .search-empty-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+
+    &_p {
+      font-size: 24px;
+      color: rgba($color: #000000, $alpha: 0.35);
+    }
+  }
 }

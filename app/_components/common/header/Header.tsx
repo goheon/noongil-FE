@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -11,7 +11,7 @@ import { MyPageHeader } from './MyPageHeader/MyPageHeader'
 import { LoginHeader } from './LoginPageHeader/LoginPageHeader'
 
 import { ICON } from '@/public'
-import { HeaderProps, MyPageHeaderProps, SearchBoxProps } from '@/app/_types'
+import { HeaderProps, HeaderLogoBoxProps, SearchBoxProps } from '@/app/_types'
 import styles from './header.module.scss'
 
 // 헤더
@@ -37,15 +37,7 @@ const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
             return <MyPageHeader />
 
           case pathname.startsWith('/map'):
-            return (
-              <MapPageHeader
-                isSearchOpen={isSearchOpen}
-                setIsSearchOpen={setIsSearchOpen}
-                isExhibition={isExhibition}
-                inputRef={inputRef}
-                handleSearchClick={handleSearchClick}
-              />
-            )
+            return <MapPageHeader />
 
           case pathname.startsWith('/login'):
             return <LoginHeader />
@@ -73,6 +65,12 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   inputRef,
   isSearchOpen,
 }) => {
+  const [searchValue, setSearchValue] = useState('')
+  const handleDeleteClick = (evt: React.MouseEvent<HTMLButtonElement>) => {
+    evt.stopPropagation()
+    setSearchValue('')
+  }
+
   return (
     <div
       className={`${styles['header_search-bar_search-box']}`}
@@ -83,9 +81,28 @@ const SearchBox: React.FC<SearchBoxProps> = ({
         className={`${styles['header_search-bar_search-box_input']} ${isExhibition && `${styles['header_search-bar_search-box_input_exhibition']}`}`}
         type="text"
         name="search"
+        value={searchValue}
         ref={inputRef}
+        onChange={(evt) => setSearchValue(evt.target.value)}
         placeholder={isSearchOpen ? '장소, 테마를 검색해보세요.' : undefined}
+        autoComplete="off"
       />
+      {searchValue.length > 0 && (
+        <button
+          className={`${styles['header_search-bar_search-box_button']} ${styles['delete-button']}`}
+          type="button"
+          aria-label="Search"
+          onClick={handleDeleteClick}
+        >
+          <Image
+            className={`${styles['delete-icon']}`}
+            src={ICON.delete}
+            alt="delete Icon"
+            width={20}
+            height={20}
+          />
+        </button>
+      )}
       <button
         className={`${styles['header_search-bar_search-box_button']}`}
         type="button"
@@ -104,7 +121,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 }
 
 // 헤더 로고 박스 컴포넌트
-const LogoBox: React.FC<MyPageHeaderProps> = ({
+const LogoBox: React.FC<HeaderLogoBoxProps> = ({
   isSearchOpen,
   setIsSearchOpen,
   isExhibition,
@@ -173,71 +190,70 @@ const LogoBox: React.FC<MyPageHeaderProps> = ({
   )
 }
 
-// 검색 포커스 최근, 인기 검색 목록 확장 박스 컴포넌트
-const RnPsearchBox: React.FC = () => {
-  return (
-    <div className={`${styles['header_search-focus-box']}`}>
-      <p className={`${styles['header_search-focus-box_title']}`}>
-        최근 검색어
-      </p>
-      <div className={`${styles['header_search-focus-box_recent-search-box']}`}>
-        <div
-          className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
-        >
-          <span>데이식스</span>
-          <button type="button">X</button>
-        </div>
+// const RnPsearchBox: React.FC = () => {
+//   return (
+//     <div className={`${styles['header_search-focus-box']}`}>
+//       <p className={`${styles['header_search-focus-box_title']}`}>
+//         최근 검색어
+//       </p>
+//       <div className={`${styles['header_search-focus-box_recent-search-box']}`}>
+//         <div
+//           className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
+//         >
+//           <span>데이식스</span>
+//           <button type="button">X</button>
+//         </div>
 
-        <div
-          className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
-        >
-          <span>트와이스</span>
-          <button type="button">X</button>
-        </div>
-        <div
-          className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
-        >
-          <span>세상에서 제일가는 포테이토 칩</span>
-          <button type="button">X</button>
-        </div>
-      </div>
-      <p className={`${styles['header_search-focus-box_title']}`}>
-        인기 검색어
-      </p>
-      <ol className={`${styles['header_search-focus-box_popular-list']}`}>
-        <li
-          className={`${styles['header_search-focus-box_popular-list_line']}`}
-        >
-          데이식스
-        </li>
-        <li
-          className={`${styles['header_search-focus-box_popular-list_line']}`}
-        >
-          트와이스
-        </li>
-        <li
-          className={`${styles['header_search-focus-box_popular-list_line']}`}
-        >
-          루피
-        </li>
-        <li
-          className={`${styles['header_search-focus-box_popular-list_line']}`}
-        >
-          데이식스
-        </li>
-        <li
-          className={`${styles['header_search-focus-box_popular-list_line']}`}
-        >
-          트와이스
-        </li>
-        <li
-          className={`${styles['header_search-focus-box_popular-list_line']}`}
-        >
-          루피
-        </li>
-      </ol>
-    </div>
-  )
-}
+//         <div
+//           className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
+//         >
+//           <span>트와이스</span>
+//           <button type="button">X</button>
+//         </div>
+//         <div
+//           className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
+//         >
+//           <span>세상에서 제일가는 포테이토 칩</span>
+//           <button type="button">X</button>
+//         </div>
+//       </div>
+//       <p className={`${styles['header_search-focus-box_title']}`}>
+//         인기 검색어
+//       </p>
+//       <ol className={`${styles['header_search-focus-box_popular-list']}`}>
+//         <li
+//           className={`${styles['header_search-focus-box_popular-list_line']}`}
+//         >
+//           데이식스
+//         </li>
+//         <li
+//           className={`${styles['header_search-focus-box_popular-list_line']}`}
+//         >
+//           트와이스
+//         </li>
+//         <li
+//           className={`${styles['header_search-focus-box_popular-list_line']}`}
+//         >
+//           루피
+//         </li>
+//         <li
+//           className={`${styles['header_search-focus-box_popular-list_line']}`}
+//         >
+//           데이식스
+//         </li>
+//         <li
+//           className={`${styles['header_search-focus-box_popular-list_line']}`}
+//         >
+//           트와이스
+//         </li>
+//         <li
+//           className={`${styles['header_search-focus-box_popular-list_line']}`}
+//         >
+//           루피
+//         </li>
+//       </ol>
+//     </div>
+//   )
+// }
 
-export { Header, LogoBox, SearchBox, RnPsearchBox }
+export { Header, LogoBox, SearchBox }

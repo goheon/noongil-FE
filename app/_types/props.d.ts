@@ -1,6 +1,8 @@
+import { IMapStore } from '../_store/map/useMapStore'
+
 // 헤더 props
 export interface HeaderProps {
-  isExhibition: boolean
+  isExhibition?: boolean
 }
 
 // 메인페이지 헤더 props
@@ -12,15 +14,17 @@ export interface MainHeaderProps extends HeaderProps {
 }
 
 // 마이페이지 헤더 props
-export interface MyPageHeaderProps extends HeaderProps {
+export interface HeaderLogoBoxProps extends HeaderProps {
   isSearchOpen: boolean
-  setIsSearchOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsSearchOpen:
+    | React.Dispatch<React.SetStateAction<boolean>>
+    | IMapStore['setIsSearchOpen']
 }
 
 // 헤더 검색박스 props
 export interface SearchBoxProps {
   handleSearchClick: () => void
-  isExhibition: boolean
+  isExhibition?: boolean
   inputRef: React.RefObject<HTMLInputElement>
   isSearchOpen: boolean
 }
