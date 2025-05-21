@@ -6,6 +6,7 @@ import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 import OrderFilter from './OrderFilter'
 import CategoryFilter from './CategoryFilter'
 import { TEventCodeName } from '@/app/_types'
+import RegionFilter from './RegionFilter'
 
 const cx = classNames.bind(styles)
 
@@ -39,7 +40,9 @@ const SearchListFilter = (props: SearchListFilterProps) => {
                 <DateFilter isExhibitionPage={eventCode === 'exhibition'} />
               )
             case 'region':
-              return <div>지역 필터</div>
+              return (
+                <RegionFilter isExhibitionPage={eventCode === 'exhibition'} />
+              )
             default:
               return null
           }

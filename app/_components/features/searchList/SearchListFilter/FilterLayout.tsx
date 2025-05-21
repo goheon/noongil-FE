@@ -10,6 +10,7 @@ import { getDateLabel } from '@/app/_utils/date'
 import { usePathname, useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 import { ALL_CATEGORY_LABELS } from '@/app/_constants/event'
+import { SEOUL_REGIONS } from '@/app/_constants/region'
 
 const cx = classNames.bind(styles)
 
@@ -33,6 +34,8 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
     endDate,
     setStartDate,
     setEndDate,
+    regions,
+    setRegion,
   } = useListFilterStore()
 
   const dateLabel = useMemo(() => {
@@ -116,6 +119,16 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
               </div>
             </div>
           )}
+
+          {regions &&
+            regions.map((regionValue) => (
+              <div className={cx('filter-list-item')} key={regionValue}>
+                <div>{SEOUL_REGIONS[regionValue].regionName}</div>
+                <div onClick={() => setRegion(regionValue)}>
+                  <Image src={ICON.x_icon} alt="close" width={18} height={18} />
+                </div>
+              </div>
+            ))}
         </div>
         <div className={cx('filter-btn-box')}>
           <button
