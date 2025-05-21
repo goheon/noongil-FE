@@ -11,7 +11,7 @@ const LIST_FILTERS: { label: string; filterKey: TFilter | null }[] = [
   { label: '인기순', filterKey: 'order' },
   { label: '카테고리', filterKey: 'category' },
   { label: '날짜', filterKey: 'date' },
-  { label: '지역', filterKey: null }, // 지역 필터는 setFilter 호출하지 않음
+  { label: '지역', filterKey: 'region' }, // 지역 필터는 setFilter 호출하지 않음
 ]
 
 interface SearchListHeaderProps {
