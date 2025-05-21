@@ -36,6 +36,7 @@ const ICON = {
   marker_exhibition: '/icons/exhibition-marker.png',
   popup_exhibition: '/icons/popup-marker.png',
   x_icon: '/icons/x-icon.svg',
+  x_icon_black: '/icons/x-icon_black.svg',
   checkbox_off_black: '/icons/checkbox-off-black.svg',
   delete: 'icons/delete-input.svg',
   filter: '/icons/filter-icon_map.svg',

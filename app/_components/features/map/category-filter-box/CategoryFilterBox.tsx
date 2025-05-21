@@ -2,7 +2,6 @@
 
 import classNames from 'classnames/bind'
 import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
-
 import styles from './CategoryFilterBox.module.scss'
 
 const cx = classNames.bind(styles)

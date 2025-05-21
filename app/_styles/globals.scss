@@ -12,7 +12,7 @@ $navigation-height: 103px;
   &_wrapper {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    overflow-y: visible;
     width: 100%;
     max-width: 430px;
     height: 100%;

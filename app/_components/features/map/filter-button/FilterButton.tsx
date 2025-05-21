@@ -8,15 +8,20 @@ import { useMapStore } from '@/app/_store/map/useMapStore'
 import styles from './FilterButton.module.scss'
 
 const FilterButton = () => {
-  const handleButtonClick = () => {}
   const isSearchOpen = useMapStore((state) => state.isSearchOpen)
+  const isFilterOpen = useMapStore((state) => state.isFilterOpen)
+  const setIsFilterOpen = useMapStore((state) => state.setIsFilterOpen)
+
+  const handleButtonClick = () => {
+    setIsFilterOpen(!isFilterOpen)
+  }
 
   return (
     <div className={styles['speed-dial']}>
       {!isSearchOpen && (
         <motion.button
           className={`${styles['speed-dial-btn']}`}
-          onClick={() => handleButtonClick()}
+          onClick={handleButtonClick}
           whileTap={{ scale: 0.8 }}
         >
           <Image src={ICON.filter} alt="filter Icon" width={30} height={30} />
