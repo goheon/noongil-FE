@@ -1,5 +1,5 @@
 import { axiosApi } from '@/app/_lib/axios'
-import { EventType } from '../main/type'
+import { TAllEventCode } from '@/app/_types'
 import axios from 'axios'
 
 export const bookmarkEventItem = async ({
@@ -44,11 +44,11 @@ export const bookmarkEventItem = async ({
 export const getAllEventList = async ({
   pageParam = 0,
   sortType = '20',
-  eventType = 'all',
+  eventCode = 'all',
 }: {
   pageParam: number
   sortType: '10' | '20' | '30'
-  eventType: EventType
+  eventCode: TAllEventCode
 }) => {
   try {
     // 쿠키 이슈 해결 후 기존의 Api endpoint 연결
@@ -63,7 +63,7 @@ export const getAllEventList = async ({
     //     withCredentials: true,
     //   },
     // )
-    const response = await axiosApi.get(`events/list/${eventType}`, {
+    const response = await axiosApi.get(`events/list/${eventCode}`, {
       params: {
         page: pageParam,
         sortType,

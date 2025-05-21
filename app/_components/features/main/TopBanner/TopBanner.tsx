@@ -7,7 +7,9 @@ import SampleImg from '@/public/free-img.jpg'
 import { Chip } from '@/app/_components/ui'
 import { useQuery } from '@tanstack/react-query'
 import { getBannerEvent } from '../mainApi'
-import { IListItem, EVENT_CATEGORY_MAP } from '../type'
+import { IListItem } from '../type'
+import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
+import { TEventCodeName } from '@/app/_types'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -19,17 +21,17 @@ import Skeleton from 'react-loading-skeleton'
 const cx = classNames.bind(styles)
 
 interface TopBannerProps {
-  category: 'all' | 'exhibition' | 'popup'
+  eventCode: TEventCodeName
 }
 
 const TopBanner = (props: TopBannerProps) => {
-  const { category } = props
+  const { eventCode } = props
 
-  const currentCategory = EVENT_CATEGORY_MAP[category]
+  const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
 
   const { data, isLoading } = useQuery({
     queryKey: ['banner-event'],
-    queryFn: () => getBannerEvent(currentCategory),
+    queryFn: () => getBannerEvent(currentEventCode),
   })
 
   return (
@@ -54,7 +56,7 @@ const TopBanner = (props: TopBannerProps) => {
         </Swiper>
       )}
 
-      <Chip className={cx('banner-chip')} category={category}>
+      <Chip className={cx('banner-chip')} eventCode={eventCode}>
         자세히 보기
       </Chip>
     </div>

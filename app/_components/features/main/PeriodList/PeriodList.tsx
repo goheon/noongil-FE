@@ -15,9 +15,8 @@ import 'swiper/css/pagination'
 import { Pagination } from 'swiper/modules'
 import { IListItem } from '../type'
 
-import Skeleton from 'react-loading-skeleton'
-
-import { EVENT_CATEGORY_MAP } from '../type'
+import { TEventCodeName } from '@/app/_types'
+import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
 import PeriodListItem from './PeriodListItem'
 import SkeletonList from './SkeletonList'
 
@@ -39,30 +38,30 @@ const TITLE_MAP = {
 // TODO: 오픈, 마감 예정과 관련한 API 완성시 수정
 
 interface PeriodListProps {
-  category: 'popup' | 'exhibition' | 'all'
+  eventCode: TEventCodeName
   periodType: 'open' | 'close'
 }
 
 const PeriodList = (props: PeriodListProps) => {
-  const { category, periodType } = props
+  const { eventCode, periodType } = props
 
-  const currentCategory = EVENT_CATEGORY_MAP[category]
+  const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
 
   const { isOpenListLoading, openList, isCloseListLoading, closeList } =
-    usePeriodList(currentCategory)
+    usePeriodList(currentEventCode)
 
   const listTitle = useMemo(() => {
-    return TITLE_MAP[periodType][category]
-  }, [periodType, category])
+    return TITLE_MAP[periodType][eventCode]
+  }, [periodType, eventCode])
 
   const isLoading = useMemo(
     () => (periodType === 'open' ? isOpenListLoading : isCloseListLoading),
-    [category, isOpenListLoading, isCloseListLoading],
+    [isOpenListLoading, isCloseListLoading, periodType],
   )
 
   const listData = useMemo(
     () => (periodType === 'open' ? openList : closeList),
-    [category, openList, closeList],
+    [openList, closeList, periodType],
   )
 
   return (

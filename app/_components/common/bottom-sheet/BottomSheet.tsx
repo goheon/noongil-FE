@@ -12,6 +12,7 @@ interface BottomSheetProps {
   /** 바텀시트의 열림 상태를 외부에서 제어할 수 있도록 하는 선택 prop */
   isOpen?: boolean
   setIsOpen?: (open: boolean) => void
+  isExhibitionPage?: boolean
 }
 
 const BottomSheet = ({
@@ -19,6 +20,7 @@ const BottomSheet = ({
   children,
   isOpen: isOpenProp,
   setIsOpen: setIsOpenProp,
+  isExhibitionPage,
 }: BottomSheetProps) => {
   // 내부 상태 초기값은 prop이 있으면 그 값, 없으면 false
   const [isOpen, setIsOpen] = useState<boolean>(isOpenProp ?? false)
@@ -49,7 +51,7 @@ const BottomSheet = ({
   }
 
   // type에 따라 다른 클래스명을 적용하거나 추가 UI를 렌더링할 수 있음.
-  const bottomSheetClass = `${styles['bottom-sheet']} ${styles[`bottom-sheet--${type}`]}`
+  const bottomSheetClass = `${styles['bottom-sheet']} ${styles[`bottom-sheet--${type}`]} ${isExhibitionPage && styles['bottom-sheet--exhibition']}`
 
   return (
     <div className={styles['bottom-sheet-container']}>

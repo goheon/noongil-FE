@@ -12,7 +12,12 @@ import { format, isSameDay, startOfWeek, addDays } from 'date-fns'
 
 const cx = classNames.bind(styles)
 
-const DateFilter = () => {
+interface DateFilterProps {
+  isExhibitionPage?: boolean
+}
+
+const DateFilter = (props: DateFilterProps) => {
+  const { isExhibitionPage } = props
   const { startDate, endDate, setStartDate, setEndDate } = useListFilterStore()
 
   const handleDateChange = (dates: [Date | null, Date | null]) => {
@@ -97,23 +102,26 @@ const DateFilter = () => {
   }, [startDate, endDate])
 
   return (
-    <FilterLayout>
+    <FilterLayout isExhibitionPage={isExhibitionPage}>
       <div className={cx('container')}>
         <div className={cx('date-option-box')}>
           <Checkbox
             label="오늘"
             checked={todayChecked}
             onChange={handleTodayChange}
+            isExhibitionPage={isExhibitionPage}
           />
           <Checkbox
             label="이번주말"
             checked={weekendChecked}
             onChange={handleWeekendChange}
+            isExhibitionPage={isExhibitionPage}
           />
           <Checkbox
             label="+7일"
             checked={sevenEightDaysChecked}
             onChange={handleSevenEightDaysChange}
+            isExhibitionPage={isExhibitionPage}
           />
         </div>
 
@@ -121,7 +129,9 @@ const DateFilter = () => {
           <div className={cx('notice')}>직접 입력</div>
 
           <DatePicker
-            calendarClassName={cx('custom-calendar')}
+            calendarClassName={cx('custom-calendar', {
+              'custom-calendar--exhibition': isExhibitionPage,
+            })}
             dateFormat="yyyy.MM.dd"
             shouldCloseOnSelect // 날짜를 선택하면 datepicker가 자동으로 닫힘
             minDate={new Date('2000-01-01')}
@@ -142,7 +152,11 @@ const DateFilter = () => {
             }
             locale={ko} // 한국어 로케일 적용
             renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
-              <div className={cx('custom-header')}>
+              <div
+                className={cx('custom-header', {
+                  'custom-header--exhibition': isExhibitionPage,
+                })}
+              >
                 <button onClick={decreaseMonth}>&lt;</button>
                 <span>{date.toLocaleString('ko-KR', { month: 'long' })}</span>
                 <button onClick={increaseMonth}>&gt;</button>
@@ -150,11 +164,21 @@ const DateFilter = () => {
             )}
             customInput={
               <div className={cx('select-info')}>
-                <Chip className={cx('date-select')} suffixIcon="calendar">
+                <Chip
+                  className={cx('date-select', {
+                    'date-select--exhibition': isExhibitionPage,
+                  })}
+                  suffixIcon="calendar"
+                >
                   {formattedStartDate}
                 </Chip>
                 <div className={cx('bar')}>-</div>
-                <Chip className={cx('date-select')} suffixIcon="calendar">
+                <Chip
+                  className={cx('date-select', {
+                    'date-select--exhibition': isExhibitionPage,
+                  })}
+                  suffixIcon="calendar"
+                >
                   {formattedEndDate}
                 </Chip>
               </div>

@@ -32,6 +32,8 @@ const ICON = {
   heart_white: '/icons/heart_white.svg',
   heart_black: '/icons/heart_black.svg',
   heart_black_active: '/icons/heart_black_active.svg',
+  x_icon: '/icons/x-icon.svg',
+  checkbox_off_black: '/icons/checkbox-off-black.svg',
 }
 
 export { ICON }

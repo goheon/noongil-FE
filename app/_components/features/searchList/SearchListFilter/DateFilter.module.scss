@@ -34,6 +34,10 @@
         display: flex;
         align-items: center;
 
+        &--exhibition {
+          background-color: white;
+        }
+
         img {
           height: 21px;
           filter: invert(0);
@@ -93,6 +97,43 @@
         color: #000000;
         border: 2px solid #5899ed;
         background-color: transparent;
+      }
+    }
+
+    &--exhibition {
+      background-color: black;
+
+      .custom-header {
+        background-color: black;
+        color: white;
+      }
+
+      .custom-day {
+        color: #ffffff;
+      }
+
+      // 헤더 스타일 변경
+      :global(.react-datepicker__header) {
+        color: white !important;
+        background-color: black;
+        width: 430px;
+        border: none;
+      }
+
+      // 요일 표시 스타일
+      :global(.react-datepicker__day-names) {
+        display: flex;
+        justify-content: space-around;
+        background-color: black;
+        color: white !important;
+        padding: 35px 0;
+        font-size: 17px;
+        border: none;
+      }
+
+      // 추가: 각 요일 텍스트에 색상 적용
+      :global(.react-datepicker__day-name) {
+        color: white !important;
       }
     }
   }

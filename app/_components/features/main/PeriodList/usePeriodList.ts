@@ -1,19 +1,20 @@
 import { getOpenList, getCloseList } from '../mainApi'
 import { useQuery } from '@tanstack/react-query'
-import { EventType, IListItem } from '../type'
+import { IListItem } from '../type'
+import { TAllEventCode } from '@/app/_types'
 
 const filterDays = (data: IListItem[]) => {
   return data.filter((item) => Number(item.dday.replace('D-', '')) <= 14)
 }
 
-const usePeriodList = (category: EventType) => {
+const usePeriodList = (eventCode: TAllEventCode) => {
   const {
     isPending: isOpenListLoading,
     error: openListError,
     data: openList = [],
   } = useQuery({
-    queryKey: ['open-list', category],
-    queryFn: () => getOpenList(category),
+    queryKey: ['open-list', eventCode],
+    queryFn: () => getOpenList(eventCode),
     select: (data) => filterDays(data),
   })
 
@@ -22,8 +23,8 @@ const usePeriodList = (category: EventType) => {
     error: closeListError,
     data: closeList = [],
   } = useQuery({
-    queryKey: ['close-list', category],
-    queryFn: () => getCloseList(category),
+    queryKey: ['close-list', eventCode],
+    queryFn: () => getCloseList(eventCode),
     select: (data) => filterDays(data),
   })
 

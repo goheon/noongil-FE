@@ -1,38 +1,48 @@
+'use client'
+
 import styles from './SearchList.module.scss'
 import classNames from 'classnames/bind'
 import useSearchList from './useSearchList'
 import SearchListItem from './SearchListItem'
 import SearchListHeader from '../SearchListHeader/SearchListHeader'
-import { EVENT_CATEGORY_MAP } from '../../main/type'
+import { useSearchParams } from 'next/navigation'
+import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
+import { TEventCodeName } from '@/app/_types'
 
 const cx = classNames.bind(styles)
 
 interface SearchListProps {
-  category: 'popup' | 'exhibition' | 'all'
+  eventCode: TEventCodeName
 }
 
 const SearchList = (props: SearchListProps) => {
-  const { category } = props
+  const { eventCode } = props
 
-  const currentCategory = EVENT_CATEGORY_MAP[category]
+  const searchParams = useSearchParams()
 
-  const { list } = useSearchList(currentCategory)
+  const categories = searchParams.get('categories')?.split(',') ?? []
+  const startDate = searchParams.get('startDate') ?? null
+  const endDate = searchParams.get('endDate') ?? null
+
+  const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
+
+  const { list } = useSearchList(currentEventCode)
 
   return (
     <div className={cx('container')}>
       <div
         className={cx('header', {
-          'header--exhibition': category === 'exhibition',
+          'header--exhibition': eventCode === 'exhibition',
         })}
       >
-        <SearchListHeader category={category} />
+        <SearchListHeader eventCode={eventCode} />
       </div>
 
       <ul className={cx('list')}>
         {list ? (
           list.map((data) => (
             <li key={data.eventId}>
-              <SearchListItem data={data} category={category} />
+              <SearchListItem data={data} eventCode={eventCode} />
             </li>
           ))
         ) : (

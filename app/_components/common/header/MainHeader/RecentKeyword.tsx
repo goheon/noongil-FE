@@ -39,7 +39,7 @@ const RecentKeyword = (props: RecentKeywordProps) => {
             <Chip
               suffixIcon="close"
               iconSize={16}
-              category={isExhibition ? 'exhibition' : 'popup'}
+              eventCode={isExhibition ? 'exhibition' : 'popup'}
             >
               {el}
             </Chip>

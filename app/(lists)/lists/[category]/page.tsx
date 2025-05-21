@@ -32,9 +32,11 @@ const CategoryPage = ({
   return (
     <>
       {/* fix categort type */}
-      <SearchList category={category as 'popup' | 'exhibition' | 'all'} />
+      <SearchList eventCode={category as 'popup' | 'exhibition' | 'all'} />
       <SpeedDial />
-      <SearchListFilter />
+      <SearchListFilter
+        eventCode={category as 'popup' | 'exhibition' | 'all'}
+      />
     </>
   )
 }

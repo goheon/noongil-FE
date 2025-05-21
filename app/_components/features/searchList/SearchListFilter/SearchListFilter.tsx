@@ -5,25 +5,44 @@ import DateFilter from './DateFilter'
 import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 import OrderFilter from './OrderFilter'
 import CategoryFilter from './CategoryFilter'
+import { TEventCodeName } from '@/app/_types'
+import RegionFilter from './RegionFilter'
 
 const cx = classNames.bind(styles)
 
-const SearchListFilter = () => {
+interface SearchListFilterProps {
+  eventCode: TEventCodeName
+}
+
+const SearchListFilter = (props: SearchListFilterProps) => {
+  const { eventCode } = props
+
   const { isOpen, filter, setOpen } = useListFilterStore()
 
   return (
-    <BottomSheet type="filter" isOpen={isOpen} setIsOpen={setOpen}>
+    <BottomSheet
+      type="filter"
+      isOpen={isOpen}
+      setIsOpen={setOpen}
+      isExhibitionPage={eventCode === 'exhibition'}
+    >
       <div className={cx('filter-container')}>
         {(() => {
           switch (filter) {
             case 'order':
               return <OrderFilter />
             case 'category':
-              return <CategoryFilter />
+              return (
+                <CategoryFilter isExhibitionPage={eventCode === 'exhibition'} />
+              )
             case 'date':
-              return <DateFilter />
+              return (
+                <DateFilter isExhibitionPage={eventCode === 'exhibition'} />
+              )
             case 'region':
-              return <div>지역 필터</div>
+              return (
+                <RegionFilter isExhibitionPage={eventCode === 'exhibition'} />
+              )
             default:
               return null
           }
