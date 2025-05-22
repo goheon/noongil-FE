@@ -39,6 +39,8 @@ const ICON = {
   checkbox_off_black: '/icons/checkbox-off-black.svg',
   delete: 'icons/delete-input.svg',
   filter: '/icons/filter-icon_map.svg',
+  check_mark: '/icons/check-mark.svg',
+  check_mark_active: '/icons/check-mark-active.svg',
 }
 
 export { ICON }
