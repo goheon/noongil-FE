@@ -63,7 +63,7 @@ const useMyCategories = () => {
   const toggleCategory = <T extends string>(
     category: T,
     prev: T[],
-    limit: number = 4,
+    limit: number = 3,
   ): T[] => {
     const isSelected = prev.includes(category)
 
