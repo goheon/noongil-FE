@@ -25,5 +25,13 @@
     &::-webkit-scrollbar {
       display: none;
     }
+
+    .skeleton-wrapper {
+      width: 215px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-bottom: 20px;
+    }
   }
 }
