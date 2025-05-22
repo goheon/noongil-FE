@@ -8,8 +8,11 @@ import SearchListHeader from '../SearchListHeader/SearchListHeader'
 import { useSearchParams } from 'next/navigation'
 import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
 import { TEventCodeName } from '@/app/_types'
+import Skeleton from 'react-loading-skeleton'
 
 const cx = classNames.bind(styles)
+
+const skeletonListArr = Array.from({ length: 6 })
 
 interface SearchListProps {
   eventCode: TEventCodeName
@@ -26,7 +29,8 @@ const SearchList = (props: SearchListProps) => {
 
   const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
 
-  const { list } = useSearchList(currentEventCode)
+  const { list, isFetching, isFetchingNextPage } =
+    useSearchList(currentEventCode)
 
   return (
     <div className={cx('container')}>
@@ -38,17 +42,43 @@ const SearchList = (props: SearchListProps) => {
         <SearchListHeader eventCode={eventCode} />
       </div>
 
-      <ul className={cx('list')}>
-        {list ? (
-          list.map((data) => (
-            <li key={data.eventId}>
-              <SearchListItem data={data} eventCode={eventCode} />
+      {isFetching ? (
+        <ul className={cx('list')}>
+          {skeletonListArr.map((_, idx) => (
+            <li key={idx} className={cx('skeleton-wrapper')}>
+              <Skeleton width={215} height={235} />
+
+              <Skeleton width={215} />
+              <Skeleton width={215} />
             </li>
-          ))
-        ) : (
-          <div>빈페이지입니다.</div>
-        )}
-      </ul>
+          ))}
+        </ul>
+      ) : (
+        <ul className={cx('list')}>
+          {list ? (
+            list.map((data) => (
+              <li key={data.eventId}>
+                <SearchListItem data={data} eventCode={eventCode} />
+              </li>
+            ))
+          ) : (
+            <div>빈페이지입니다.</div>
+          )}
+        </ul>
+      )}
+
+      {isFetchingNextPage && (
+        <ul className={cx('list')}>
+          {skeletonListArr.map((_, idx) => (
+            <li key={idx} className={cx('skeleton-wrapper')}>
+              <Skeleton width={215} height={235} />
+
+              <Skeleton width={215} />
+              <Skeleton width={215} />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
