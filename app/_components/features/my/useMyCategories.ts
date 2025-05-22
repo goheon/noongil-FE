@@ -1,14 +1,24 @@
 import { getUserCategories, updateUserCategories } from './myApi'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { TEventCategory } from '@/app/_types'
+import {
+  TEventCategory,
+  TPopupCategory,
+  TExhibitionCategory,
+} from '@/app/_types'
+import {
+  POPUP_CATEGORY_VALUES,
+  EXHIBITION_CATEGORY_VALUES,
+} from '@/app/_constants/event'
 
 const useMyCategories = () => {
   const queryClient = useQueryClient()
 
-  const [selectedCategories, setSelectedCategories] = useState<
-    TEventCategory[]
+  const [selectedPopupCategories, setSelectedPopupCategories] = useState<
+    TPopupCategory[]
   >([])
+  const [selectedExhibitionCategories, setSelectedExhibitionCategories] =
+    useState<TExhibitionCategory[]>([])
 
   const { data } = useQuery({
     queryKey: ['user-interest'],
@@ -16,7 +26,11 @@ const useMyCategories = () => {
   })
 
   const updateCategoriesMutation = useMutation({
-    mutationFn: () => updateUserCategories(selectedCategories),
+    mutationFn: () =>
+      updateUserCategories([
+        ...selectedPopupCategories,
+        ...selectedExhibitionCategories,
+      ]),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['user-interest'],
@@ -24,24 +38,60 @@ const useMyCategories = () => {
     },
   })
 
+  const handleFetchedCategories = (categories: TEventCategory[]) => {
+    const popupCategories = categories.filter(
+      (category): category is TPopupCategory =>
+        POPUP_CATEGORY_VALUES.includes(category as TPopupCategory),
+    )
+
+    const exhibitionCategories = categories.filter(
+      (category): category is TExhibitionCategory =>
+        EXHIBITION_CATEGORY_VALUES.includes(category as TExhibitionCategory),
+    )
+
+    setSelectedPopupCategories(popupCategories)
+    setSelectedExhibitionCategories(exhibitionCategories)
+  }
+
   useEffect(() => {
     if (data) {
-      setSelectedCategories(data)
+      handleFetchedCategories(data)
     }
   }, [data])
 
-  const handleCategories = (category: TEventCategory) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category],
-    )
+  // 공통 토글 함수
+  const toggleCategory = <T extends string>(
+    category: T,
+    prev: T[],
+    limit: number = 4,
+  ): T[] => {
+    const isSelected = prev.includes(category)
+
+    if (isSelected) {
+      return prev.filter((c) => c !== category)
+    }
+
+    if (prev.length >= limit) {
+      return prev
+    }
+
+    return [...prev, category]
+  }
+
+  const handlePopupCategories = (category: TPopupCategory) => {
+    setSelectedPopupCategories((prev) => toggleCategory(category, prev))
+  }
+
+  const handleExhibitionCategories = (category: TExhibitionCategory) => {
+    setSelectedExhibitionCategories((prev) => toggleCategory(category, prev))
   }
 
   return {
-    selectedCategories,
-    handleCategories,
     updateCategories: updateCategoriesMutation.mutate,
+    selectedPopupCategories,
+    selectedExhibitionCategories,
+    handlePopupCategories,
+    handleExhibitionCategories,
   }
 }
 
