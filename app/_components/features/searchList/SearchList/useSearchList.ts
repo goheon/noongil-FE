@@ -1,17 +1,44 @@
-import { getAllEventList } from '../searchApi'
+import { getSearchEventList } from '../searchApi'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { ISearchListItem } from '../type'
-import { TAllEventCode } from '@/app/_types'
+import { ISearchListItem, ISearchEventParms } from '../type'
 
-// TODO : list 관련 API 완성시 로직 수정
+type IUseSearchListArgs = Omit<ISearchEventParms, 'page'>
 
-const useSearchList = (eventCode: TAllEventCode) => {
+const useSearchList = (args: IUseSearchListArgs) => {
+  const {
+    eventCode,
+    sortType,
+    keyword,
+    operEndDt,
+    operStatDt,
+    categories,
+    regionGroups,
+  } = args
+
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['search-list'],
+      queryKey: [
+        'search-list',
+        eventCode,
+        sortType,
+        keyword,
+        operEndDt,
+        operStatDt,
+        categories,
+        regionGroups,
+      ],
       queryFn: ({ pageParam }) =>
-        getAllEventList({ pageParam, sortType: '20', eventCode: eventCode }),
+        getSearchEventList({
+          page: pageParam,
+          sortType,
+          eventCode,
+          keyword,
+          operEndDt,
+          operStatDt,
+          categories,
+          regionGroups,
+        }),
       initialPageParam: 0,
       getNextPageParam: (lastPage, pages) => {
         const totalPages = lastPage.total
@@ -23,7 +50,7 @@ const useSearchList = (eventCode: TAllEventCode) => {
 
   const list = useMemo(() => {
     return data?.pages?.reduce<ISearchListItem[]>((acc, item) => {
-      return acc.concat(item.data)
+      return acc.concat(item?.events ?? [])
     }, [])
   }, [data])
 
