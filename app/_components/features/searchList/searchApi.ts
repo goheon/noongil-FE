@@ -1,6 +1,5 @@
 import { axiosApi } from '@/app/_lib/axios'
-import { TAllEventCode } from '@/app/_types'
-import axios from 'axios'
+import { ISearchEventParms } from './type'
 
 export const bookmarkEventItem = async ({
   eventId,
@@ -10,19 +9,6 @@ export const bookmarkEventItem = async ({
   likeYn: string
 }) => {
   try {
-    // 쿠키 이슈 해결 후 기존의 Api endpoint 연결
-    // const response = await axiosApi.post(
-    //   'mark-events/save',
-    // const response = await axios.post(
-    //   'http://localhost:8080/api/mark-events/save',
-    //   {
-    //     eventId,
-    //     likeYn,
-    //   },
-    //   {
-    //     withCredentials: true,
-    //   },
-    // )
     const response = await axiosApi.post(
       'mark-events/save',
       {
@@ -41,33 +27,32 @@ export const bookmarkEventItem = async ({
   }
 }
 
-export const getAllEventList = async ({
-  pageParam = 0,
-  sortType = '20',
+export const getSearchEventList = async ({
+  page = 0,
   eventCode = 'all',
-}: {
-  pageParam: number
-  sortType: '10' | '20' | '30'
-  eventCode: TAllEventCode
-}) => {
+  keyword,
+  sortType,
+  operStatDt,
+  operEndDt,
+  categories,
+  regionGroups,
+}: ISearchEventParms) => {
   try {
-    // 쿠키 이슈 해결 후 기존의 Api endpoint 연결
-    // const response = await axiosApi.get(`events/list/${eventType}`, {
-    // const response = await axios.get(
-    //   `http://localhost:8080/api/events/list/${eventType}`,
-    //   {
-    //     params: {
-    //       page: pageParam,
-    //       sortType,
-    //     },
-    //     withCredentials: true,
-    //   },
-    // )
-    const response = await axiosApi.get(`events/list/${eventCode}`, {
-      params: {
-        page: pageParam,
-        sortType,
-      },
+    const params: Record<string, any> = {
+      page,
+      eventTypeCd: eventCode,
+    }
+
+    if (keyword && keyword.trim() !== '') params.keyword = keyword
+    if (operStatDt && operStatDt.trim() !== '') params.operStatDt = operStatDt
+    if (operEndDt && operEndDt.trim() !== '') params.operEndDt = operEndDt
+    if (categories && categories.trim() !== '') params.categories = categories
+    if (regionGroups && regionGroups.trim() !== '')
+      params.regionGroups = regionGroups
+    if (sortType && sortType.trim() !== '') params.sortType = sortType
+
+    const response = await axiosApi.get(`search/events`, {
+      params,
       withCredentials: true,
     })
 
