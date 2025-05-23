@@ -1,6 +1,8 @@
+import { TAllEventCode } from '@/app/_types'
+
 export type TFilter = 'order' | 'category' | 'date' | 'region'
 
-export type TOrder = 'popular' | 'newest' | 'ending' | 'region' | 'distance'
+export type TOrder = 'popular' | 'newest' | 'ending'
 
 export interface ISearchListItem {
   eventId: number
@@ -18,4 +20,15 @@ export interface ISearchListItem {
   viewNmvl: number
   imageUrl: string
   smallImageUrl: string
+}
+
+export interface ISearchEventParms {
+  page: number
+  eventCode: TAllEventCode
+  keyword?: string
+  sortType: string
+  operStatDt?: string
+  operEndDt?: string
+  categories?: string
+  regionGroups?: string
 }
