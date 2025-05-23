@@ -48,19 +48,23 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
   }
 
   const applyFilter = useCallback(() => {
-    const newParams = new URLSearchParams()
-    if (category.length > 0) {
-      newParams.set('categories', category.join(','))
-    }
-    if (startDate) {
-      newParams.set('startDate', format(startDate, 'yyyyMMdd'))
-    }
-    if (endDate) {
-      newParams.set('endDate', format(endDate, 'yyyyMMdd'))
+    const newParams = new URLSearchParams(window.location.search)
+
+    const updateParam = (key: string, value?: string | null) => {
+      if (value) {
+        newParams.set(key, value)
+      } else {
+        newParams.delete(key)
+      }
     }
 
+    updateParam('categories', category.length ? category.join(',') : null)
+    updateParam('startDate', startDate ? format(startDate, 'yyyyMMdd') : null)
+    updateParam('endDate', endDate ? format(endDate, 'yyyyMMdd') : null)
+    updateParam('regions', regions.length ? regions.join(',') : null)
+
     router.push(`${pathname}?${newParams.toString()}`)
-  }, [category, startDate, endDate, pathname, router])
+  }, [category, startDate, endDate, pathname, router, regions])
 
   return (
     <div className={cx('container')}>
@@ -90,6 +94,9 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
         <div
           className={cx('filter-option', {
             'filter-option--selected': filter === 'region',
+            'filter-option--selected--exhibition':
+              filter === 'region' && isExhibitionPage,
+            'filter-option--active': regions.length > 0,
           })}
           onClick={() => setFilter('region')}
         >
