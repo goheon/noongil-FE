@@ -9,6 +9,7 @@ import { useSearchParams } from 'next/navigation'
 import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
 import { TEventCodeName } from '@/app/_types'
 import Skeleton from 'react-loading-skeleton'
+import useSyncStoreWithURL from '../useSyncStoreWithURL'
 
 const cx = classNames.bind(styles)
 
@@ -23,14 +24,27 @@ const SearchList = (props: SearchListProps) => {
 
   const searchParams = useSearchParams()
 
-  const categories = searchParams.get('categories')?.split(',') ?? []
-  const startDate = searchParams.get('startDate') ?? null
-  const endDate = searchParams.get('endDate') ?? null
+  useSyncStoreWithURL(searchParams)
+
+  const categories = searchParams.get('categories') ?? ''
+  const startDate = searchParams.get('startDate') ?? ''
+  const endDate = searchParams.get('endDate') ?? ''
+  const regions = searchParams.get('regions') ?? ''
+  const sortType = searchParams.get('sortType') ?? ''
 
   const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
 
-  const { list, isFetching, isFetchingNextPage } =
-    useSearchList(currentEventCode)
+  const keyword = ''
+
+  const { list, isFetching, isFetchingNextPage } = useSearchList({
+    eventCode: currentEventCode,
+    categories,
+    keyword,
+    sortType,
+    operStatDt: startDate,
+    operEndDt: endDate,
+    regionGroups: regions,
+  })
 
   return (
     <div className={cx('container')}>
@@ -55,7 +69,7 @@ const SearchList = (props: SearchListProps) => {
         </ul>
       ) : (
         <ul className={cx('list')}>
-          {list ? (
+          {list && list.length > 0 ? (
             list.map((data) => (
               <li key={data.eventId}>
                 <SearchListItem data={data} eventCode={eventCode} />

@@ -54,5 +54,13 @@ export const useListFilterStore = create<IListFilter>((set) => ({
   setSeoulCheck: (checked: boolean) => set({ isSeoulChecked: checked }),
   setGyenggiCheck: (checked: boolean) => set({ isGyeonggiChecked: checked }),
   reset: () =>
-    set({ order: null, category: [], startDate: null, endDate: null }),
+    set({
+      order: null,
+      category: [],
+      startDate: null,
+      endDate: null,
+      regions: [],
+      isSeoulChecked: false,
+      isGyeonggiChecked: false,
+    }),
 }))
