@@ -27,6 +27,8 @@ export interface SearchBoxProps {
   isExhibition?: boolean
   inputRef: React.RefObject<HTMLInputElement>
   isSearchOpen: boolean
+  closeSearchBox?: () => void
+  isListSearch?: boolean
 }
 
 // 전시 상세 페이지 props

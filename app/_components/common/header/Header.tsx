@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -13,6 +13,8 @@ import { LoginHeader } from './LoginPageHeader/LoginPageHeader'
 import { ICON } from '@/public'
 import { HeaderProps, HeaderLogoBoxProps, SearchBoxProps } from '@/app/_types'
 import styles from './header.module.scss'
+import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
+import useApplySearchParams from '../../features/searchList/useApplySearchParams'
 
 // 헤더
 const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
@@ -64,11 +66,50 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   isExhibition,
   inputRef,
   isSearchOpen,
+  closeSearchBox,
+  isListSearch,
 }) => {
+  const { keyword, setKeyword } = useListFilterStore()
+
   const [searchValue, setSearchValue] = useState('')
   const handleDeleteClick = (evt: React.MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation()
     setSearchValue('')
+  }
+
+  const { applyParams } = useApplySearchParams()
+
+  useEffect(() => {
+    if (isListSearch && keyword) {
+      setSearchValue(keyword)
+    }
+  }, [isListSearch, keyword])
+
+  const searchKeyword = useCallback(() => {
+    if (!isListSearch) {
+      return
+    }
+
+    const value = searchValue.trim()
+
+    setKeyword(value || '')
+
+    if (closeSearchBox) {
+      closeSearchBox()
+    }
+
+    // 0ms 딜레이를 주어 다음 이벤트 루프로 밀기
+    setTimeout(() => {
+      applyParams({
+        keyword: value,
+      })
+    }, 0)
+  }, [searchValue, setKeyword, isListSearch, closeSearchBox])
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      searchKeyword()
+    }
   }
 
   return (
@@ -86,6 +127,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
         onChange={(evt) => setSearchValue(evt.target.value)}
         placeholder={isSearchOpen ? '장소, 테마를 검색해보세요.' : undefined}
         autoComplete="off"
+        onKeyDown={handleKeyDown}
       />
       {searchValue.length > 0 && (
         <button
@@ -107,6 +149,10 @@ const SearchBox: React.FC<SearchBoxProps> = ({
         className={`${styles['header_search-bar_search-box_button']}`}
         type="button"
         aria-label="Search"
+        onClick={(e) => {
+          e.stopPropagation()
+          searchKeyword()
+        }}
       >
         <Image
           className={`${styles['header_search-bar_search-box_icon']}`}
