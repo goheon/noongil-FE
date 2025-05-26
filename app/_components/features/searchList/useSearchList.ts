@@ -1,20 +1,19 @@
-import { getSearchEventList } from '../searchApi'
+import { getSearchEventList } from './searchApi'
+import { ISearchListItem } from './type'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { ISearchListItem, ISearchEventParms } from '../type'
+import { useSearchParams } from 'next/navigation'
+import { TAllEventCode } from '@/app/_types'
 
-type IUseSearchListArgs = Omit<ISearchEventParms, 'page'>
+const useSearchList = (eventCode: TAllEventCode) => {
+  const searchParams = useSearchParams()
 
-const useSearchList = (args: IUseSearchListArgs) => {
-  const {
-    eventCode,
-    sortType,
-    keyword,
-    operEndDt,
-    operStatDt,
-    categories,
-    regionGroups,
-  } = args
+  const categories = searchParams.get('categories') ?? ''
+  const startDate = searchParams.get('startDate') ?? ''
+  const endDate = searchParams.get('endDate') ?? ''
+  const regions = searchParams.get('regions') ?? ''
+  const sortType = searchParams.get('sortType') ?? ''
+  const keyword = searchParams.get('keyword') ?? ''
 
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery({
@@ -23,10 +22,10 @@ const useSearchList = (args: IUseSearchListArgs) => {
         eventCode,
         sortType,
         keyword,
-        operEndDt,
-        operStatDt,
+        startDate,
+        endDate,
         categories,
-        regionGroups,
+        regions,
       ],
       queryFn: ({ pageParam }) =>
         getSearchEventList({
@@ -34,10 +33,10 @@ const useSearchList = (args: IUseSearchListArgs) => {
           sortType,
           eventCode,
           keyword,
-          operEndDt,
-          operStatDt,
+          operEndDt: startDate,
+          operStatDt: endDate,
           categories,
-          regionGroups,
+          regionGroups: regions,
         }),
       initialPageParam: 0,
       getNextPageParam: (lastPage, pages) => {
