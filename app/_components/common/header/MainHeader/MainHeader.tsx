@@ -13,6 +13,10 @@ const MainHeader: React.FC<MainHeaderProps> = ({
   inputRef,
   handleSearchClick,
 }) => {
+  const closeSearchBox = () => {
+    setIsSearchOpen(false)
+  }
+
   return (
     <>
       {/* 헤더 검색 바 */}
@@ -29,6 +33,8 @@ const MainHeader: React.FC<MainHeaderProps> = ({
           inputRef={inputRef}
           isExhibition={isExhibition}
           isSearchOpen={isSearchOpen}
+          closeSearchBox={closeSearchBox}
+          isListSearch
         />
       </div>
       {/* 검색 포커스 확장 최근, 인기 검색 목록 */}

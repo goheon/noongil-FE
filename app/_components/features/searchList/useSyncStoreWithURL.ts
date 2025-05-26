@@ -5,28 +5,37 @@ import { TEventCategory } from '@/app/_types'
 import { useEffect } from 'react'
 import { parseISO, isValid } from 'date-fns'
 
-export const useSyncStoreWithURL = (params: URLSearchParams) => {
-  const { setCategory, setOrder, setStartDate, setEndDate, setRegion, reset } =
-    useListFilterStore()
+export const useSyncStoreWithURL = () => {
+  const searchParams = useSearchParams()
+
+  const {
+    setCategory,
+    setOrder,
+    setStartDate,
+    setEndDate,
+    setRegion,
+    setKeyword,
+  } = useListFilterStore()
 
   useEffect(() => {
-    const categoriesStr = params.get('categories') ?? ''
+    // 카테고리
+    const categoriesStr = searchParams.get('categories') ?? ''
     const categories = categoriesStr
       ? (categoriesStr.split(',') as TEventCategory[])
       : []
     categories.forEach((category) => setCategory(category))
 
-    // 3. 지역
-    const regionsStr = params.get('regions') ?? ''
+    // 지역
+    const regionsStr = searchParams.get('regions') ?? ''
     const regions = regionsStr ? regionsStr.split(',') : []
     regions.forEach((region) => setRegion(region))
 
-    // 4. 정렬
-    const order = params.get('order') as TOrder
+    // 정렬
+    const order = searchParams.get('order') as TOrder
     if (order) setOrder(order)
 
-    // 5. 날짜
-    const start = params.get('startDate')
+    // 날짜
+    const start = searchParams.get('startDate')
 
     if (start) {
       const date = parseISO(start)
@@ -37,7 +46,7 @@ export const useSyncStoreWithURL = (params: URLSearchParams) => {
       }
     }
 
-    const end = params.get('endDate')
+    const end = searchParams.get('endDate')
     if (end) {
       const date = parseISO(end)
 
@@ -47,6 +56,10 @@ export const useSyncStoreWithURL = (params: URLSearchParams) => {
         console.warn('Invalid date format:', start)
       }
     }
+
+    // 검색어
+    const keyword = searchParams.get('keyword') ?? ''
+    setKeyword(keyword)
   }, [])
 }
 

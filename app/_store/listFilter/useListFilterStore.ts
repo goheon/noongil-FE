@@ -12,6 +12,7 @@ interface IListFilter {
   regions: string[]
   isSeoulChecked: boolean
   isGyeonggiChecked: boolean
+  keyword: string
   setFilter: (filter: TFilter) => void
   setOpen: (isOpen: boolean) => void
   setOrder: (order: TOrder) => void
@@ -21,6 +22,7 @@ interface IListFilter {
   setRegion: (region: string) => void
   setSeoulCheck: (checked: boolean) => void
   setGyenggiCheck: (checked: boolean) => void
+  setKeyword: (keyword: string) => void
   reset: () => void
 }
 
@@ -34,6 +36,7 @@ export const useListFilterStore = create<IListFilter>((set) => ({
   regions: [],
   isSeoulChecked: false,
   isGyeonggiChecked: false,
+  keyword: '',
   setOpen: (isOpen: boolean) => set({ isOpen: isOpen }),
   setFilter: (filter: TFilter) => set({ filter: filter }),
   setOrder: (order) => set({ order: order }),
@@ -53,6 +56,7 @@ export const useListFilterStore = create<IListFilter>((set) => ({
     })),
   setSeoulCheck: (checked: boolean) => set({ isSeoulChecked: checked }),
   setGyenggiCheck: (checked: boolean) => set({ isGyeonggiChecked: checked }),
+  setKeyword: (keyword: string) => set({ keyword: keyword }),
   reset: () =>
     set({
       order: null,

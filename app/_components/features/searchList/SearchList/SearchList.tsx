@@ -2,10 +2,9 @@
 
 import styles from './SearchList.module.scss'
 import classNames from 'classnames/bind'
-import useSearchList from './useSearchList'
+import useSearchList from '../useSearchList'
 import SearchListItem from './SearchListItem'
 import SearchListHeader from '../SearchListHeader/SearchListHeader'
-import { useSearchParams } from 'next/navigation'
 import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
 import { TEventCodeName } from '@/app/_types'
 import Skeleton from 'react-loading-skeleton'
@@ -21,30 +20,12 @@ interface SearchListProps {
 
 const SearchList = (props: SearchListProps) => {
   const { eventCode } = props
-
-  const searchParams = useSearchParams()
-
-  useSyncStoreWithURL(searchParams)
-
-  const categories = searchParams.get('categories') ?? ''
-  const startDate = searchParams.get('startDate') ?? ''
-  const endDate = searchParams.get('endDate') ?? ''
-  const regions = searchParams.get('regions') ?? ''
-  const sortType = searchParams.get('sortType') ?? ''
-
   const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
 
-  const keyword = ''
+  useSyncStoreWithURL()
 
-  const { list, isFetching, isFetchingNextPage } = useSearchList({
-    eventCode: currentEventCode,
-    categories,
-    keyword,
-    sortType,
-    operStatDt: startDate,
-    operEndDt: endDate,
-    regionGroups: regions,
-  })
+  const { list, isFetching, isFetchingNextPage } =
+    useSearchList(currentEventCode)
 
   return (
     <div className={cx('container')}>
