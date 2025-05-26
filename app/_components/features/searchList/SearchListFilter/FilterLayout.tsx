@@ -7,10 +7,10 @@ import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 import Image from 'next/image'
 import { ICON } from '@/public'
 import { getDateLabel } from '@/app/_utils/date'
-import { usePathname, useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 import { ALL_CATEGORY_LABELS } from '@/app/_constants/event'
 import { SEOUL_REGIONS } from '@/app/_constants/region'
+import useApplySearchParams from '../useApplySearchParams'
 
 const cx = classNames.bind(styles)
 
@@ -20,9 +20,6 @@ interface FilterLayoutProps {
 
 const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
   const { children, isExhibitionPage } = props
-
-  const router = useRouter()
-  const pathname = usePathname()
 
   const {
     filter,
@@ -38,6 +35,8 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
     setRegion,
   } = useListFilterStore()
 
+  const { applyParams } = useApplySearchParams()
+
   const dateLabel = useMemo(() => {
     return startDate && endDate ? getDateLabel(startDate, endDate) : null
   }, [startDate, endDate])
@@ -48,23 +47,13 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
   }
 
   const applyFilter = useCallback(() => {
-    const newParams = new URLSearchParams(window.location.search)
-
-    const updateParam = (key: string, value?: string | null) => {
-      if (value) {
-        newParams.set(key, value)
-      } else {
-        newParams.delete(key)
-      }
-    }
-
-    updateParam('categories', category.length ? category.join(',') : null)
-    updateParam('startDate', startDate ? format(startDate, 'yyyyMMdd') : null)
-    updateParam('endDate', endDate ? format(endDate, 'yyyyMMdd') : null)
-    updateParam('regions', regions.length ? regions.join(',') : null)
-
-    router.push(`${pathname}?${newParams.toString()}`)
-  }, [category, startDate, endDate, pathname, router, regions])
+    applyParams({
+      categories: category.length ? category.join(',') : null,
+      startDate: startDate ? format(startDate, 'yyyyMMdd') : null,
+      endDate: endDate ? format(endDate, 'yyyyMMdd') : null,
+      regions: regions.length ? regions.join(',') : null,
+    })
+  }, [category, startDate, endDate, regions])
 
   return (
     <div className={cx('container')}>

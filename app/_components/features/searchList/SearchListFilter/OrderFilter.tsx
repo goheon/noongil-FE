@@ -1,8 +1,8 @@
 import styles from './OrderFilter.module.scss'
 import classNames from 'classnames/bind'
 import { TOrder } from '../type'
-import { useRouter, usePathname } from 'next/navigation'
 import { useCallback } from 'react'
+import useApplySearchParams from '../useApplySearchParams'
 
 const cx = classNames.bind(styles)
 
@@ -21,17 +21,14 @@ const ORDER_FILER_VALUE_MAP: Record<TOrder, string> = {
 }
 
 const OrderFilter = () => {
-  const router = useRouter()
-  const pathname = usePathname()
+  const { applyParams } = useApplySearchParams()
 
   const applyFilter = useCallback((value: TOrder) => {
-    const searchParams = new URLSearchParams(window.location.search)
-
     const orderValue = ORDER_FILER_VALUE_MAP[value]
 
-    searchParams.set('sortType', orderValue)
-
-    router.push(`${pathname}?${searchParams.toString()}`)
+    applyParams({
+      sortType: orderValue,
+    })
   }, [])
 
   return (
