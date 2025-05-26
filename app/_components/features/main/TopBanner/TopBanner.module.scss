@@ -9,6 +9,9 @@
     width: 100%;
 
     .slide-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       box-sizing: border-box;
       width: 382px;
       height: 429px;

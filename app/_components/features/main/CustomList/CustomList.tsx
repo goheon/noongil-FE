@@ -17,18 +17,19 @@ const CustomList = () => {
       <div className={cx('top-section')}>
         <div className={cx('title')}>당신에게 딱 맞는 팝업</div>
       </div>
-
-      <div className={cx('info-section')}>
-        <div className={cx('headline')}>로그인이 필요해요</div>
-        <div className={cx('subline')}>
-          당신에게 딱 맞는 팝업이 기다리고 있어요
+      <div className={cx('info-section-container')}>
+        <div className={cx('info-section')}>
+          <div className={cx('headline')}>로그인이 필요해요</div>
+          <div className={cx('subline')}>
+            당신에게 딱 맞는 팝업이 기다리고 있어요
+          </div>
+          <Chip
+            className={cx('login-chip')}
+            onClick={() => router.push('/login')}
+          >
+            로그인
+          </Chip>
         </div>
-        <Chip
-          className={cx('login-chip')}
-          onClick={() => router.push('/login')}
-        >
-          로그인
-        </Chip>
       </div>
     </div>
   )

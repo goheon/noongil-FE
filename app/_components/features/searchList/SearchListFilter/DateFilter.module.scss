@@ -49,7 +49,7 @@
   // 캘린더 팝업 스타일 변경
   .custom-calendar {
     background-color: #ffffff;
-    width: 430px;
+    width: 940px;
     height: 569px;
 
     .custom-header {
@@ -116,7 +116,7 @@
       :global(.react-datepicker__header) {
         color: white !important;
         background-color: black;
-        width: 430px;
+        width: 940px;
         border: none;
       }
 
@@ -142,7 +142,7 @@
   :global(.react-datepicker__header) {
     color: #000000;
     background-color: #ffffff;
-    width: 430px;
+    width: 940px;
     border: none;
   }
 
