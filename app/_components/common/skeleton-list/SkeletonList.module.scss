@@ -1,0 +1,51 @@
+.list {
+  width: 100%;
+
+  &--carousel {
+    display: flex;
+    gap: 30px;
+    overflow-x: hidden;
+    padding-left: 30px;
+  }
+
+  &--board {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    overflow-y: scroll;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .card {
+    box-sizing: border-box;
+
+    &--column {
+      box-sizing: border-box;
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      &--board {
+        width: 215px;
+        padding-bottom: 20px;
+      }
+    }
+
+    &--row {
+      width: 320px;
+      display: flex;
+      gap: 10px;
+
+      .infos {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  }
+}
