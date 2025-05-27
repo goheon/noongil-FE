@@ -40,10 +40,8 @@ const useSearchList = (eventCode: TAllEventCode) => {
         }),
       initialPageParam: 0,
       getNextPageParam: (lastPage, pages) => {
-        const totalPages = lastPage.total
-        const nextPage = pages.length + 1
-
-        return nextPage <= totalPages ? nextPage : undefined
+        const nextPage = pages.length
+        return nextPage < lastPage.totalPageCount ? nextPage : undefined
       },
     })
 

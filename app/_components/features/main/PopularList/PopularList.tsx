@@ -18,7 +18,7 @@ import { useMemo } from 'react'
 import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
 
 import PopularListItem from './PopularListItem'
-import SkeletonList from './SkeletonList'
+import SkeletonList from '@/app/_components/common/skeleton-list/SkeletonList'
 
 const cx = classNames.bind(styles)
 
@@ -55,7 +55,7 @@ const PopularList = (props: PopularListProps) => {
       </div>
 
       {isLoading ? (
-        <SkeletonList />
+        <SkeletonList listType="carousel" cardType="column" length={3} />
       ) : (
         <Swiper
           slidesPerView={'auto'}
