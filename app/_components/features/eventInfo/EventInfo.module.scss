@@ -48,7 +48,10 @@
 
         .like {
           box-sizing: border-box;
-          padding-top: 10px;
+
+          &--exhibition {
+            padding-top: 10px;
+          }
         }
       }
     }

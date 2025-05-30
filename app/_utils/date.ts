@@ -1,4 +1,11 @@
-import { isSameDay, addDays, startOfWeek, format } from 'date-fns'
+import {
+  isSameDay,
+  addDays,
+  startOfWeek,
+  format,
+  parse,
+  isBefore,
+} from 'date-fns'
 
 export const formatDate = (date: Date) => {
   return format(date, 'MM.dd')
@@ -44,4 +51,20 @@ export const getDateLabel = (startDate: Date, endDate: Date): string => {
   if (isAfterAWeek(startDate, endDate)) return '7일 후'
 
   return `${formatDate(startDate)} ~ ${formatDate(endDate)}`
+}
+
+// 오늘을 기준으로 날짜가 지났는지 확인
+export const isPastDate = (dateString: string) => {
+  const year = dateString.slice(0, 4)
+  const month = dateString.slice(4, 6)
+  const day = dateString.slice(6, 8)
+
+  // 'YYMMDD' 형식에서 'YYYY-MM-DD' 형식으로 변환
+  const date = parse(`${year}-${month}-${day}`, 'yyyy-MM-dd', new Date())
+
+  // 오늘 날짜와 비교
+  const today = new Date()
+  today.setHours(0, 0, 0, 0) // 오늘 자정으로 시간 초기화
+
+  return isBefore(date, today) // date가 today보다 이전인지 확인
 }

@@ -4,10 +4,12 @@ import useEventInfo from './useEventInfo'
 import Image from 'next/image'
 import SampleImage from '@/public/free-img.jpg'
 import { ICON } from '@/public'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { formatDateRange } from '@/app/_utils/textFormatter'
 import usePopularList from '../main/PopularList/usePopularList'
 import SuggestionList from './SuggestionList'
+import { isPastDate } from '@/app/_utils/date'
+import useBookmarkItem from '../searchList/SearchList/useBookmarkItem'
 
 const cx = classNames.bind(styles)
 
@@ -28,6 +30,8 @@ interface EventInfoProps {
 
 const EventInfo = (props: EventInfoProps) => {
   const { id } = props
+
+  const { onBookmark } = useBookmarkItem()
 
   const { isLoading, eventDetail, nearEvents } = useEventInfo(id)
 
@@ -50,7 +54,22 @@ const EventInfo = (props: EventInfoProps) => {
     [eventDetail],
   )
 
+  const isPast = useMemo(() => {
+    return eventDetail?.operEndDt && isPastDate(eventDetail.operEndDt)
+  }, [eventDetail])
+
   const { popularList } = usePopularList(isExhibition ? '20' : '10')
+
+  const handleLike = useCallback(() => {
+    if (!eventDetail) {
+      return
+    }
+
+    onBookmark({
+      eventId: eventDetail.eventId,
+      likeYn: eventDetail.likeYn === 'Y' ? 'N' : 'Y',
+    })
+  }, [eventDetail])
 
   return (
     <div className={cx('container')}>
@@ -64,7 +83,7 @@ const EventInfo = (props: EventInfoProps) => {
       </div>
 
       <div className={cx('info-box')}>
-        <div className={cx('progress')}>진행중</div>
+        <div className={cx('progress')}>{isPast ? '마감' : '진행 중'}</div>
         <div className={cx('info-top')}>
           <div className={cx('title')}>{eventDetail?.eventNm}</div>
           <div className={cx('option-box')}>
@@ -77,7 +96,10 @@ const EventInfo = (props: EventInfoProps) => {
                 height={20}
               />
             </div>
-            <div className={cx('like')}>
+            <div
+              className={cx('like', { 'like--exhibition': isExhibition })}
+              onClick={handleLike}
+            >
               <Image src={heartIcon} alt="icon" width={30} height={30} />
             </div>
           </div>
