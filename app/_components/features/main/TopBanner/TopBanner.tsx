@@ -18,6 +18,10 @@ import 'swiper/css'
 
 import Skeleton from 'react-loading-skeleton'
 
+import Link from 'next/link'
+import { getEventDetailUrl } from '@/app/_utils/navigation'
+import { useMemo } from 'react'
+
 const cx = classNames.bind(styles)
 
 interface TopBannerProps {
@@ -43,13 +47,15 @@ const TopBanner = (props: TopBannerProps) => {
           {data.map((item: IListItem) => {
             return (
               <SwiperSlide className={cx('slide-item')} key={item.eventId}>
-                <Image
-                  className={cx('banner-img')}
-                  src={item.imageUrl ?? SampleImg}
-                  alt="top-banner"
-                  width={382}
-                  height={429}
-                />
+                <Link href={getEventDetailUrl(item.eventTypeCd, item.eventId)}>
+                  <Image
+                    className={cx('banner-img')}
+                    src={item.imageUrl ?? SampleImg}
+                    alt="top-banner"
+                    width={382}
+                    height={429}
+                  />
+                </Link>
               </SwiperSlide>
             )
           })}
