@@ -1,0 +1,41 @@
+.list {
+  width: 100%;
+
+  .list-item-wrapper {
+    box-sizing: border-box;
+    width: 160px;
+    margin-right: 25px;
+
+    .list-item {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 33px;
+
+      .info-box {
+        display: flex;
+        gap: 10px;
+
+        .image {
+          border-radius: 5px;
+        }
+
+        .info {
+          display: flex;
+          flex-direction: column;
+          font-weight: 400;
+
+          .title {
+            font-size: 15px;
+            color: black;
+          }
+
+          .event-date {
+            font-size: 11px;
+            color: #9c9c9c;
+          }
+        }
+      }
+    }
+  }
+}
