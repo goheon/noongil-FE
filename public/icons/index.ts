@@ -41,6 +41,10 @@ const ICON = {
   filter: '/icons/filter-icon_map.svg',
   check_mark: '/icons/check-mark.svg',
   check_mark_active: '/icons/check-mark-active.svg',
+  clock: '/icons/clock.svg',
+  location: '/icons/location.svg',
+  share: '/icons/share.svg',
+  website: '/icons/website.svg',
 }
 
 export { ICON }
