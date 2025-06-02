@@ -111,6 +111,12 @@
         white-space: break-spaces;
       }
     }
+
+    .img-container {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
   }
 
   .suggestion-box {
@@ -119,16 +125,5 @@
     display: flex;
     flex-direction: column;
     gap: 85px;
-
-    .suggestion {
-      display: flex;
-      flex-direction: column;
-      gap: 33px;
-
-      .suggestion-title {
-        font-size: 20px;
-        font-weight: 400;
-      }
-    }
   }
 }
