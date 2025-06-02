@@ -18,42 +18,61 @@ const cx = classNames.bind(styles)
 interface SuggestionListProps {
   list: IListItem[]
   rank?: boolean
+  title: string
 }
 
 const SuggestionList = (props: SuggestionListProps) => {
-  const { list, rank = false } = props
+  const { list, rank = false, title } = props
 
   return (
-    <Swiper
-      className={cx('list')}
-      slidesPerView={'auto'}
-      modules={[Pagination]}
-    >
-      {list &&
-        list.map((item, idx) => (
-          <SwiperSlide className={cx('list-item-wrapper')} key={item.eventId}>
-            <div className={cx('list-item')}>
-              <Image
-                className={cx('image')}
-                src={item.imageUrl || SampleImage}
-                width={160}
-                height={180}
-                alt="img"
-              />
-              <div className={cx('info-box')}>
-                {rank && <div className={cx('rank')}>{idx + 1}</div>}
+    <div className={cx('container')}>
+      <div className={cx('title')}>{title}</div>
 
-                <div className={cx('info')}>
-                  <div className={cx('title')}>{item.eventNm}</div>
-                  <div className={cx('event-date')}>
-                    {formatDateRange(item.operStatDt, item.operEndDt)}
+      <Swiper
+        className={cx('list')}
+        slidesPerView={'auto'}
+        modules={[Pagination]}
+      >
+        {list &&
+          list.map((item, idx) => (
+            <SwiperSlide className={cx('list-item-wrapper')} key={item.eventId}>
+              <div className={cx('list-item')}>
+                <Image
+                  className={cx('image')}
+                  src={item.imageUrl || SampleImage}
+                  width={160}
+                  height={180}
+                  alt="img"
+                />
+                <div className={cx('info-box')}>
+                  {rank && (
+                    <div
+                      className={cx('rank', {
+                        'rank--exhibition': item.eventTypeCd === '20',
+                      })}
+                    >
+                      {idx + 1}
+                    </div>
+                  )}
+
+                  <div className={cx('info')}>
+                    <div
+                      className={cx('title', {
+                        'title--exhibition': item.eventTypeCd === '20',
+                      })}
+                    >
+                      {item.eventNm}
+                    </div>
+                    <div className={cx('event-date')}>
+                      {formatDateRange(item.operStatDt, item.operEndDt)}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
-    </Swiper>
+            </SwiperSlide>
+          ))}
+      </Swiper>
+    </div>
   )
 }
 

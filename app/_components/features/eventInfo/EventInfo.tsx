@@ -75,7 +75,7 @@ const EventInfo = (props: EventInfoProps) => {
     <div className={cx('container')}>
       <div className={cx('img-wrapper')}>
         <Image
-          src={eventDetail?.imageUrl || SampleImage}
+          src={eventDetail?.smallImageUrl || SampleImage}
           width={430}
           height={567}
           alt="img"
@@ -160,16 +160,29 @@ const EventInfo = (props: EventInfoProps) => {
           <div className={cx('intro-detail')}>{eventDetail?.eventCntn}</div>
         </div>
 
-        <div className={cx('img-container')}></div>
+        <ul className={cx('img-container')}>
+          {eventDetail &&
+            eventDetail.imageUrls &&
+            eventDetail.imageUrls.map((item) => (
+              <li key={item}>
+                <Image src={item} alt="content-img" width={369} height={277} />
+              </li>
+            ))}
+        </ul>
       </div>
 
       <div className={cx('suggestion-box')}>
-        <SuggestionList list={popularList} rank={true} />
+        <SuggestionList
+          title={`${eventDetail?.eventTypeCd === '10' ? '팝업' : '전시'} Best`}
+          list={popularList}
+          rank={true}
+        />
 
         {nearEvents && nearEvents.length > 0 && (
-          <div className={cx('suggestion')}>
-            <div className={cx('suggestion-title')}>이벤트 BEST</div>
-          </div>
+          <SuggestionList
+            title={`근처 ${eventDetail?.eventTypeCd === '10' ? '팝업' : '전시'} 추천`}
+            list={nearEvents}
+          />
         )}
       </div>
     </div>
