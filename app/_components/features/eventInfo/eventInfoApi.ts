@@ -1,9 +1,9 @@
 import { axiosApi } from '@/app/_lib'
 import { IListItem } from '../main/type'
-import { ISearchListItem } from '../searchList/type'
+import { IEventInfo } from './type'
 
 interface IEevntInfoResponse {
-  eventDetails: ISearchListItem
+  eventDetails: IEventInfo
   nearEvents: IListItem[]
 }
 
