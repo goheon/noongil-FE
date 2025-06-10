@@ -3,7 +3,11 @@
 import { useState, useEffect, useCallback } from 'react'
 
 import { useVhUnit, config } from '@/app/_lib'
-import { useNaverMapSDK, useMapInitializer, useMarkerManager } from '@/app/_utils/MapHooks'
+import {
+  useNaverMapSDK,
+  useMapInitializer,
+  useMarkerManager,
+} from '@/app/_utils/MapHooks'
 import { useMapStore } from '@/app/_store/map/useMapStore'
 
 import styles from './MapBox.module.scss'
@@ -18,16 +22,12 @@ export const MapBox: React.FC = () => {
   const map = useNaverMapSDK({
     clientId: process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || '',
     mapContainerId: 'map',
-    center: { lat: 37.5665, lng: 126.9780 },
+    center: { lat: 37.5665, lng: 126.978 },
     zoom: 15,
     background: '#f8f9fa',
   })
 
-  const {
-    addMarker,
-    markers,
-    updateMarkerLabels,
-  } = useMarkerManager({ map })
+  const { addMarker, markers, updateMarkerLabels } = useMarkerManager({ map })
 
   // 지도 인스턴스를 전역 상태에 저장
   useEffect(() => {
@@ -38,11 +38,15 @@ export const MapBox: React.FC = () => {
   useEffect(() => {
     if (!map) return
 
-    const zoomListener = naver.maps.Event.addListener(map, 'zoom_changed', () => {
-      const currentZoom = map.getZoom()
-      console.log('현재 줌 레벨:', currentZoom)
-      updateMarkerLabels(currentZoom)
-    })
+    const zoomListener = naver.maps.Event.addListener(
+      map,
+      'zoom_changed',
+      () => {
+        const currentZoom = map.getZoom()
+        console.log('현재 줌 레벨:', currentZoom)
+        updateMarkerLabels(currentZoom)
+      },
+    )
 
     return () => {
       naver.maps.Event.removeListener(zoomListener)
@@ -130,7 +134,9 @@ export const MapBox: React.FC = () => {
           getCurrentLocation={async () => {
             return new Promise((resolve, reject) => {
               if (!navigator.geolocation) {
-                return reject(new Error('Geolocation is not supported by this browser.'))
+                return reject(
+                  new Error('Geolocation is not supported by this browser.'),
+                )
               }
 
               navigator.geolocation.getCurrentPosition(
