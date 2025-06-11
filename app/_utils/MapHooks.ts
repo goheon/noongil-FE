@@ -72,10 +72,6 @@ interface MarkerWithLabel extends naver.maps.Marker {
 }
 
 // ===== Constants =====
-const LABEL_OFFSET = {
-  NORMAL: 0.00015, // 기본 줌 레벨에서의 오프셋
-  HIGH_ZOOM: 0.00008, // 높은 줌 레벨에서의 오프셋
-}
 const MIN_ZOOM_FOR_LABELS = 15
 const HIGH_ZOOM_LEVEL = 18
 
@@ -349,10 +345,6 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
       if (!map) return
 
       const shouldShowLabel = zoomLevel >= MIN_ZOOM_FOR_LABELS
-      const offset =
-        zoomLevel >= HIGH_ZOOM_LEVEL
-          ? LABEL_OFFSET.HIGH_ZOOM
-          : LABEL_OFFSET.NORMAL
 
       setMarkers((prev) => {
         // 변경이 필요한 경우에만 업데이트
@@ -371,10 +363,7 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
             // 라벨 마커가 없는 경우 새로 생성
             if (!marker.labelMarker) {
               const labelMarker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(
-                  position.y + offset,
-                  position.x,
-                ),
+                position: new naver.maps.LatLng(position.y, position.x),
                 map: shouldShowLabel ? map : undefined,
                 icon: {
                   content: LABEL_STYLE.content(
@@ -442,7 +431,7 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
         // 라벨 마커 생성
         const labelMarker = new naver.maps.Marker({
           position: new naver.maps.LatLng(
-            marker.position.lat + LABEL_OFFSET.NORMAL,
+            marker.position.lat,
             marker.position.lng,
           ),
           map: currentZoom >= MIN_ZOOM_FOR_LABELS ? map : undefined,
@@ -556,7 +545,7 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
           // 라벨 마커 생성
           const labelMarker = new naver.maps.Marker({
             position: new naver.maps.LatLng(
-              marker.position.lat + LABEL_OFFSET.NORMAL,
+              marker.position.lat,
               marker.position.lng,
             ),
             map: currentZoom >= MIN_ZOOM_FOR_LABELS ? map : undefined,
