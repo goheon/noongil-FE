@@ -32,3 +32,22 @@ export interface ISearchEventParms {
   categories?: string
   regionGroups?: string
 }
+
+export interface IGeoData {
+  rgntCd: string
+  regionName: string
+  rgntTypeCd: string
+  cnt: number
+  lcdcNm: string
+}
+
+export type RegionGroupCode = '10' | '20'
+
+export type GeoFilterType = {
+  [key in RegionGroupCode]: IGeoData[]
+}
+
+export const regionGroupMap: Record<RegionGroupCode, string> = {
+  '10': '서울',
+  '20': '경기도',
+}

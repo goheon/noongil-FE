@@ -9,8 +9,8 @@ import { ICON } from '@/public'
 import { getDateLabel } from '@/app/_utils/date'
 import { format } from 'date-fns'
 import { ALL_CATEGORY_LABELS } from '@/app/_constants/event'
-import { SEOUL_REGIONS } from '@/app/_constants/region'
 import useApplySearchParams from '../useApplySearchParams'
+import useSetGeoFilterOption from '../useSetGeoFilterOption'
 
 const cx = classNames.bind(styles)
 
@@ -51,9 +51,11 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
       categories: category.length ? category.join(',') : null,
       startDate: startDate ? format(startDate, 'yyyyMMdd') : null,
       endDate: endDate ? format(endDate, 'yyyyMMdd') : null,
-      regions: regions.length ? regions.join(',') : null,
+      regions: regions.length ? regions.map((r) => r.rgntCd).join(',') : null,
     })
   }, [category, startDate, endDate, regions])
+
+  useSetGeoFilterOption()
 
   return (
     <div className={cx('container')}>
@@ -118,8 +120,8 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
 
           {regions &&
             regions.map((regionValue) => (
-              <div className={cx('filter-list-item')} key={regionValue}>
-                <div>{SEOUL_REGIONS[regionValue].regionName}</div>
+              <div className={cx('filter-list-item')} key={regionValue.rgntCd}>
+                <div>{regionValue.regionName}</div>
                 <div onClick={() => setRegion(regionValue)}>
                   <Image src={ICON.x_icon} alt="close" width={18} height={18} />
                 </div>

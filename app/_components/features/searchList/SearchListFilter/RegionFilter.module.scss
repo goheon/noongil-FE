@@ -17,5 +17,11 @@
     gap: 14px;
     overflow-y: scroll;
     padding: 50px 27px;
+
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
   }
 }

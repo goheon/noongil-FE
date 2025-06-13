@@ -4,17 +4,21 @@ import { TOrder } from './type'
 import { TEventCategory } from '@/app/_types'
 import { useEffect } from 'react'
 import { parseISO, isValid } from 'date-fns'
+import { IGeoData } from './type'
 
 export const useSyncStoreWithURL = () => {
   const searchParams = useSearchParams()
 
   const {
+    regionFilter,
     setCategory,
     setOrder,
     setStartDate,
     setEndDate,
     setRegion,
     setKeyword,
+    setSeoulCheck,
+    setGyenggiCheck,
   } = useListFilterStore()
 
   useEffect(() => {
@@ -27,8 +31,23 @@ export const useSyncStoreWithURL = () => {
 
     // 지역
     const regionsStr = searchParams.get('regions') ?? ''
-    const regions = regionsStr ? regionsStr.split(',') : []
-    regions.forEach((region) => setRegion(region))
+    const regionCodes = regionsStr ? regionsStr.split(',') : []
+
+    if (regionFilter) {
+      const allRegions = Object.values(regionFilter).flat()
+
+      const selectedRegions = regionCodes
+        .map((code) => allRegions.find((region) => region.rgntCd === code))
+        .filter(Boolean) as IGeoData[]
+
+      selectedRegions.forEach(setRegion)
+
+      const hasSeoul = selectedRegions.some((r) => r.rgntTypeCd === '10')
+      const hasGyeonggi = selectedRegions.some((r) => r.rgntTypeCd === '20')
+
+      setSeoulCheck(hasSeoul)
+      setGyenggiCheck(hasGyeonggi)
+    }
 
     // 정렬
     const order = searchParams.get('order') as TOrder
@@ -60,7 +79,7 @@ export const useSyncStoreWithURL = () => {
     // 검색어
     const keyword = searchParams.get('keyword') ?? ''
     setKeyword(keyword)
-  }, [])
+  }, [regionFilter])
 }
 
 export default useSyncStoreWithURL

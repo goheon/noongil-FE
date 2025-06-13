@@ -1,6 +1,10 @@
 import { create } from 'zustand'
 import { TFilter, TOrder } from '@/app/_components/features/searchList/type'
 import { TEventCategory } from '@/app/_types'
+import {
+  GeoFilterType,
+  IGeoData,
+} from '@/app/_components/features/searchList/type'
 
 interface IListFilter {
   isOpen: boolean
@@ -9,7 +13,8 @@ interface IListFilter {
   category: TEventCategory[]
   startDate: Date | null
   endDate: Date | null
-  regions: string[]
+  regionFilter: GeoFilterType | null
+  regions: IGeoData[]
   isSeoulChecked: boolean
   isGyeonggiChecked: boolean
   keyword: string
@@ -19,7 +24,8 @@ interface IListFilter {
   setCategory: (catergory: TEventCategory) => void
   setStartDate: (date: Date | null) => void
   setEndDate: (date: Date | null) => void
-  setRegion: (region: string) => void
+  setRegionFilter: (filter: GeoFilterType) => void
+  setRegion: (region: IGeoData) => void
   setSeoulCheck: (checked: boolean) => void
   setGyenggiCheck: (checked: boolean) => void
   setKeyword: (keyword: string) => void
@@ -33,6 +39,7 @@ export const useListFilterStore = create<IListFilter>((set) => ({
   category: [],
   startDate: null,
   endDate: null,
+  regionFilter: null,
   regions: [],
   isSeoulChecked: false,
   isGyeonggiChecked: false,
@@ -48,12 +55,16 @@ export const useListFilterStore = create<IListFilter>((set) => ({
     })),
   setStartDate: (date: Date | null) => set({ startDate: date }),
   setEndDate: (date: Date | null) => set({ endDate: date }),
-  setRegion: (region: string) =>
-    set((state) => ({
-      regions: state.regions.includes(region)
-        ? state.regions.filter((r) => r !== region)
-        : [...state.regions, region],
-    })),
+  setRegionFilter: (filter: GeoFilterType) => set({ regionFilter: filter }),
+  setRegion: (region: IGeoData) =>
+    set((state) => {
+      const exists = state.regions.some((r) => r.rgntCd === region.rgntCd)
+      return {
+        regions: exists
+          ? state.regions.filter((r) => r.rgntCd !== region.rgntCd)
+          : [...state.regions, region],
+      }
+    }),
   setSeoulCheck: (checked: boolean) => set({ isSeoulChecked: checked }),
   setGyenggiCheck: (checked: boolean) => set({ isGyeonggiChecked: checked }),
   setKeyword: (keyword: string) => set({ keyword: keyword }),
