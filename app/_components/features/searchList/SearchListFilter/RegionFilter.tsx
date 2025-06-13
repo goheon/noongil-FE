@@ -3,7 +3,8 @@ import classNames from 'classnames/bind'
 import FilterLayout from './FilterLayout'
 import { Checkbox } from '@/app/_components/ui'
 import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
-import { SEOUL_REGION_LIST } from '@/app/_constants/region'
+import { useMemo } from 'react'
+import { regionGroupMap, RegionGroupCode } from '../type'
 
 const cx = classNames.bind(styles)
 
@@ -21,45 +22,77 @@ const RegionFilter = (props: RegionFilterProps) => {
     setGyenggiCheck,
     regions,
     setRegion,
+    regionFilter,
   } = useListFilterStore()
+
+  const regionGroupKeys = useMemo(
+    () =>
+      regionFilter ? (Object.keys(regionFilter) as RegionGroupCode[]) : [],
+    [regionFilter],
+  )
 
   return (
     <FilterLayout isExhibitionPage={isExhibitionPage}>
       <div className={cx('container')}>
         <div className={cx('section')}>
-          <Checkbox
-            value={'seoul'}
-            label="서울"
-            onChange={() => setSeoulCheck(!isSeoulChecked)}
-            checked={isSeoulChecked}
-            isExhibitionPage={isExhibitionPage}
-          />
-          <Checkbox
-            value={'gyeonggi'}
-            label="경기"
-            onChange={() => setGyenggiCheck(!isGyeonggiChecked)}
-            checked={isGyeonggiChecked}
-            isExhibitionPage={isExhibitionPage}
-          />
+          {regionGroupKeys.map((groupCode) => {
+            const checked =
+              groupCode === '10'
+                ? isSeoulChecked
+                : groupCode === '20'
+                  ? isGyeonggiChecked
+                  : false
+
+            const setChecked =
+              groupCode === '10'
+                ? setSeoulCheck
+                : groupCode === '20'
+                  ? setGyenggiCheck
+                  : () => {}
+
+            return (
+              <Checkbox
+                key={groupCode}
+                value={groupCode}
+                label={regionGroupMap[groupCode] ?? groupCode}
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+                isExhibitionPage={isExhibitionPage}
+              />
+            )
+          })}
         </div>
 
         <div className={cx('divider')} />
 
         <div className={cx('section')}>
-          {isSeoulChecked && (
-            <>
-              {SEOUL_REGION_LIST.map((regionData) => (
-                <Checkbox
-                  key={regionData.rgntCd}
-                  value={regionData.rgntCd}
-                  label={regionData.regionName}
-                  isExhibitionPage={isExhibitionPage}
-                  onChange={() => setRegion(regionData.rgntCd)}
-                  checked={regions.includes(regionData.rgntCd)}
-                />
-              ))}
-            </>
-          )}
+          {regionGroupKeys.map((groupCode) => {
+            const isChecked =
+              groupCode === '10'
+                ? isSeoulChecked
+                : groupCode === '20'
+                  ? isGyeonggiChecked
+                  : false
+
+            if (!isChecked) return null
+
+            const regionList = regionFilter?.[groupCode] ?? []
+
+            return (
+              <div key={groupCode} className={cx('item-list')}>
+                {regionList.map((geoData) => (
+                  <Checkbox
+                    key={geoData.rgntCd}
+                    value={geoData.rgntCd}
+                    label={geoData.regionName}
+                    checked={regions.some((r) => r.rgntCd === geoData.rgntCd)}
+                    onChange={() => setRegion(geoData)}
+                    isExhibitionPage={isExhibitionPage}
+                  />
+                ))}
+              </div>
+            )
+          })}
         </div>
       </div>
     </FilterLayout>
