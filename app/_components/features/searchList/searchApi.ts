@@ -1,5 +1,5 @@
 import { axiosApi } from '@/app/_lib/axios'
-import { ISearchEventParms } from './type'
+import { ISearchEventParms, GeoFilterType } from './type'
 
 export const bookmarkEventItem = async ({
   eventId,
@@ -59,6 +59,17 @@ export const getSearchEventList = async ({
     return response.data
   } catch (err) {
     console.log('err :', err)
+    throw err
+  }
+}
+
+export const getGeoOptions = async (): Promise<GeoFilterType> => {
+  try {
+    const response = await axiosApi.get('main-events/list/geoData')
+
+    return response.data
+  } catch (err) {
+    console.log('geo data option :', err)
     throw err
   }
 }
