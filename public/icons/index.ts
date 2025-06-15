@@ -40,7 +40,7 @@ const ICON = {
   checkbox_off_black: '/icons/checkbox-off-black.svg',
   delete: 'icons/delete-input.svg',
   filter: '/icons/filter-icon_map.svg',
-  refresh: '/icons/refresh-icon.svg',
+  reset: '/icons/reset-icon.png',
 }
 
 export { ICON }

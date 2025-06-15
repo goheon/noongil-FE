@@ -19,7 +19,7 @@ const MapPageHeader: React.FC<HeaderProps> = () => {
 
   useEffect(() => {
     setIsSearchOpen(false)
-    setSelectedType('ALL')
+    setSelectedType('all')
     if (inputRef.current) {
       inputRef.current.value = ''
     }

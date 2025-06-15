@@ -33,7 +33,10 @@ const CurrentButton = () => {
 
       // 캐시된 위치 정보 확인
       const now = Date.now()
-      if (locationCache.current && (now - locationCache.current.timestamp) < CACHE_DURATION) {
+      if (
+        locationCache.current &&
+        now - locationCache.current.timestamp < CACHE_DURATION
+      ) {
         // 캐시된 위치 정보 사용
         const { latitude, longitude } = locationCache.current
         moveMapCenter(map, latitude, longitude)
@@ -42,21 +45,22 @@ const CurrentButton = () => {
 
       // 새로운 위치 정보 요청
       const { latitude, longitude } = await getCurrentLocation()
-      
+
       // 위치 정보 캐싱
       locationCache.current = {
         latitude,
         longitude,
-        timestamp: now
+        timestamp: now,
       }
 
       moveMapCenter(map, latitude, longitude)
     } catch (error) {
       console.error('Failed to get current location:', error)
       showSnackbar({
-        message: '위치 정보를 가져오는데 실패했습니다.\n잠시 후 다시 시도해주세요.',
+        message:
+          '위치 정보를 가져오는데 실패했습니다.\n잠시 후 다시 시도해주세요.',
         type: 'error',
-        duration: 3000
+        duration: 3000,
       })
     } finally {
       setIsLoading(false)
@@ -72,12 +76,12 @@ const CurrentButton = () => {
           whileTap={{ scale: 0.8 }}
           disabled={isLoading}
         >
-          <Image 
-            src={ICON.target} 
-            alt="target Icon" 
-            width={30} 
+          <Image
+            src={ICON.target}
+            alt="target Icon"
+            width={30}
             height={30}
-            className={isLoading ? styles['rotating'] : ''} 
+            className={isLoading ? styles['rotating'] : ''}
           />
         </motion.button>
       )}

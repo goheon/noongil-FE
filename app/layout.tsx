@@ -1,6 +1,7 @@
-import './_styles'
-import 'react-loading-skeleton/dist/skeleton.css'
 import ClientRootLayout from './ClientRootLayout'
+
+import 'react-loading-skeleton/dist/skeleton.css'
+import '@/app/_styles'
 
 export const metadata = {
   title: {
@@ -17,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body>
+      <body className="pages">
         <ClientRootLayout>{children}</ClientRootLayout>
       </body>
     </html>
