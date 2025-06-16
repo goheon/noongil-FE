@@ -20,7 +20,7 @@ import Skeleton from 'react-loading-skeleton'
 
 import Link from 'next/link'
 import { getEventDetailUrl } from '@/app/_utils/navigation'
-import { useMemo } from 'react'
+import { formatDateRange } from '@/app/_utils/textFormatter'
 
 const cx = classNames.bind(styles)
 
@@ -48,13 +48,25 @@ const TopBanner = (props: TopBannerProps) => {
             return (
               <SwiperSlide className={cx('slide-item')} key={item.eventId}>
                 <Link href={getEventDetailUrl(item.eventTypeCd, item.eventId)}>
-                  <Image
-                    className={cx('banner-img')}
-                    src={item.imageUrl ?? SampleImg}
-                    alt="top-banner"
-                    width={382}
-                    height={429}
-                  />
+                  <div className={cx('item-wrapper')}>
+                    <Image
+                      className={cx('banner-img')}
+                      src={item.imageUrl ?? SampleImg}
+                      alt="top-banner"
+                      width={382}
+                      height={429}
+                    />
+
+                    <div className={cx('notice-box')}>
+                      <div className={cx('title')}>{item.eventNm}</div>
+                      <div className={cx('infos')}>
+                        <div className={cx('info')}>
+                          {formatDateRange(item.operStatDt, item.operEndDt)}
+                        </div>
+                        <div className={cx('info')}>서울시 강남구...</div>
+                      </div>
+                    </div>
+                  </div>
                 </Link>
               </SwiperSlide>
             )
