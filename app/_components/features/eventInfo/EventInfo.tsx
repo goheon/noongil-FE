@@ -10,6 +10,8 @@ import usePopularList from '../main/PopularList/usePopularList'
 import SuggestionList from './SuggestionList'
 import { isPastDate } from '@/app/_utils/date'
 import useBookmarkItem from '../searchList/SearchList/useBookmarkItem'
+import { useSnackbar } from '../../common/snackbar/useSnackbar'
+import Link from 'next/link'
 
 const cx = classNames.bind(styles)
 
@@ -30,6 +32,8 @@ interface EventInfoProps {
 
 const EventInfo = (props: EventInfoProps) => {
   const { id } = props
+
+  const { showSnackbar } = useSnackbar()
 
   const { onBookmark } = useBookmarkItem()
 
@@ -71,6 +75,26 @@ const EventInfo = (props: EventInfoProps) => {
     })
   }, [eventDetail])
 
+  const copyCurrentUrlToClipboard = async () => {
+    try {
+      const url = window.location.href
+      await navigator.clipboard.writeText(url)
+      showSnackbar({
+        message: '현재 주소를 클립보드에 저장하였습니다.',
+        type: 'success',
+        duration: 3000,
+      })
+    } catch (err) {
+      console.error('복사 실패:', err)
+
+      showSnackbar({
+        message: '현재 주소를 클립보드에 저장하지 못 하였습니다.',
+        type: 'error',
+        duration: 3000,
+      })
+    }
+  }
+
   return (
     <div className={cx('container')}>
       <div className={cx('img-wrapper')}>
@@ -87,7 +111,7 @@ const EventInfo = (props: EventInfoProps) => {
         <div className={cx('info-top')}>
           <div className={cx('title')}>{eventDetail?.eventNm}</div>
           <div className={cx('option-box')}>
-            <div className={cx('share')}>
+            <div className={cx('share')} onClick={copyCurrentUrlToClipboard}>
               <Image
                 className={cx('icon', { 'icon--exhibition': isExhibition })}
                 src={ICON.share}
@@ -144,7 +168,10 @@ const EventInfo = (props: EventInfoProps) => {
               height={20}
               alt="icon"
             />
-            <div className={cx('info')}>이벤트 사이트 방문하기</div>
+
+            <Link href={eventDetail?.eventDetailUrl ?? ''} target="_blank">
+              <div className={cx('info')}>이벤트 사이트 방문하기</div>
+            </Link>
           </div>
 
           <div className={cx('hastags')}>
