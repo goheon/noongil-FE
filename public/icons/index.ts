@@ -34,7 +34,7 @@ const ICON = {
   heart_black_active: '/icons/heart_black_active.svg',
   target: '/icons/target.svg',
   marker_exhibition: '/icons/exhibition-marker.png',
-  popup_exhibition: '/icons/popup-marker.png',
+  marker_popup: '/icons/popup-marker.png',
   x_icon: '/icons/x-icon.svg',
   x_icon_black: '/icons/x-icon_black.svg',
   checkbox_off_black: '/icons/checkbox-off-black.svg',

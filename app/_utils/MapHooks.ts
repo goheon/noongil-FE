@@ -1,3 +1,4 @@
+import { ICON } from '@/public'
 import {
   useLayoutEffect,
   useEffect,
@@ -93,15 +94,17 @@ const createLabelStyle = () => {
       ? new window.naver.maps.Size(100, 30)
       : { width: 100, height: 30 }
 
-  const anchor =
-    typeof window !== 'undefined' && window?.naver?.maps?.Point
-      ? new window.naver.maps.Point(50, 15)
-      : { x: 50, y: 15 }
+  const getAnchor = (text: string) => {
+    const x = text.length >= 8 ? 55 : 45
+    return typeof window !== 'undefined' && window?.naver?.maps?.Point
+      ? new window.naver.maps.Point(x, 15)
+      : { x, y: 15 }
+  }
 
   return {
     content,
     size,
-    anchor,
+    getAnchor,
   }
 }
 
@@ -328,14 +331,13 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
   // 마커 아이콘 생성
   const createMarkerIcon = useCallback((type: MarkerType) => {
     const iconUrl =
-      type === 'popup'
-        ? '/icons/popup-marker.png'
-        : '/icons/exhibition-marker.png'
+      type === 'popup' ? ICON.marker_popup : ICON.marker_exhibition
     return {
       url: iconUrl,
       size: new naver.maps.Size(48, 48),
       origin: new naver.maps.Point(0, 0),
       anchor: new naver.maps.Point(24, 48),
+      scaledSize: new naver.maps.Size(36, 36),
     }
   }, [])
 
@@ -370,7 +372,9 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
                     marker.instance.getTitle() || '',
                   ),
                   size: LABEL_STYLE.size,
-                  anchor: LABEL_STYLE.anchor,
+                  anchor: LABEL_STYLE.getAnchor(
+                    marker.instance.getTitle() || '',
+                  ),
                 },
               })
               marker.labelMarker = labelMarker
@@ -379,6 +383,11 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
                 new naver.maps.LatLng(position.y, position.x),
               )
               marker.labelMarker.setMap(shouldShowLabel ? map : null)
+              marker.labelMarker.setIcon({
+                content: LABEL_STYLE.content(marker.instance.getTitle() || ''),
+                size: LABEL_STYLE.size,
+                anchor: LABEL_STYLE.getAnchor(marker.instance.getTitle() || ''),
+              })
             }
           } catch (error) {
             console.error('Failed to update marker label:', error)
@@ -438,7 +447,7 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
           icon: {
             content: LABEL_STYLE.content(marker.title || ''),
             size: LABEL_STYLE.size,
-            anchor: LABEL_STYLE.anchor,
+            anchor: LABEL_STYLE.getAnchor(marker.title || ''),
           },
         })
 
@@ -552,7 +561,7 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
             icon: {
               content: LABEL_STYLE.content(marker.title || ''),
               size: LABEL_STYLE.size,
-              anchor: LABEL_STYLE.anchor,
+              anchor: LABEL_STYLE.getAnchor(marker.title || ''),
             },
           })
 
