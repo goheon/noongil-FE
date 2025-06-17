@@ -21,6 +21,7 @@ import Skeleton from 'react-loading-skeleton'
 import Link from 'next/link'
 import { getEventDetailUrl } from '@/app/_utils/navigation'
 import { formatDateRange } from '@/app/_utils/textFormatter'
+import { useMemo, useState } from 'react'
 
 const cx = classNames.bind(styles)
 
@@ -31,6 +32,8 @@ interface TopBannerProps {
 const TopBanner = (props: TopBannerProps) => {
   const { eventCode } = props
 
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+
   const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
 
   const { data, isLoading } = useQuery({
@@ -38,12 +41,28 @@ const TopBanner = (props: TopBannerProps) => {
     queryFn: () => getBannerEvent(currentEventCode),
   })
 
+  const currentSlideUrl = useMemo(() => {
+    if (
+      !Array.isArray(data) ||
+      currentSlideIndex < 0 ||
+      currentSlideIndex >= data.length
+    ) {
+      return ''
+    }
+
+    const current = data[currentSlideIndex]
+    return getEventDetailUrl(current.eventTypeCd, current.eventId)
+  }, [data, currentSlideIndex])
+
   return (
     <div className={cx('container')}>
       {isLoading ? (
         <Skeleton width={382} height={429} borderRadius={10} />
       ) : (
-        <Swiper className={cx('slide')}>
+        <Swiper
+          className={cx('slide')}
+          onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
+        >
           {data.map((item: IListItem) => {
             return (
               <SwiperSlide className={cx('slide-item')} key={item.eventId}>
@@ -74,9 +93,11 @@ const TopBanner = (props: TopBannerProps) => {
         </Swiper>
       )}
 
-      <Chip className={cx('banner-chip')} eventCode={eventCode}>
-        자세히 보기
-      </Chip>
+      <Link href={currentSlideUrl}>
+        <Chip className={cx('banner-chip')} eventCode={eventCode}>
+          자세히 보기
+        </Chip>
+      </Link>
     </div>
   )
 }

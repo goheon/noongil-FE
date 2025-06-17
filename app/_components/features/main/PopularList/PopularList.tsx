@@ -51,7 +51,6 @@ const PopularList = (props: PopularListProps) => {
     <div className={cx('container')}>
       <div className={cx('top-section')}>
         <div className={cx('title')}>{listTitle}</div>
-        <div className={cx('more')}>더보기</div>
       </div>
 
       {isLoading ? (
