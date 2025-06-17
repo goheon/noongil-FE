@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import classNames from 'classnames/bind'
 import { motion, useDragControls } from 'framer-motion'
+
 import styles from './BottomSheet.module.scss'
 
 export type BottomSheetType = 'filter' | 'map-list' | 'map-select'
@@ -14,6 +16,8 @@ interface BottomSheetProps {
   setIsOpen?: (open: boolean) => void
   isExhibitionPage?: boolean
 }
+
+const cx = classNames.bind(styles)
 
 const BottomSheet = ({
   type,
@@ -51,7 +55,7 @@ const BottomSheet = ({
       if (setIsOpenProp) {
         setIsOpenProp(false)
       }
-    } else {
+    } else if (dragDistance < 0) {
       setIsOpen(true)
       if (setIsOpenProp) {
         setIsOpenProp(true)
@@ -59,16 +63,21 @@ const BottomSheet = ({
     }
   }
 
-  // type에 따라 다른 클래스명을 적용하거나 추가 UI를 렌더링할 수 있음.
-  const bottomSheetClass = `${styles['bottom-sheet']} ${styles[`bottom-sheet--${type}`]} ${isExhibitionPage && styles['bottom-sheet--exhibition']}`
-
   // type에 따른 exit 위치와 드래그 범위 설정
   const getSheetConfig = () => {
+    const isShortHeightView = innerHeight < 741
+
     switch (type) {
       case 'map-list':
         return {
-          animate: { y: isOpen ? '0%' : 175 },
-          exitY: 150,
+          animate: { y: isOpen ? 0 : '63dvh' },
+          exitY: '63dvh',
+          dragConstraints: { top: 0, bottom: 0 },
+        }
+      case 'map-select':
+        return {
+          animate: { y: isOpen ? 0 : isShortHeightView ? '35dvh' : '25dvh' },
+          exitY: isShortHeightView ? '35dvh' : '25dvh',
           dragConstraints: { top: 0, bottom: 0 },
         }
       default:
@@ -83,7 +92,7 @@ const BottomSheet = ({
   const { animate, exitY, dragConstraints } = getSheetConfig()
 
   return (
-    <div className={styles['bottom-sheet-container']}>
+    <div className={cx('bottom-sheet-container')}>
       {/* <motion.button
         className={styles['open-button']}
         onClick={handleToggle}
@@ -95,12 +104,16 @@ const BottomSheet = ({
 
       <motion.div
         ref={bottomSheetRef}
-        className={bottomSheetClass}
+        className={cx(
+          'bottom-sheet',
+          `bottom-sheet--${type}`,
+          isExhibitionPage && 'bottom-sheet-exhibition',
+        )}
         initial={{ y: '100%' }}
         animate={animate}
         exit={{ y: exitY }}
         transition={{ type: 'spring', stiffness: 300, damping: 50 }}
-        drag="y"
+        // drag="y"
         dragControls={dragControls}
         dragListener={false}
         dragConstraints={dragConstraints}
@@ -108,16 +121,14 @@ const BottomSheet = ({
         onDragEnd={handleDragEnd}
       >
         <motion.div
-          className={styles['handle-bar']}
+          className={cx('handle-bar')}
           onPointerDown={(event) => dragControls.start(event)}
           style={{ touchAction: 'none' }}
         >
-          <div className={styles['handle']} />
+          <div className={cx('handle')} />
         </motion.div>
 
-        <div
-          className={`${styles['content']} ${type === 'filter' && `${styles['content--filter']}`}`}
-        >
+        <div className={cx('content', type === 'filter' && 'content--filter')}>
           {/* {type === 'filter' && (
             <div className={styles['header']}>
               <h3>필터 옵션</h3>

@@ -5,6 +5,7 @@ import { FilterButton } from '@/app/_components/features/map/filter-button/Filte
 import { CategoryFilterBox } from '@/app/_components/features/map/category-filter-box/CategoryFilterBox'
 import { FilterBox } from '@/app/_components/features/map/filter-box/FilterBox'
 import { MapListBottomSheet } from '@/app/_components/features/map/map-list-bottom-sheet/MapListBottomSheet'
+import { MapSelectBottomSheet } from '@/app/_components/features/map/map-select-bottom-sheet/MapSelectBottomSheet'
 
 const MapPage: React.FC = () => {
   return (
@@ -15,7 +16,8 @@ const MapPage: React.FC = () => {
       <CurrentButton />
       <CategoryDial />
       <FilterBox />
-      <MapListBottomSheet />
+      {/* <MapListBottomSheet /> */}
+      <MapSelectBottomSheet />
     </>
   )
 }
