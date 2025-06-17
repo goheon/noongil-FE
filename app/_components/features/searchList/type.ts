@@ -1,6 +1,8 @@
+import { TAllEventCode } from '@/app/_types'
+
 export type TFilter = 'order' | 'category' | 'date' | 'region'
 
-export type TOrder = 'popular' | 'newest' | 'ending' | 'region' | 'distance'
+export type TOrder = 'popular' | 'newest' | 'ending'
 
 export interface ISearchListItem {
   eventId: number
@@ -18,4 +20,34 @@ export interface ISearchListItem {
   viewNmvl: number
   imageUrl: string
   smallImageUrl: string
+}
+
+export interface ISearchEventParms {
+  page: number
+  eventCode: TAllEventCode
+  keyword?: string
+  sortType: string
+  operStatDt?: string
+  operEndDt?: string
+  categories?: string
+  regionGroups?: string
+}
+
+export interface IGeoData {
+  rgntCd: string
+  regionName: string
+  rgntTypeCd: string
+  cnt: number
+  lcdcNm: string
+}
+
+export type RegionGroupCode = '10' | '20'
+
+export type GeoFilterType = {
+  [key in RegionGroupCode]: IGeoData[]
+}
+
+export const regionGroupMap: Record<RegionGroupCode, string> = {
+  '10': '서울',
+  '20': '경기도',
 }

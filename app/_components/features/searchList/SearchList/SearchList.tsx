@@ -2,12 +2,15 @@
 
 import styles from './SearchList.module.scss'
 import classNames from 'classnames/bind'
-import useSearchList from './useSearchList'
+import useSearchList from '../useSearchList'
 import SearchListItem from './SearchListItem'
 import SearchListHeader from '../SearchListHeader/SearchListHeader'
-import { useSearchParams } from 'next/navigation'
 import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
 import { TEventCodeName } from '@/app/_types'
+import useSyncStoreWithURL from '../useSyncStoreWithURL'
+import { useInView } from 'react-intersection-observer'
+import { useEffect } from 'react'
+import SkeletonList from '@/app/_components/common/skeleton-list/SkeletonList'
 
 const cx = classNames.bind(styles)
 
@@ -17,16 +20,22 @@ interface SearchListProps {
 
 const SearchList = (props: SearchListProps) => {
   const { eventCode } = props
-
-  const searchParams = useSearchParams()
-
-  const categories = searchParams.get('categories')?.split(',') ?? []
-  const startDate = searchParams.get('startDate') ?? null
-  const endDate = searchParams.get('endDate') ?? null
-
   const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
 
-  const { list } = useSearchList(currentEventCode)
+  useSyncStoreWithURL()
+
+  const { list, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useSearchList(currentEventCode)
+
+  const { ref, inView } = useInView({
+    threshold: 1,
+  })
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage()
+    }
+  }, [inView, hasNextPage, fetchNextPage])
 
   return (
     <div className={cx('container')}>
@@ -38,17 +47,27 @@ const SearchList = (props: SearchListProps) => {
         <SearchListHeader eventCode={eventCode} />
       </div>
 
-      <ul className={cx('list')}>
-        {list ? (
-          list.map((data) => (
-            <li key={data.eventId}>
-              <SearchListItem data={data} eventCode={eventCode} />
-            </li>
-          ))
-        ) : (
-          <div>빈페이지입니다.</div>
-        )}
-      </ul>
+      {isFetching ? (
+        <SkeletonList listType="board" cardType="column" length={6} />
+      ) : (
+        <ul className={cx('list')}>
+          {list && list.length > 0 ? (
+            list.map((data) => (
+              <li key={data.eventId}>
+                <SearchListItem data={data} eventCode={eventCode} />
+              </li>
+            ))
+          ) : (
+            <div>빈페이지입니다.</div>
+          )}
+
+          <div ref={ref} />
+        </ul>
+      )}
+
+      {isFetchingNextPage && (
+        <SkeletonList listType="board" cardType="column" length={6} />
+      )}
     </div>
   )
 }

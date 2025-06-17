@@ -7,9 +7,10 @@ import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 import Image from 'next/image'
 import { ICON } from '@/public'
 import { getDateLabel } from '@/app/_utils/date'
-import { usePathname, useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 import { ALL_CATEGORY_LABELS } from '@/app/_constants/event'
+import useApplySearchParams from '../useApplySearchParams'
+import useSetGeoFilterOption from '../useSetGeoFilterOption'
 
 const cx = classNames.bind(styles)
 
@@ -19,9 +20,6 @@ interface FilterLayoutProps {
 
 const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
   const { children, isExhibitionPage } = props
-
-  const router = useRouter()
-  const pathname = usePathname()
 
   const {
     filter,
@@ -33,7 +31,11 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
     endDate,
     setStartDate,
     setEndDate,
+    regions,
+    setRegion,
   } = useListFilterStore()
+
+  const { applyParams } = useApplySearchParams()
 
   const dateLabel = useMemo(() => {
     return startDate && endDate ? getDateLabel(startDate, endDate) : null
@@ -45,19 +47,15 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
   }
 
   const applyFilter = useCallback(() => {
-    const newParams = new URLSearchParams()
-    if (category.length > 0) {
-      newParams.set('categories', category.join(','))
-    }
-    if (startDate) {
-      newParams.set('startDate', format(startDate, 'yyyyMMdd'))
-    }
-    if (endDate) {
-      newParams.set('endDate', format(endDate, 'yyyyMMdd'))
-    }
+    applyParams({
+      categories: category.length ? category.join(',') : null,
+      startDate: startDate ? format(startDate, 'yyyyMMdd') : null,
+      endDate: endDate ? format(endDate, 'yyyyMMdd') : null,
+      regions: regions.length ? regions.map((r) => r.rgntCd).join(',') : null,
+    })
+  }, [category, startDate, endDate, regions])
 
-    router.push(`${pathname}?${newParams.toString()}`)
-  }, [category, startDate, endDate, pathname, router])
+  useSetGeoFilterOption()
 
   return (
     <div className={cx('container')}>
@@ -87,6 +85,9 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
         <div
           className={cx('filter-option', {
             'filter-option--selected': filter === 'region',
+            'filter-option--selected--exhibition':
+              filter === 'region' && isExhibitionPage,
+            'filter-option--active': regions.length > 0,
           })}
           onClick={() => setFilter('region')}
         >
@@ -116,6 +117,16 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
               </div>
             </div>
           )}
+
+          {regions &&
+            regions.map((regionValue) => (
+              <div className={cx('filter-list-item')} key={regionValue.rgntCd}>
+                <div>{regionValue.regionName}</div>
+                <div onClick={() => setRegion(regionValue)}>
+                  <Image src={ICON.x_icon} alt="close" width={18} height={18} />
+                </div>
+              </div>
+            ))}
         </div>
         <div className={cx('filter-btn-box')}>
           <button

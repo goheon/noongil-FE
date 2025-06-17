@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation'
 import { notFound } from 'next/navigation'
 
 import { config } from '@/app/_lib'
+import EventInfo from '@/app/_components/features/eventInfo/EventInfo'
 
 const { VALID_CATEGORIES } = config
 
@@ -18,12 +19,5 @@ export default function ArticlePage() {
     notFound()
   }
 
-  return (
-    <div>
-      <h1>
-        {category} 카테고리의 게시물 {articleNo}
-      </h1>
-      <p>게시물 내용을 불러오는 중...</p>
-    </div>
-  )
+  return <EventInfo id={articleNo} />
 }

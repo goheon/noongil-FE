@@ -11,6 +11,8 @@ import {
 } from '@/app/_utils/textFormatter'
 import useBookmarkItem from './useBookmarkItem'
 import { TEventCodeName } from '@/app/_types'
+import Link from 'next/link'
+import { getEventDetailUrl } from '@/app/_utils/navigation'
 
 const heartIconMap = {
   exhibition: {
@@ -46,6 +48,7 @@ const SearchListItem = (props: SearchListItemProps) => {
     smallImageUrl,
     eventAddr,
     imageUrl,
+    eventTypeCd,
   } = data
 
   const { onBookmark } = useBookmarkItem()
@@ -73,32 +76,38 @@ const SearchListItem = (props: SearchListItemProps) => {
     })
   }
 
-  return (
-    <div className={cx('container')}>
-      <Image
-        src={imageUrl ?? ExampleImg}
-        width={215}
-        height={235}
-        alt="image"
-      />
-      <div className={cx('info-section')}>
-        <div className={cx('top')}>
-          <div className={cx('title')}>{eventNm}</div>
-          <div className={cx('icon-wrapper')} onClick={handleClick}>
-            <Image
-              className={cx('icon')}
-              src={heartIcon}
-              alt="icon"
-              width={20}
-              height={20}
-            />
-          </div>
-        </div>
+  const detailUrl = useMemo(() => {
+    return getEventDetailUrl(eventTypeCd, eventId)
+  }, [eventId, eventTypeCd])
 
-        <div className={cx('address')}>{eventAddress}</div>
-        <div className={cx('period')}>{eventPeriod}</div>
+  return (
+    <Link href={detailUrl}>
+      <div className={cx('container')}>
+        <Image
+          src={imageUrl ?? ExampleImg}
+          width={215}
+          height={235}
+          alt="image"
+        />
+        <div className={cx('info-section')}>
+          <div className={cx('top')}>
+            <div className={cx('title')}>{eventNm}</div>
+            <div className={cx('icon-wrapper')} onClick={handleClick}>
+              <Image
+                className={cx('icon')}
+                src={heartIcon}
+                alt="icon"
+                width={20}
+                height={20}
+              />
+            </div>
+          </div>
+
+          <div className={cx('address')}>{eventAddress}</div>
+          <div className={cx('period')}>{eventPeriod}</div>
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

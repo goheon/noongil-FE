@@ -18,7 +18,7 @@ import { IListItem } from '../type'
 import { TEventCodeName } from '@/app/_types'
 import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
 import PeriodListItem from './PeriodListItem'
-import SkeletonList from './SkeletonList'
+import SkeletonList from '@/app/_components/common/skeleton-list/SkeletonList'
 
 const cx = classNames.bind(styles)
 
@@ -68,7 +68,9 @@ const PeriodList = (props: PeriodListProps) => {
     <div className={cx('container')}>
       <div className={cx('title')}>{listTitle}</div>
 
-      {isLoading && <SkeletonList />}
+      {isLoading && (
+        <SkeletonList listType="carousel" cardType="row" length={3} />
+      )}
 
       {!isLoading && listData.length > 0 && (
         <Swiper

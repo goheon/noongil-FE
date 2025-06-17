@@ -6,6 +6,8 @@ import { IListItem } from '../type'
 import SampleImage from '@/public/free-img.jpg'
 import { formatDateRange } from '@/app/_utils/textFormatter'
 import { useMemo } from 'react'
+import { getEventDetailUrl } from '@/app/_utils/navigation'
+import Link from 'next/link'
 
 const cx = classNames.bind(styles)
 
@@ -27,30 +29,36 @@ const PeriodListItem = (props: PeriodListItemProps) => {
     [data],
   )
 
-  return (
-    <div className={cx('list-item')}>
-      <div className={cx('img-wrapper')}>
-        <Image
-          src={data.imageUrl ?? SampleImage}
-          alt="image"
-          width={125}
-          height={125}
-          className={cx('image')}
-        />
-      </div>
+  const detailUrl = useMemo(() => {
+    return getEventDetailUrl(data.eventTypeCd, data.eventId)
+  }, [data])
 
-      <div className={cx('info-section')}>
-        <Chip
-          className={cx('day-chip', {
-            'day-chip--close': periodType === 'close',
-          })}
-        >
-          {eventDday}
-        </Chip>
-        <div className={cx('event-title')}>{data.eventNm}</div>
-        <div className={cx('event-date')}>{eventDate}</div>
+  return (
+    <Link href={detailUrl}>
+      <div className={cx('list-item')}>
+        <div className={cx('img-wrapper')}>
+          <Image
+            src={data.imageUrl ?? SampleImage}
+            alt="image"
+            width={125}
+            height={125}
+            className={cx('image')}
+          />
+        </div>
+
+        <div className={cx('info-section')}>
+          <Chip
+            className={cx('day-chip', {
+              'day-chip--close': periodType === 'close',
+            })}
+          >
+            {eventDday}
+          </Chip>
+          <div className={cx('event-title')}>{data.eventNm}</div>
+          <div className={cx('event-date')}>{eventDate}</div>
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
