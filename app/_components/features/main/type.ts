@@ -8,5 +8,6 @@ export interface IListItem {
   likeYn: string
   imageUrl: string
   smallImageUrl: string
+  lnad: string
   dday: string
 }
