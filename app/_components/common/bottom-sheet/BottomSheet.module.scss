@@ -18,10 +18,8 @@
 .bottom-sheet {
   position: fixed;
   bottom: 0;
-
-  z-index: 99;
+  z-index: 101;
   box-sizing: border-box;
-
   width: 100%;
   max-width: 940px;
   border: 1px solid #9c9c9c;
@@ -32,6 +30,10 @@
 
   &--exhibition {
     background-color: #000000;
+  }
+
+  &--map-list {
+    bottom: 102.5px;
   }
 }
 
@@ -58,6 +60,6 @@
   min-height: 200px;
 
   &--filter {
-    height: 450px;
+    height: 550px;
   }
 }

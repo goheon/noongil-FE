@@ -26,6 +26,7 @@ const BottomSheet = ({
   const [isOpen, setIsOpen] = useState<boolean>(isOpenProp ?? false)
   const dragControls = useDragControls()
   const bottomSheetRef = useRef(null)
+  const [dragStartY, setDragStartY] = useState(0)
 
   // 외부 prop으로 전달된 isOpen 값이 바뀔 때 내부 상태도 업데이트
   useEffect(() => {
@@ -38,20 +39,48 @@ const BottomSheet = ({
     setIsOpen(!isOpen)
   }
 
-  const handleDragEnd = (e: any, info: any) => {
-    if (info.point.y > window.innerHeight * 0.8) {
-      setIsOpen(false)
+  const handleDragStart = (e: any, info: any) => {
+    setDragStartY(info.point.y)
+  }
 
+  const handleDragEnd = (e: any, info: any) => {
+    const dragDistance = info.point.y - dragStartY
+
+    if (dragDistance > 50) {
+      setIsOpen(false)
       if (setIsOpenProp) {
         setIsOpenProp(false)
       }
-    } else if (info.point.y > window.innerHeight * 0.2) {
+    } else {
       setIsOpen(true)
+      if (setIsOpenProp) {
+        setIsOpenProp(true)
+      }
     }
   }
 
   // type에 따라 다른 클래스명을 적용하거나 추가 UI를 렌더링할 수 있음.
   const bottomSheetClass = `${styles['bottom-sheet']} ${styles[`bottom-sheet--${type}`]} ${isExhibitionPage && styles['bottom-sheet--exhibition']}`
+
+  // type에 따른 exit 위치와 드래그 범위 설정
+  const getSheetConfig = () => {
+    switch (type) {
+      case 'map-list':
+        return {
+          animate: { y: isOpen ? '0%' : 175 },
+          exitY: 150,
+          dragConstraints: { top: 0, bottom: 0 },
+        }
+      default:
+        return {
+          animate: { y: isOpen ? '0%' : '100%' },
+          exitY: '100%',
+          dragConstraints: { top: 0, bottom: 0 },
+        }
+    }
+  }
+
+  const { animate, exitY, dragConstraints } = getSheetConfig()
 
   return (
     <div className={styles['bottom-sheet-container']}>
@@ -68,13 +97,14 @@ const BottomSheet = ({
         ref={bottomSheetRef}
         className={bottomSheetClass}
         initial={{ y: '100%' }}
-        animate={{ y: isOpen ? '0%' : '100%' }}
-        exit={{ y: '100%' }}
+        animate={animate}
+        exit={{ y: exitY }}
         transition={{ type: 'spring', stiffness: 300, damping: 50 }}
         drag="y"
         dragControls={dragControls}
         dragListener={false}
-        dragConstraints={{ top: 0, bottom: 0 }}
+        dragConstraints={dragConstraints}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
         <motion.div
@@ -92,8 +122,8 @@ const BottomSheet = ({
             <div className={styles['header']}>
               <h3>필터 옵션</h3>
             </div>
-          )}
-          {(type === 'map-list' || type === 'map-select') && (
+          )} */}
+          {/* {(type === 'map-list' || type === 'map-select') && (
             <div className={styles['header']}>
               <h3>{type === 'map-list' ? '지도 리스트' : '지도 선택'}</h3>
             </div>
