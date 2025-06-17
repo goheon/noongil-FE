@@ -105,6 +105,16 @@ const FilterBox = () => {
     setIsFilterOpen(false)
   }
 
+  // 필터가 열렸을 때 전역상태를 필터 내부 상태로 최신화
+  useEffect(() => {
+    if (isFilterOpen) {
+      setOnType(selectedType)
+      setOnCategories(selectedCategories)
+      setOnDateType(selectedDateType)
+      setOnDates(selectedDates)
+    }
+  }, [isFilterOpen])
+
   // 주말 날짜 계산
   const getWeekend = (date: Date) => {
     const startOfThisWeek = startOfWeek(date, { weekStartsOn: 0 }) // 주 시작 (일요일)
