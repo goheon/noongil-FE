@@ -1,9 +1,10 @@
 import { getUserInfo, logout, deleteUserAccount } from './myApi'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 
 const useUserAuth = () => {
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const { data: userInfo } = useQuery({
     queryKey: ['user-auth'],
@@ -15,6 +16,9 @@ const useUserAuth = () => {
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['map-user-categories'],
+      })
       router.push('/')
     },
   })

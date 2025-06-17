@@ -1,19 +1,20 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import classNames from 'classnames/bind'
 
 import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
+import { axiosApi } from '@/app/_lib'
 
+import { TEventCategory } from '@/app/_types'
 import {
   POPUP_CATEGORY_LABELS,
   EXHIBITION_CATEGORY_LABELS,
 } from '@/app/_constants/event'
-import { TEventCategory } from '@/app/_types'
+
 import styles from './CategoryFilterBox.module.scss'
 
 const cx = classNames.bind(styles)
-
-const CATEGORY_CHIP_BUTTON_LIST = ['PASH', 'CHAR', 'FANDB']
 
 const ALL_CATEGORY_LABELS = {
   ...POPUP_CATEGORY_LABELS,
@@ -21,9 +22,12 @@ const ALL_CATEGORY_LABELS = {
 }
 
 export const CategoryFilterBox = () => {
+  const { data } = useUserCategoriesQuery()
+  const favCategories = data?.data as TEventCategory[] | []
+
   return (
     <div className={cx('map-category-filter-box')}>
-      {CATEGORY_CHIP_BUTTON_LIST.map((category, idx) => (
+      {favCategories?.map((category, idx) => (
         <CategoryChipButton category={category as TEventCategory} key={idx} />
       ))}
     </div>
@@ -54,4 +58,22 @@ const CategoryChipButton = ({ category }: { category: TEventCategory }) => {
       <p className={cx('chip-label')}>{ALL_CATEGORY_LABELS[category]}</p>
     </div>
   )
+}
+
+// 카테고리 조회 쿼리 훅
+const useUserCategoriesQuery = () => {
+  return useQuery({
+    queryKey: ['map-user-categories'],
+    queryFn: getUserCategories,
+  })
+}
+
+// 카테고리 조회 쿼리함수
+const getUserCategories = async () => {
+  try {
+    const { data: userCategories } = await axiosApi.get('user-categories')
+    return userCategories
+  } catch (err) {
+    return err
+  }
 }
