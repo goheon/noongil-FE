@@ -52,13 +52,14 @@
 
       &_button {
         all: unset;
+        cursor: pointer;
         position: absolute;
         top: 25%;
-        right: 8%;
+        right: 22px;
 
         &.delete-button {
           top: 33%;
-          right: 22%;
+          right: 60px;
         }
       }
     }
