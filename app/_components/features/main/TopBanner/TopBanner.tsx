@@ -82,7 +82,7 @@ const TopBanner = (props: TopBannerProps) => {
                         <div className={cx('info')}>
                           {formatDateRange(item.operStatDt, item.operEndDt)}
                         </div>
-                        <div className={cx('info')}>서울시 강남구...</div>
+                        <div className={cx('info')}>{item.lnad}</div>
                       </div>
                     </div>
                   </div>

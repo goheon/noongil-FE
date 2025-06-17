@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { axiosApi } from '@/app/_lib/axios'
 import { TAllEventCode } from '@/app/_types'
 
