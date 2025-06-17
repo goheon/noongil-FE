@@ -2,7 +2,7 @@ import styles from './MainPage.module.scss'
 import classNames from 'classnames/bind'
 import TopBanner from './TopBanner/TopBanner'
 import PopularList from './PopularList/PopularList'
-import CustomList from './CustomList/CustomList'
+import RecommendList from './RecommedList/RecommendList'
 import PeriodList from './PeriodList/PeriodList'
 import { TEventCodeName } from '@/app/_types'
 
@@ -19,7 +19,7 @@ const MainPage = (props: MainPageProps) => {
     <div className={cx('container')}>
       <TopBanner eventCode={eventCode} />
       <PopularList eventCode={eventCode} />
-      <CustomList />
+      <RecommendList eventCode={eventCode} />
       <PeriodList eventCode={eventCode} periodType="open" />
       <PeriodList eventCode={eventCode} periodType="close" />
     </div>

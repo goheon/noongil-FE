@@ -5,11 +5,16 @@ import { useRouter } from 'next/navigation'
 const useUserAuth = () => {
   const router = useRouter()
 
-  const { data: userInfo } = useQuery({
+  const {
+    data: userInfo,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['user-auth'],
     queryFn: getUserInfo,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    retry: false,
   })
 
   const logoutMutation = useMutation({
@@ -26,10 +31,14 @@ const useUserAuth = () => {
     },
   })
 
+  const isUnauthorized = isError && (error as any)?.response?.status === 401
+  const isLoggedIn = !!userInfo && !isUnauthorized
+
   return {
     userInfo,
     userLogout: logoutMutation.mutate,
     deleteUser: deleteAccountMutation.mutate,
+    isLoggedIn,
   }
 }
 
