@@ -7,7 +7,6 @@ import {
   IGeocodingResponse,
 } from './type'
 
-// cookie sameSite 이슈 해결 후 수정
 export const adminLogin = async ({
   id,
   password,
@@ -16,8 +15,6 @@ export const adminLogin = async ({
   password: string
 }) => {
   try {
-    // const response = await axios.post(
-    //   'http://localhost:8080/api/admin/login',
     const response = await axiosApi.post(
       `admin/login`,
       {
@@ -34,12 +31,8 @@ export const adminLogin = async ({
   }
 }
 
-// cookie sameSite 이슈 해결 후 수정
 export const adminLogout = async () => {
   try {
-    // await axios.delete(`http://localhost:8080/api/admin/logout`, {
-    //   withCredentials: true,
-    // })
     await axiosApi.delete('admin/logout', {
       withCredentials: true,
     })
@@ -49,15 +42,8 @@ export const adminLogout = async () => {
   }
 }
 
-// cookie sameSite 이슈 해결 후 수정
 export const checkAdminAuth = async () => {
   try {
-    // const response = await axios.get(
-    //   `http://localhost:8080/api/admin/user-info`,
-    //   {
-    //     withCredentials: true,
-    //   },
-    // )
     const response = await axiosApi.get('admin/user-info', {
       withCredentials: true,
     })
@@ -191,7 +177,7 @@ export const registerContentImage = async ({
     const formData = new FormData()
 
     for (let i = 0; i < contentImage.length; i++) {
-      formData.append('file', contentImage[i])
+      formData.append('files', contentImage[i])
     }
 
     await axiosApi.post(`admin/events/${eventId}/file/detail`, formData, {
