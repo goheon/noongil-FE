@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+
+  .sidebar {
+    width: 250px;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    box-sizing: border-box;
+
+    a {
+      text-decoration: none;
+      color: white;
+    }
+
+    .tab {
+      width: 200px;
+      height: 48px;
+      background-color: gray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .content {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 24px;
+    overflow-y: scroll;
+  }
+}

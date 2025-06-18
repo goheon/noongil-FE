@@ -1,0 +1,60 @@
+.speed-dial {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  position: absolute;
+  bottom: 25px;
+  right: 15px;
+  z-index: 99;
+  box-sizing: border-box;
+  width: fit-content;
+  border-radius: 100%;
+  text-align: center;
+}
+
+.speed-dial-actions {
+  display: flex;
+  flex-direction: row-reverse;
+  position: absolute;
+  right: 20px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  border: 1px solid #9c9c9c;
+  border-radius: 100px;
+  padding-right: 45px;
+  background-color: #ffffff;
+  gap: 5px;
+}
+
+.speed-dial-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 55px;
+  height: 55px;
+  border: none;
+  border-radius: 50%;
+  padding: 12px;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 17px;
+  line-height: 17px;
+  cursor: pointer;
+}
+
+.speed-dial-btn.main {
+  z-index: 100;
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  background-color: #000000;
+  color: white;
+  font-size: 17px;
+}
+
+.speed-dial-btn:hover {
+  background-color: #000000;
+  color: #ffffff;
+  transition: background-color 0.3s;
+}

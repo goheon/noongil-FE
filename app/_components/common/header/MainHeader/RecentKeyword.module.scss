@@ -1,0 +1,22 @@
+.container {
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 37px;
+
+  .title {
+    padding-left: 28px;
+    font-weight: 600;
+    font-size: 22px;
+  }
+
+  .list {
+    width: 100%;
+
+    .list-item {
+      box-sizing: border-box;
+      width: fit-content;
+      padding-left: 28px;
+    }
+  }
+}

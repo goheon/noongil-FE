@@ -1,0 +1,129 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .icon {
+    filter: none;
+
+    &--exhibition {
+      filter: invert(1) grayscale(1);
+    }
+  }
+
+  .info-box {
+    padding: 40px 30px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-bottom: 1px solid #d9d9d9;
+
+    .progress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #5899ed;
+      border-radius: 30px;
+      width: 75px;
+      height: 35px;
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .info-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .title {
+        font-weight: 600;
+        font-size: 25px;
+      }
+
+      .option-box {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        .like {
+          box-sizing: border-box;
+
+          &--exhibition {
+            padding-top: 10px;
+          }
+        }
+      }
+    }
+
+    .info-middle {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+
+      .infos {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .info {
+          font-weight: 400;
+          font-size: 15px;
+          white-space: break-spaces;
+
+          &--date {
+            font-weight: 500;
+            font-size: 17px;
+          }
+        }
+      }
+
+      .hastags {
+        margin-top: 8px;
+        display: flex;
+        gap: 10px;
+        font-size: 15px;
+        font-weight: 400;
+        color: #9c9c9c;
+      }
+    }
+  }
+
+  .intro-box {
+    padding: 25px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+
+      .intro-title {
+        font-weight: 600;
+        font-size: 15px;
+      }
+
+      .intro-detail {
+        font-weight: 400;
+        font-size: 15px;
+        white-space: break-spaces;
+      }
+    }
+
+    .img-container {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+  }
+
+  .suggestion-box {
+    margin-top: 100px;
+    padding: 25px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 85px;
+  }
+}

@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  .title {
+    font-weight: 600;
+    font-size: 22px;
+    padding: 0px 30px;
+  }
+
+  .skeleton-wrapper {
+    display: flex;
+    gap: 20px;
+
+    .skeleton-infos {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+
+  .list {
+    width: 100%;
+
+    .list-item-wrapper {
+      box-sizing: border-box;
+      width: 320px;
+      padding-left: 30px;
+    }
+  }
+
+  .notice {
+    padding: 0px 30px;
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 16px;
+  }
+}

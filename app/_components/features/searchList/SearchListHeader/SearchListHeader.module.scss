@@ -1,0 +1,13 @@
+.searchList-header {
+  padding: 24px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .filter-chip {
+    font-weight: 400;
+    font-size: 15px;
+    padding: 12px 16px;
+    cursor: pointer;
+  }
+}

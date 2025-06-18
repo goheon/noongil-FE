@@ -1,0 +1,175 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 50px 27px;
+  gap: 56px;
+
+  .date-option-box {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .date-select-box {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    .notice {
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .select-info {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      .date-select {
+        width: 120px;
+        height: 44px;
+        font-weight: 700;
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+
+        &--exhibition {
+          background-color: white;
+        }
+
+        img {
+          height: 21px;
+          filter: invert(0);
+        }
+      }
+    }
+  }
+
+  // 캘린더 팝업 스타일 변경
+  .custom-calendar {
+    background-color: #ffffff;
+    width: 430px;
+    height: 569px;
+
+    .custom-header {
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+      color: #000000;
+      background-color: #ffffff;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #d9d9d9 !important;
+      gap: 12px;
+
+      button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+      }
+    }
+
+    .custom-day {
+      font-weight: 400;
+      font-size: 20px;
+      background-color: transparent !important;
+      color: #000000;
+      border-radius: 50%;
+      border: 2px solid transparent;
+
+      &:hover {
+        border-radius: 50%;
+        color: #5899ed;
+        background-color: transparent !important;
+      }
+
+      &--range {
+        border-radius: 50%;
+        border: 2px solid #5899ed;
+        background-color: #5899ed !important;
+      }
+
+      &--selected {
+        border-radius: 50%;
+        color: #000000;
+        border: 2px solid #5899ed;
+        background-color: transparent;
+      }
+    }
+
+    &--exhibition {
+      background-color: black;
+
+      .custom-header {
+        background-color: black;
+        color: white;
+      }
+
+      .custom-day {
+        color: #ffffff;
+      }
+
+      // 헤더 스타일 변경
+      :global(.react-datepicker__header) {
+        color: white !important;
+        background-color: black;
+        width: 430px;
+        border: none;
+      }
+
+      // 요일 표시 스타일
+      :global(.react-datepicker__day-names) {
+        display: flex;
+        justify-content: space-around;
+        background-color: black;
+        color: white !important;
+        padding: 35px 0;
+        font-size: 17px;
+        border: none;
+      }
+
+      // 추가: 각 요일 텍스트에 색상 적용
+      :global(.react-datepicker__day-name) {
+        color: white !important;
+      }
+    }
+  }
+
+  // 헤더 스타일 변경
+  :global(.react-datepicker__header) {
+    color: #000000;
+    background-color: #ffffff;
+    width: 430px;
+    border: none;
+  }
+
+  // 요일 표시 스타일
+  :global(.react-datepicker__day-names) {
+    display: flex;
+    justify-content: space-around;
+    background-color: #ffffff;
+    padding: 35px 0;
+    font-size: 17px;
+    border: none;
+  }
+
+  // 날짜 행(row) 스타일 변경
+  :global(.react-datepicker__week) {
+    display: flex;
+    justify-content: space-around; // 날짜 간격 균등 정렬
+    padding: 5px 0;
+  }
+
+  // 이전달/다음달 날짜 스타일
+  :global(.react-datepicker__day--outside-month) {
+    color: #d9d9d9 !important;
+  }
+
+  :global(.react-datepicker-popper) {
+    transform: translateY(0px) !important; // Y축 이동
+    left: 0px !important; // X축 이동
+  }
+}

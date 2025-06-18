@@ -1,0 +1,36 @@
+$header-height: 88px;
+$navigation-height: 103px;
+
+.pages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 430px;
+    height: 100%;
+
+    .content {
+      position: relative;
+      width: 100%;
+      height: calc(100 * var(--vh) - #{$header-height} - #{$navigation-height});
+      margin-top: $header-height;
+    }
+
+    > :last-child {
+      margin-top: auto;
+    }
+  }
+}
+
+.pages.exhibition {
+  background-color: #000000;
+  color: #ffffff;
+}

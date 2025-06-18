@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 17px;
+
+  .checkbox {
+    display: none;
+    width: 0;
+    height: 0;
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+}

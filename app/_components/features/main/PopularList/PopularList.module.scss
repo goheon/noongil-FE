@@ -1,0 +1,36 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: -40px;
+
+  .top-section {
+    padding: 0px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      font-weight: 600;
+      font-size: 23px;
+    }
+
+    .more {
+      font-size: 17px;
+      font-weight: 300;
+      color: #9c9c9c;
+      cursor: pointer;
+    }
+  }
+
+  .list {
+    width: 100%;
+
+    .list-item-wrapper {
+      box-sizing: border-box;
+      width: 260px;
+      padding: 0px 30px;
+    }
+  }
+}

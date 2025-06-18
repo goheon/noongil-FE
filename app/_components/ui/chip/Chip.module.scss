@@ -1,0 +1,25 @@
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 30px;
+  border: 1px solid #9c9c9c;
+  color: black;
+  width: fit-content;
+  padding: 12px 16px;
+  box-sizing: border-box;
+
+  img {
+    filter: invert(1);
+  }
+
+  &--exhibition {
+    color: white;
+    border-color: white;
+
+    img {
+      filter: none;
+    }
+  }
+}
