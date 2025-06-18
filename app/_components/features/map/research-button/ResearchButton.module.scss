@@ -1,0 +1,25 @@
+.research-button {
+  all: unset;
+  position: absolute;
+  z-index: 1;
+  top: 76px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  box-sizing: border-box;
+  border: 1px solid #d9d9d9;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 16px 13px 16px;
+  box-shadow: 0px 4px 4px 0px #00000040;
+
+  .research-icon {
+    margin-right: 5px;
+  }
+
+  span {
+    font-size: 13px;
+  }
+}

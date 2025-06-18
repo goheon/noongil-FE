@@ -7,6 +7,7 @@ import {
   useNaverMapSDK,
   useMapInitializer,
   useMarkerManager,
+  useMapCenter,
 } from '@/app/_utils/MapHooks'
 import { useMapStore } from '@/app/_store/map/useMapStore'
 
@@ -18,7 +19,6 @@ export const MapBox: React.FC = () => {
   const setMap = useMapStore((state) => state.setMap)
   useVhUnit()
 
-  const clientId = config.NAVER_MAP_CLIENT_ID || 'null'
   const map = useNaverMapSDK({
     clientId: process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || '',
     mapContainerId: 'map',
@@ -27,6 +27,12 @@ export const MapBox: React.FC = () => {
     background: '#f8f9fa',
   })
 
+  // 지도 중심좌표 반환 훅
+  const monitoredCenter = useMapCenter(map)
+
+  console.log(monitoredCenter)
+
+  // 마커 매니저 훅
   const { addMarker, markers, updateMarkerLabels } = useMarkerManager({ map })
 
   // 지도 인스턴스를 전역 상태에 저장

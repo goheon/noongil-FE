@@ -323,6 +323,56 @@ export const setMapZoom = (map: MapType | null, zoom: number) => {
   map.setZoom(zoom)
 }
 
+export const getCenter = (map: MapType | null) => {
+  if (!map) return null
+  const center = map.getCenter()
+  return {
+    lat: center.y,
+    lng: center.x,
+  }
+}
+
+// ===== Map Center Monitoring Hook =====
+export const useMapCenter = (map: MapType | null) => {
+  const [center, setCenter] = useState<{ lat: number; lng: number } | null>(
+    null,
+  )
+
+  useEffect(() => {
+    if (!map) {
+      setCenter(null)
+      return
+    }
+
+    // 초기 중심 좌표 설정
+    const initialCenter = map.getCenter()
+    setCenter({
+      lat: initialCenter.y,
+      lng: initialCenter.x,
+    })
+
+    // 중심 이동 이벤트 리스너 등록
+    const centerChangedListener = naver.maps.Event.addListener(
+      map,
+      'center_changed',
+      () => {
+        const newCenter = map.getCenter()
+        setCenter({
+          lat: newCenter.y,
+          lng: newCenter.x,
+        })
+      },
+    )
+
+    // 클린업 함수
+    return () => {
+      naver.maps.Event.removeListener(centerChangedListener)
+    }
+  }, [map])
+
+  return center
+}
+
 // ===== Marker Management Hook =====
 export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
   const [markers, setMarkers] = useState<MarkerInstance[]>([])

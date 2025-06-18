@@ -31,6 +31,13 @@ const BottomSheet = ({
   const dragControls = useDragControls()
   const bottomSheetRef = useRef(null)
   const [dragStartY, setDragStartY] = useState(0)
+  const [height, setHeight] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setHeight(window.innerHeight)
+    }
+  }, [])
 
   // 외부 prop으로 전달된 isOpen 값이 바뀔 때 내부 상태도 업데이트
   useEffect(() => {
@@ -65,7 +72,7 @@ const BottomSheet = ({
 
   // type에 따른 exit 위치와 드래그 범위 설정
   const getSheetConfig = () => {
-    const isShortHeightView = innerHeight < 741
+    const isShortHeightView = typeof height === 'number' && height < 741
 
     switch (type) {
       case 'map-list':

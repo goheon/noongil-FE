@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import classNames from 'classnames/bind'
 import Image from 'next/image'
 
@@ -14,6 +14,13 @@ const cx = classNames.bind(styles)
 
 const MapSelectBottomSheet = () => {
   const [isSelectSheetOpen, setIsSelectSheetOpen] = useState(true)
+  const [height, setHeight] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setHeight(window.innerHeight)
+    }
+  }, [])
 
   return (
     <BottomSheet
@@ -21,7 +28,12 @@ const MapSelectBottomSheet = () => {
       isOpen={isSelectSheetOpen}
       setIsOpen={setIsSelectSheetOpen}
     >
-      <div className={cx('select-wrap', innerHeight < 741 ? 'large' : '')}>
+      <div
+        className={cx(
+          'select-wrap',
+          height !== null && height < 741 ? 'large' : '',
+        )}
+      >
         <ItemCard />
       </div>
     </BottomSheet>
