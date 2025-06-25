@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface KeywordHistoryState {
   histories: string[]
@@ -9,30 +10,32 @@ interface KeywordHistoryState {
 
 const MAX_HISTORY_LENGTH = 5
 
-export const useKeywordHistoryStore = create<KeywordHistoryState>((set) => ({
-  histories: JSON.parse(localStorage.getItem('keywordHistories') || '[]'),
+export const useKeywordHistoryStore = create(
+  persist<KeywordHistoryState>(
+    (set, get) => ({
+      histories: [],
 
-  addHistory: (keyword: string) => {
-    set((state) => {
-      const newHistories = [
-        keyword,
-        ...state.histories.filter((h) => h !== keyword),
-      ].slice(0, MAX_HISTORY_LENGTH)
-      localStorage.setItem('keywordHistories', JSON.stringify(newHistories))
-      return { histories: newHistories }
-    })
-  },
+      addHistory: (keyword) => {
+        const newHistories = [
+          keyword,
+          ...get().histories.filter((h) => h !== keyword),
+        ].slice(0, MAX_HISTORY_LENGTH)
 
-  removeHistory: (keyword: string) => {
-    set((state) => {
-      const filtered = state.histories.filter((item) => item !== keyword)
-      localStorage.setItem('keywordHistories', JSON.stringify(filtered))
-      return { histories: filtered }
-    })
-  },
+        set({ histories: newHistories })
+      },
 
-  clearHistory: () => {
-    localStorage.removeItem('keywordHistories')
-    set({ histories: [] })
-  },
-}))
+      removeHistory: (keyword) => {
+        const filtered = get().histories.filter((item) => item !== keyword)
+        set({ histories: filtered })
+      },
+
+      clearHistory: () => {
+        set({ histories: [] })
+      },
+    }),
+    {
+      name: 'keywordHistories', // localStorage key
+      // storage: createJSONStorage(() => sessionStorage), // 원하면 이렇게 storage 지정도 가능
+    },
+  ),
+)

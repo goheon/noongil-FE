@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './RecentKeyword.module.scss'
 import classNames from 'classnames/bind'
 import { Chip } from '@/app/_components/ui'
