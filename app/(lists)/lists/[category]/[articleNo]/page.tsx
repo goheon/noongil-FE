@@ -13,7 +13,6 @@ export default function ArticlePage() {
   const category = params?.category as string
   const articleNo = params?.articleNo as string
 
-  console.log(category, articleNo)
   // 유효한 카테고리 검증 (필요에 따라 수정 가능)
   if (!VALID_CATEGORIES.includes(category)) {
     notFound()
