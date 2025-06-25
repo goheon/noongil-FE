@@ -6,46 +6,60 @@ import { Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 
-const cx = classNames.bind(styles)
+import useApplySearchParams from '@/app/_components/features/searchList/useApplySearchParams'
+import { useKeywordHistoryStore } from '@/app/_store/keywordHistory/useKeywordHistory'
 
-const KEYWORD_EXAMPLES = [
-  '더현대',
-  '뉴진스',
-  '성수',
-  '데이식스',
-  '픽사',
-  '짱구',
-  '크리스마스',
-] as const
+const cx = classNames.bind(styles)
 
 interface RecentKeywordProps {
   isExhibition: boolean
+  closeSearchBox: () => void
 }
 
 const RecentKeyword = (props: RecentKeywordProps) => {
-  const { isExhibition } = props
+  const { isExhibition, closeSearchBox } = props
+
+  const { applyParams } = useApplySearchParams()
+  const { histories, removeHistory } = useKeywordHistoryStore()
+
+  const handleClick = (keyword: string) => {
+    setTimeout(() => {
+      applyParams({
+        keyword,
+      })
+    }, 0)
+
+    closeSearchBox()
+  }
 
   return (
     <div className={cx('container')}>
       <div className={cx('title')}>최근 검색어</div>
 
-      <Swiper
-        slidesPerView="auto"
-        modules={[Pagination]}
-        className={cx('list')}
-      >
-        {KEYWORD_EXAMPLES.map((el) => (
-          <SwiperSlide key={el} className={cx('list-item')}>
-            <Chip
-              suffixIcon="close"
-              iconSize={16}
-              eventCode={isExhibition ? 'exhibition' : 'popup'}
-            >
-              {el}
-            </Chip>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {histories.length > 0 ? (
+        <Swiper
+          slidesPerView="auto"
+          modules={[Pagination]}
+          className={cx('list')}
+        >
+          {histories.map((el) => (
+            <SwiperSlide key={el} className={cx('list-item')}>
+              <Chip
+                className={cx('chip')}
+                onClick={() => handleClick(el)}
+                suffixIcon="close"
+                iconSize={16}
+                eventCode={isExhibition ? 'exhibition' : 'popup'}
+                handleIconClick={() => removeHistory(el)}
+              >
+                {el}
+              </Chip>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <div className={cx('notice')}>최근 검색어가 없습니다.</div>
+      )}
     </div>
   )
 }

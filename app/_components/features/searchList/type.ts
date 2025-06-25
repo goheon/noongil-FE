@@ -51,3 +51,9 @@ export const regionGroupMap: Record<RegionGroupCode, string> = {
   '10': '서울',
   '20': '경기도',
 }
+
+export type PopularKeywordType = {
+  pplrSrchId: number
+  pplrSrchCntn: string
+  pplrSrchRank: string
+}

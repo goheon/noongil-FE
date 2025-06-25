@@ -1,5 +1,5 @@
 import { axiosApi } from '@/app/_lib/axios'
-import { ISearchEventParms, GeoFilterType } from './type'
+import { ISearchEventParms, GeoFilterType, PopularKeywordType } from './type'
 
 export const bookmarkEventItem = async ({
   eventId,
@@ -70,6 +70,18 @@ export const getGeoOptions = async (): Promise<GeoFilterType> => {
     return response.data
   } catch (err) {
     console.log('geo data option :', err)
+    throw err
+  }
+}
+
+export const getPopularKeywords = async (): Promise<{
+  events: PopularKeywordType[]
+}> => {
+  try {
+    const response = await axiosApi.get('search/popular')
+    return response.data
+  } catch (err) {
+    console.log('get popular keyword', err)
     throw err
   }
 }
