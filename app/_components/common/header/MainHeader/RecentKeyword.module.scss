@@ -17,6 +17,16 @@
       box-sizing: border-box;
       width: fit-content;
       padding-left: 28px;
+
+      .chip {
+        cursor: pointer;
+      }
     }
+  }
+
+  .notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
