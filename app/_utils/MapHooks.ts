@@ -95,7 +95,19 @@ const createLabelStyle = () => {
       : { width: 100, height: 30 }
 
   const getAnchor = (text: string) => {
-    const x = text.length >= 8 ? 55 : 45
+    let x = 45
+    console.log(text, text.length)
+    if (text.length >= 12) {
+      x = 70
+    } else if (text.length >= 9) {
+      x = 55
+    } else if (text.length >= 7) {
+      x = 45
+    } else if (text.length >= 4) {
+      x = 35
+    } else {
+      x = 20
+    }
     return typeof window !== 'undefined' && window?.naver?.maps?.Point
       ? new window.naver.maps.Point(x, 15)
       : { x, y: 15 }

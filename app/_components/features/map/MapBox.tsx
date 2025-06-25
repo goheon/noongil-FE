@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react'
 
-import { useVhUnit, config } from '@/app/_lib'
+import { LocationPermissionModal } from './LocationPermissionModal'
+
+import { useVhUnit } from '@/app/_lib'
 import {
   useNaverMapSDK,
   useMapInitializer,
@@ -10,15 +12,23 @@ import {
   useMapCenter,
 } from '@/app/_utils/MapHooks'
 import { useMapStore } from '@/app/_store/map/useMapStore'
+import { useMapQuery } from './useMapQuery'
 
+import { IEventInfo } from '../eventInfo/type'
 import styles from './MapBox.module.scss'
-import { LocationPermissionModal } from './LocationPermissionModal'
+
+export interface MapEventInfo extends IEventInfo {
+  addrLttd: number
+  addrLotd: number
+}
 
 export const MapBox: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const setMap = useMapStore((state) => state.setMap)
+  // 내부높이 계산 훅
   useVhUnit()
 
+  // 지도 인스턴스 할당
   const map = useNaverMapSDK({
     clientId: process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || '',
     mapContainerId: 'map',
@@ -27,20 +37,35 @@ export const MapBox: React.FC = () => {
     background: '#f8f9fa',
   })
 
-  // 지도 중심좌표 반환 훅
-  const monitoredCenter = useMapCenter(map)
-
-  console.log(monitoredCenter)
-
-  // 마커 매니저 훅
-  const { addMarker, markers, updateMarkerLabels } = useMarkerManager({ map })
-
   // 지도 인스턴스를 전역 상태에 저장
   useEffect(() => {
     setMap(map)
   }, [map, setMap])
 
-  // 줌 레벨 변경 감지
+  // 지도 마운트 시 초기화 훅, 위치권한 핸들링
+  const { isModalOpen: permissionModalOpen } = useMapInitializer({
+    map,
+    checkLocationPermission: async () => {
+      const { state } = await navigator.permissions.query({
+        name: 'geolocation',
+      })
+      return state === 'granted'
+    },
+  })
+
+  // permissionModalOpen 값이 변경될 때 isModalOpen 상태 업데이트
+  useEffect(() => {
+    setIsModalOpen(permissionModalOpen)
+  }, [permissionModalOpen])
+
+  // 마커 매니저 훅
+  const { addMarker, markers, updateMarkerLabels } = useMarkerManager({ map })
+
+  // 지도 중심좌표 반환 훅
+  const monitoredCenter = useMapCenter(map)
+  console.log(monitoredCenter)
+
+  // 줌 레벨 변경 감지 후 라벨 마커 컨트롤
   useEffect(() => {
     if (!map) return
 
@@ -59,74 +84,46 @@ export const MapBox: React.FC = () => {
     }
   }, [map, updateMarkerLabels])
 
-  const { isModalOpen: permissionModalOpen } = useMapInitializer({
-    map,
-    checkLocationPermission: async () => {
-      const { state } = await navigator.permissions.query({
-        name: 'geolocation',
-      })
-      return state === 'granted'
-    },
-  })
-
-  // permissionModalOpen 값이 변경될 때 isModalOpen 상태 업데이트
-  useEffect(() => {
-    setIsModalOpen(permissionModalOpen)
-  }, [permissionModalOpen])
+  // 이벤트 조회 쿼리 데이터
+  const { data } = useMapQuery()
 
   // 테스트용 마커 추가
   useEffect(() => {
-    if (!map) return
+    if (!map || !data) return
 
-    // 팝업 마커 추가 (3초 후)
-    const popupTimer = setTimeout(() => {
-      addMarker({
-        id: 'popup1',
-        position: { lat: 37.5665, lng: 126.978 },
-        title: '서울시청 팝업스토어',
-        type: 'popup',
-        onClick: () => {
-          console.log('팝업 마커 클릭됨')
-        },
-      })
-      addMarker({
-        id: 'popup2',
-        position: { lat: 37.5645, lng: 126.975 },
-        title: '광화문 팝업스토어',
-        type: 'popup',
-        onClick: () => {
-          console.log('광화문 팝업 마커 클릭됨')
-        },
-      })
-    }, 3000)
+    const { events } = data
+    if (!events || events.length === 0) return
 
-    // 전시 마커 추가 (6초 후)
-    const exhibitionTimer = setTimeout(() => {
-      addMarker({
-        id: 'exhibition1',
-        position: { lat: 37.5685, lng: 126.981 },
-        title: '덕수궁 전시회',
-        type: 'exhibition',
-        onClick: () => {
-          console.log('덕수궁 전시회 마커 클릭됨')
-        },
-      })
-      addMarker({
-        id: 'exhibition2',
-        position: { lat: 37.5625, lng: 126.973 },
-        title: '경복궁 전시회',
-        type: 'exhibition',
-        onClick: () => {
-          console.log('경복궁 전시회 마커 클릭됨')
-        },
-      })
-    }, 6000)
+    const firstEvent = events[0]
+    const initialPosition = new naver.maps.LatLng(
+      firstEvent.addrLttd,
+      firstEvent.addrLotd,
+    )
+    const bounds = new naver.maps.LatLngBounds(initialPosition, initialPosition)
 
-    return () => {
-      clearTimeout(popupTimer)
-      clearTimeout(exhibitionTimer)
-    }
-  }, [map, addMarker])
+    events.forEach((event: MapEventInfo) => {
+      const position = new naver.maps.LatLng(event.addrLttd, event.addrLotd)
+
+      addMarker({
+        id: String(event.eventId),
+        position: { lat: event.addrLttd, lng: event.addrLotd },
+        title: event.eventNm,
+        type: event.eventTypeCd === '10' ? 'popup' : 'exhibition',
+        onClick: () => {
+          console.log(`${event.eventNm} 마커 클릭됨`)
+        },
+      })
+
+      bounds.extend(position)
+    })
+
+    map.fitBounds(bounds, {
+      top: 50,
+      bottom: 50,
+      left: 50,
+      right: 50,
+    })
+  }, [addMarker, map, data])
 
   return (
     <div className={`${styles['map-box']}`}>

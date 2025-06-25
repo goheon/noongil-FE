@@ -14,14 +14,14 @@ const MapPage: React.FC = () => {
     <>
       <MapBox />
       {/* <ResearchButton /> */}
-      <LoadMoreButton />
+      {/* <LoadMoreButton /> */}
       <CategoryFilterBox />
       <FilterButton />
       <CurrentButton />
       <CategoryDial />
       <FilterBox />
       {/* <MapListBottomSheet /> */}
-      <MapSelectBottomSheet />
+      {/* <MapSelectBottomSheet /> */}
     </>
   )
 }
