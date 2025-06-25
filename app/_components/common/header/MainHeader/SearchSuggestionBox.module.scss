@@ -25,6 +25,11 @@
 
       .list-item {
         font-size: 17px;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        cursor: pointer;
       }
     }
   }
