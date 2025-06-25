@@ -39,7 +39,7 @@ const SuggestionList = (props: SuggestionListProps) => {
               <div className={cx('list-item')}>
                 <Image
                   className={cx('image')}
-                  src={item.imageUrl || SampleImage}
+                  src={item.imageUrl || item.smallImageUrl || SampleImage}
                   width={160}
                   height={180}
                   alt="img"
