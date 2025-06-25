@@ -16,6 +16,7 @@ interface ChipProps
   suffixIcon?: keyof typeof ICON
   eventCode?: TEventCodeName
   iconSize?: number
+  handleIconClick?: () => void
 }
 
 const Chip = (props: ChipProps) => {
@@ -24,6 +25,7 @@ const Chip = (props: ChipProps) => {
     children,
     style,
     onClick,
+    handleIconClick,
     suffixIcon,
     eventCode = 'popup',
     iconSize = 20,
@@ -45,12 +47,21 @@ const Chip = (props: ChipProps) => {
       {children}
 
       {suffixIcon && (
-        <Image
-          src={ICON[suffixIcon]}
-          alt="icon"
-          width={iconSize}
-          height={iconSize}
-        />
+        <div
+          onClick={(e) => {
+            e.stopPropagation()
+            if (handleIconClick) {
+              handleIconClick()
+            }
+          }}
+        >
+          <Image
+            src={ICON[suffixIcon]}
+            alt="icon"
+            width={iconSize}
+            height={iconSize}
+          />
+        </div>
       )}
     </div>
   )
