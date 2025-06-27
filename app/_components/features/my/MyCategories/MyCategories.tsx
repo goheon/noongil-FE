@@ -13,7 +13,6 @@ const cx = classNames.bind(styles)
 
 const MyCategories = () => {
   const {
-    updateCategories,
     handlePopupCategories,
     handleExhibitionCategories,
     selectedPopupCategories,
@@ -34,10 +33,6 @@ const MyCategories = () => {
         selectedCategories={selectedExhibitionCategories}
         handleCategories={handleExhibitionCategories}
       />
-
-      <button className={cx('update-btn')} onClick={() => updateCategories()}>
-        수정하기
-      </button>
     </div>
   )
 }
