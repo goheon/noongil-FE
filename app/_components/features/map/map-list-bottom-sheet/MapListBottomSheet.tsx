@@ -1,11 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import classNames from 'classnames/bind'
 import Image from 'next/image'
 
 import { BottomSheet } from '@/app/_components/common'
+
+import { useMapQuery } from '../useMapQuery'
 import { useMapStore } from '@/app/_store/map/useMapStore'
+
+import { MapEventInfo } from '../MapBox'
 
 import { ICON } from '@/public'
 import styles from './MapListBottomSheet.module.scss'
@@ -14,6 +18,15 @@ const cx = classNames.bind(styles)
 
 const MapListBottomSheet = () => {
   const [isListSheetOpen, setIsListSheetOpen] = useState(false)
+  const [events, setEvents] = useState([])
+  const { data } = useMapQuery()
+
+  useEffect(() => {
+    if (data) {
+      const { events } = data
+      if (events) setEvents(events)
+    }
+  }, [data])
 
   return (
     <BottomSheet
@@ -23,27 +36,35 @@ const MapListBottomSheet = () => {
     >
       <div className={cx('list-wrap')}>
         <div className={cx('counts')}>
-          <span className={cx('counts-text')}>전체 5개</span>
+          <span className={cx('counts-text')}>전체 {events.length}개</span>
         </div>
         <div className={cx('contents')}>
-          <ItemCard />
-          <ItemCard />
-          <ItemCard />
-          <ItemCard />
-          <ItemCard />
+          {(events as MapEventInfo[]).map((event) => (
+            <ItemCard key={event.eventId} event={event as MapEventInfo} />
+          ))}
         </div>
       </div>
     </BottomSheet>
   )
 }
+interface ItemCardProps {
+  event: MapEventInfo
+}
 
-const ItemCard = () => {
+const ItemCard: React.FC<ItemCardProps> = ({ event }) => {
   return (
     <div className={cx('item-card')}>
-      <Image className={cx('item-image')} src={''} alt={'alt'} />
+      <div className={cx('image-wrapper')}>
+        <Image
+          className={cx('item-image')}
+          src={event.imageUrl ?? ''}
+          alt={event.eventNm}
+          fill
+        />
+      </div>
       <div className={cx('item-info')}>
         <div className={cx('item-top')}>
-          <p className={cx('item-title')}>망그러진 곰 다락방</p>
+          <p className={cx('item-title')}>{event.eventNm || ''}</p>
           <div className={cx('item-location')}>
             <Image
               src={ICON.location_map_list}
@@ -51,15 +72,35 @@ const ItemCard = () => {
               width={17}
               height={17}
             />
-            <p>서울시 강남구</p>
+            <p>{event.eventAddr}</p>
           </div>
         </div>
         <div className={cx('item-bottom')}>
-          <p className={cx('item-period')}>2024. 10. 20 ~ 11. 25</p>
+          <p className={cx('item-period')}>
+            {formatRange(event.operStatDt, event.operEndDt)}
+          </p>
         </div>
       </div>
     </div>
   )
+}
+
+const formatRange = (start: string, end: string) => {
+  const format = (dateStr: string) => {
+    const year = dateStr.slice(0, 4)
+    const month = dateStr.slice(4, 6)
+    const day = dateStr.slice(6, 8)
+    return { year, date: `${month}. ${day}` }
+  }
+
+  const startDate = format(start)
+  const endDate = format(end)
+
+  if (startDate.year === endDate.year) {
+    return `${startDate.year}. ${startDate.date} ~ ${endDate.date}`
+  } else {
+    return `${startDate.year}. ${startDate.date} ~ ${endDate.year}. ${endDate.date}`
+  }
 }
 
 export { MapListBottomSheet }

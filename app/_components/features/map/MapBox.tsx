@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 
-import { LocationPermissionModal } from './LocationPermissionModal'
+import { LocationPermissionModal } from './location-permission-modal/LocationPermissionModal'
 
 import { useVhUnit } from '@/app/_lib'
 import {
@@ -24,7 +24,8 @@ export interface MapEventInfo extends IEventInfo {
 
 export const MapBox: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const setMap = useMapStore((state) => state.setMap)
+  const setMap = useMapStore((s) => s.setMap)
+  const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
   // 내부높이 계산 훅
   useVhUnit()
 
@@ -117,13 +118,20 @@ export const MapBox: React.FC = () => {
       bounds.extend(position)
     })
 
-    map.fitBounds(bounds, {
-      top: 50,
-      bottom: 50,
-      left: 50,
-      right: 50,
-    })
-  }, [addMarker, map, data])
+    map.fitBounds(bounds)
+    map.panToBounds(
+      bounds,
+      {},
+      {
+        top: 50,
+        bottom: 50,
+        left: 50,
+        right: 50,
+      },
+    )
+
+    setIsListSheetShowing(true)
+  }, [addMarker, map, data, setIsListSheetShowing])
 
   return (
     <div className={`${styles['map-box']}`}>
