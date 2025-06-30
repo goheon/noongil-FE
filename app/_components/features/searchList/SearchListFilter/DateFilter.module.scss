@@ -152,45 +152,45 @@
       color: white !important;
     }
   }
-}
 
-// 캘린더 너비 할당
-:global(.react-datepicker__month-container) {
-  width: 100%;
-}
+  // 캘린더 너비 할당
+  :global(.react-datepicker__month-container) {
+    width: 100%;
+  }
 
-// 헤더 스타일 변경
-:global(.react-datepicker__header) {
-  color: #000000;
-  background-color: #ffffff;
-  width: 100%;
-  border: none;
-}
+  // 헤더 스타일 변경
+  :global(.react-datepicker__header) {
+    color: #000000;
+    background-color: #ffffff;
+    width: 100%;
+    border: none;
+  }
 
-// 요일 표시 스타일
-:global(.react-datepicker__day-names) {
-  display: flex;
-  justify-content: space-around;
-  background-color: #ffffff;
-  padding: 35px 0;
-  font-size: 17px;
-  border: none;
-}
+  // 요일 표시 스타일
+  :global(.react-datepicker__day-names) {
+    display: flex;
+    justify-content: space-around;
+    background-color: #ffffff;
+    padding: 35px 0;
+    font-size: 17px;
+    border: none;
+  }
 
-// 날짜 행(row) 스타일 변경
-:global(.react-datepicker__week) {
-  display: flex;
-  justify-content: space-around; // 날짜 간격 균등 정렬
-  padding: 5px 0;
-}
+  // 날짜 행(row) 스타일 변경
+  :global(.react-datepicker__week) {
+    display: flex;
+    justify-content: space-around; // 날짜 간격 균등 정렬
+    padding: 5px 0;
+  }
 
-// 이전달/다음달 날짜 스타일
-:global(.react-datepicker__day--outside-month) {
-  color: #d9d9d9 !important;
-}
+  // 이전달/다음달 날짜 스타일
+  :global(.react-datepicker__day--outside-month) {
+    color: #d9d9d9 !important;
+  }
 
-:global(.react-datepicker-popper) {
-  width: 100%;
-  transform: translateY(0px) !important; // Y축 이동
-  left: 0px !important; // X축 이동
+  :global(.react-datepicker-popper) {
+    width: 100%;
+    transform: translateY(0px) !important; // Y축 이동
+    left: 0px !important; // X축 이동
+  }
 }

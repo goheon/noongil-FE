@@ -134,3 +134,7 @@ a:active {
   text-decoration: none;
   color: inherit;
 }
+
+*:focus-visible {
+  outline: none;
+}

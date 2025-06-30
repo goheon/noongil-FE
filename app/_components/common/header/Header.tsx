@@ -16,6 +16,7 @@ import styles from './header.module.scss'
 import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 import useApplySearchParams from '../../features/searchList/useApplySearchParams'
 import { useMapStore } from '@/app/_store/map/useMapStore'
+import { useKeywordHistoryStore } from '@/app/_store/keywordHistory/useKeywordHistory'
 
 // 헤더
 const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
@@ -71,6 +72,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   isListSearch,
 }) => {
   const { keyword, setKeyword } = useListFilterStore()
+  const { addHistory } = useKeywordHistoryStore()
 
   const [searchValue, setSearchValue] = useState('')
   const handleDeleteClick = (evt: React.MouseEvent<HTMLButtonElement>) => {
@@ -104,6 +106,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       applyParams({
         keyword: value,
       })
+      addHistory(value)
     }, 0)
   }, [searchValue, setKeyword, isListSearch, closeSearchBox])
 

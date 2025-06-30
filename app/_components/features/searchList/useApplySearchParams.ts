@@ -16,17 +16,23 @@ const useApplySearchParams = () => {
     }
   }
 
-  const applyParams = (
-    updates: Record<string, string | null | undefined>,
-    basePath?: string,
-  ) => {
+  const applyParams = (updates: Record<string, string | null | undefined>) => {
     const newParams = new URLSearchParams(window.location.search)
 
     Object.entries(updates).forEach(([key, value]) => {
       updateParam(newParams, key, value)
     })
 
-    router.push(`${basePath || pathname}?${newParams.toString()}`)
+    // 체크할 경로 키워드 목록
+    const paths = ['exhibition', 'popup']
+
+    // 현재 pathname에서 키워드 찾기
+    const matchedPath = paths.find((p) => pathname.includes(`/${p}`))
+
+    // matchedPath가 있으면 `/lists/${matchedPath}`, 없으면 기본 `/lists`
+    const basePath = matchedPath ? `/lists/${matchedPath}` : '/lists'
+
+    router.push(`${basePath}?${newParams.toString()}`)
   }
 
   return { applyParams }

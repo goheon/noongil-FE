@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { axiosApi } from '@/app/_lib/axios'
 import { TAllEventCode } from '@/app/_types'
+import { IUserRecommendListResponse } from './type'
 
 // TOOD: main API 완성시 수정 필요
 
@@ -52,6 +52,20 @@ export const getCloseList = async (category: TAllEventCode) => {
     return response.data.data
   } catch (err) {
     console.log('err :', err)
+    throw err
+  }
+}
+
+// 유저 추천 리스트 조회
+export const getUserRecommendList = async (
+  category: TAllEventCode,
+): Promise<IUserRecommendListResponse> => {
+  try {
+    const response = await axiosApi.get(`main-events/rcmn/${category}`)
+
+    return response.data
+  } catch (err) {
+    console.log('user recommend list :', err)
     throw err
   }
 }

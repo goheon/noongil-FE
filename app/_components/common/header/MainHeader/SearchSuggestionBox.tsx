@@ -2,24 +2,21 @@ import { useEffect } from 'react'
 import styles from './SearchSuggestionBox.module.scss'
 import classNames from 'classnames/bind'
 import RecentKeyword from './RecentKeyword'
+import { getPopularKeywords } from '@/app/_components/features/searchList/searchApi'
+import { useQuery } from '@tanstack/react-query'
+import useApplySearchParams from '@/app/_components/features/searchList/useApplySearchParams'
 
 const cx = classNames.bind(styles)
 
-const POPULAR_KEYWORDS = [
-  '데이식스',
-  '트와이스',
-  '루피',
-  '짱구',
-  '고흐',
-  '크리스마스',
-]
-
 interface SearchSuggestionBoxProps {
   isExhibition: boolean
+  closeSearchBox: () => void
 }
 
 const SearchSuggestionBox = (props: SearchSuggestionBoxProps) => {
-  const { isExhibition } = props
+  const { isExhibition, closeSearchBox } = props
+
+  const { applyParams } = useApplySearchParams()
 
   useEffect(() => {
     document.body.style.overflow = 'hidden' // 컴포넌트가 보일 때 스크롤 막기
@@ -29,20 +26,47 @@ const SearchSuggestionBox = (props: SearchSuggestionBoxProps) => {
     }
   }, [])
 
+  const { data, isLoading } = useQuery({
+    queryKey: ['popular-keyword'],
+    queryFn: getPopularKeywords,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  })
+
+  const handleClick = (keyword: string) => {
+    setTimeout(() => {
+      applyParams({
+        keyword,
+      })
+    }, 0)
+
+    closeSearchBox()
+  }
+
   return (
     <div className={cx('container')}>
-      <RecentKeyword isExhibition={isExhibition} />
+      <RecentKeyword
+        isExhibition={isExhibition}
+        closeSearchBox={closeSearchBox}
+      />
 
       <div className={cx('popular-keyword')}>
         <div className={cx('title')}>인기 검색어</div>
 
-        <ul className={cx('list')}>
-          {POPULAR_KEYWORDS.map((el, idx) => (
-            <li className={cx('list-item')} key={el}>
-              {idx + 1}.{el}
-            </li>
-          ))}
-        </ul>
+        {data?.events && data.events.length > 0 ? (
+          <ul className={cx('list')}>
+            {data.events.map((item) => (
+              <li
+                className={cx('list-item')}
+                key={item.pplrSrchId}
+                onClick={() => handleClick(item.pplrSrchCntn)}
+              >
+                <span>{item.pplrSrchRank}.</span>
+                <span>{item.pplrSrchCntn}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     </div>
   )

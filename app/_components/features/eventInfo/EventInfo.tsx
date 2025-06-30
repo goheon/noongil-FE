@@ -12,6 +12,9 @@ import { isPastDate } from '@/app/_utils/date'
 import useBookmarkItem from '../searchList/SearchList/useBookmarkItem'
 import { useSnackbar } from '../../common/snackbar/useSnackbar'
 import Link from 'next/link'
+import useUserAuth from '../my/useUserAuth'
+import Skeleton from 'react-loading-skeleton'
+import { ALL_CATEGORY_LABELS } from '@/app/_constants/event'
 
 const cx = classNames.bind(styles)
 
@@ -95,124 +98,145 @@ const EventInfo = (props: EventInfoProps) => {
     }
   }
 
+  const { isLoggedIn } = useUserAuth()
+
   return (
-    <div className={cx('container')}>
-      <div className={cx('img-wrapper')}>
-        <Image
-          src={eventDetail?.smallImageUrl || SampleImage}
-          width={430}
-          height={567}
-          alt="img"
-        />
-      </div>
+    <>
+      {isLoading ? (
+        <div className={cx('loading')}>
+          <Skeleton width={430} height={567} />
+          <Skeleton width={430} height={200} />
+          <Skeleton width={430} height={200} />
+        </div>
+      ) : (
+        <div className={cx('container')}>
+          <div className={cx('img-wrapper')}>
+            <Image
+              src={eventDetail?.smallImageUrl || SampleImage}
+              width={430}
+              height={567}
+              alt="img"
+            />
+          </div>
 
-      <div className={cx('info-box')}>
-        <div className={cx('progress')}>{isPast ? '마감' : '진행 중'}</div>
-        <div className={cx('info-top')}>
-          <div className={cx('title')}>{eventDetail?.eventNm}</div>
-          <div className={cx('option-box')}>
-            <div className={cx('share')} onClick={copyCurrentUrlToClipboard}>
-              <Image
-                className={cx('icon', { 'icon--exhibition': isExhibition })}
-                src={ICON.share}
-                alt="icon"
-                width={20}
-                height={20}
+          <div className={cx('info-box')}>
+            <div className={cx('progress')}>{isPast ? '마감' : '진행 중'}</div>
+            <div className={cx('info-top')}>
+              <div className={cx('title')}>{eventDetail?.eventNm}</div>
+              <div className={cx('option-box')}>
+                <div
+                  className={cx('share')}
+                  onClick={copyCurrentUrlToClipboard}
+                >
+                  <Image
+                    className={cx('icon', { 'icon--exhibition': isExhibition })}
+                    src={ICON.share}
+                    alt="icon"
+                    width={20}
+                    height={20}
+                  />
+                </div>
+                {isLoggedIn && (
+                  <div
+                    className={cx('like', { 'like--exhibition': isExhibition })}
+                    onClick={handleLike}
+                  >
+                    <Image src={heartIcon} alt="icon" width={30} height={30} />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className={cx('info-middle')}>
+              <div className={cx('infos')}>
+                <Image
+                  className={cx('icon', { 'icon--exhibition': isExhibition })}
+                  src={ICON.calendar}
+                  width={20}
+                  height={20}
+                  alt="icon"
+                />
+                <div className={cx('info', 'info--date')}>{eventDate}</div>
+              </div>
+              <div className={cx('infos')}>
+                <Image
+                  className={cx('icon', { 'icon--exhibition': isExhibition })}
+                  src={ICON.clock}
+                  width={20}
+                  height={20}
+                  alt="icon"
+                />
+                <div className={cx('info')}>{eventDetail?.operDttmCntn}</div>
+              </div>
+              <div className={cx('infos')}>
+                <Image
+                  className={cx('icon', { 'icon--exhibition': isExhibition })}
+                  src={ICON.location}
+                  width={20}
+                  height={20}
+                  alt="icon"
+                />
+                <div className={cx('info')}>{eventDetail?.eventAddr}</div>
+              </div>
+              <div className={cx('infos')}>
+                <Image
+                  className={cx('icon', { 'icon--exhibition': isExhibition })}
+                  src={ICON.website}
+                  width={20}
+                  height={20}
+                  alt="icon"
+                />
+
+                <Link href={eventDetail?.eventDetailUrl ?? ''} target="_blank">
+                  <div className={cx('info')}>이벤트 사이트 방문하기</div>
+                </Link>
+              </div>
+
+              <div className={cx('hastags')}>
+                {eventDetail ? ALL_CATEGORY_LABELS[eventDetail?.ctgyId] : null}
+              </div>
+            </div>
+          </div>
+
+          <div className={cx('intro-box')}>
+            <div className={cx('intro')}>
+              <div className={cx('intro-title')}>[이벤트 소개]</div>
+              <div className={cx('intro-detail')}>{eventDetail?.eventCntn}</div>
+            </div>
+
+            <ul className={cx('img-container')}>
+              {eventDetail &&
+                eventDetail.imageUrls &&
+                eventDetail.imageUrls.map((item) => (
+                  <li key={item}>
+                    <Image
+                      src={item}
+                      alt="content-img"
+                      width={369}
+                      height={277}
+                    />
+                  </li>
+                ))}
+            </ul>
+          </div>
+
+          <div className={cx('suggestion-box')}>
+            <SuggestionList
+              title={`${eventDetail?.eventTypeCd === '10' ? '팝업' : '전시'} Best`}
+              list={popularList}
+              rank={true}
+            />
+
+            {nearEvents && nearEvents.length > 0 && (
+              <SuggestionList
+                title={`근처 ${eventDetail?.eventTypeCd === '10' ? '팝업' : '전시'} 추천`}
+                list={nearEvents}
               />
-            </div>
-            <div
-              className={cx('like', { 'like--exhibition': isExhibition })}
-              onClick={handleLike}
-            >
-              <Image src={heartIcon} alt="icon" width={30} height={30} />
-            </div>
+            )}
           </div>
         </div>
-
-        <div className={cx('info-middle')}>
-          <div className={cx('infos')}>
-            <Image
-              className={cx('icon', { 'icon--exhibition': isExhibition })}
-              src={ICON.calendar}
-              width={20}
-              height={20}
-              alt="icon"
-            />
-            <div className={cx('info', 'info--date')}>{eventDate}</div>
-          </div>
-          <div className={cx('infos')}>
-            <Image
-              className={cx('icon', { 'icon--exhibition': isExhibition })}
-              src={ICON.clock}
-              width={20}
-              height={20}
-              alt="icon"
-            />
-            <div className={cx('info')}>{eventDetail?.operDttmCntn}</div>
-          </div>
-          <div className={cx('infos')}>
-            <Image
-              className={cx('icon', { 'icon--exhibition': isExhibition })}
-              src={ICON.location}
-              width={20}
-              height={20}
-              alt="icon"
-            />
-            <div className={cx('info')}>{eventDetail?.eventAddr}</div>
-          </div>
-          <div className={cx('infos')}>
-            <Image
-              className={cx('icon', { 'icon--exhibition': isExhibition })}
-              src={ICON.website}
-              width={20}
-              height={20}
-              alt="icon"
-            />
-
-            <Link href={eventDetail?.eventDetailUrl ?? ''} target="_blank">
-              <div className={cx('info')}>이벤트 사이트 방문하기</div>
-            </Link>
-          </div>
-
-          <div className={cx('hastags')}>
-            <span>#팝업스토어</span>
-            <span>#전시</span>{' '}
-          </div>
-        </div>
-      </div>
-
-      <div className={cx('intro-box')}>
-        <div className={cx('intro')}>
-          <div className={cx('intro-title')}>[이벤트 소개]</div>
-          <div className={cx('intro-detail')}>{eventDetail?.eventCntn}</div>
-        </div>
-
-        <ul className={cx('img-container')}>
-          {eventDetail &&
-            eventDetail.imageUrls &&
-            eventDetail.imageUrls.map((item) => (
-              <li key={item}>
-                <Image src={item} alt="content-img" width={369} height={277} />
-              </li>
-            ))}
-        </ul>
-      </div>
-
-      <div className={cx('suggestion-box')}>
-        <SuggestionList
-          title={`${eventDetail?.eventTypeCd === '10' ? '팝업' : '전시'} Best`}
-          list={popularList}
-          rank={true}
-        />
-
-        {nearEvents && nearEvents.length > 0 && (
-          <SuggestionList
-            title={`근처 ${eventDetail?.eventTypeCd === '10' ? '팝업' : '전시'} 추천`}
-            list={nearEvents}
-          />
-        )}
-      </div>
-    </div>
+      )}
+    </>
   )
 }
 export default EventInfo
