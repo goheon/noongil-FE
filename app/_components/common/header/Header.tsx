@@ -15,6 +15,7 @@ import { HeaderProps, HeaderLogoBoxProps, SearchBoxProps } from '@/app/_types'
 import styles from './header.module.scss'
 import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 import useApplySearchParams from '../../features/searchList/useApplySearchParams'
+import { useMapStore } from '@/app/_store/map/useMapStore'
 
 // 헤더
 const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
@@ -174,6 +175,7 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
 }) => {
   const pathname = usePathname()
   const router = useRouter()
+  const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
 
   return (
     <div
@@ -181,6 +183,7 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
       onClick={() => {
         if (isSearchOpen) {
           setIsSearchOpen(false)
+          setIsListSheetShowing(true)
         } else {
           if (pathname.includes('exhibition')) {
             router.push('/exhibition')

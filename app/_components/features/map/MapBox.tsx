@@ -111,6 +111,11 @@ export const MapBox: React.FC = () => {
         title: event.eventNm,
         type: event.eventTypeCd === '10' ? 'popup' : 'exhibition',
         onClick: () => {
+          // select bottomsheet showing true
+          // select bottomsheet open
+          // header back button
+          // map center move
+          //
           console.log(`${event.eventNm} 마커 클릭됨`)
         },
       })

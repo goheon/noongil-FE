@@ -13,6 +13,9 @@ import styles from './MapPageHeader.module.scss'
 const MapPageHeader: React.FC<HeaderProps> = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const isSearchOpen = useMapStore((state) => state.isSearchOpen)
+  const setIsListSheetShowing = useMapStore(
+    (state) => state.setIsListSheetShowing,
+  )
   const setIsSearchOpen = useMapStore.getState().setIsSearchOpen
   const setSelectedType = useMapFilterStore.getState().setSelectedType
   const pathname = usePathname()
@@ -28,6 +31,7 @@ const MapPageHeader: React.FC<HeaderProps> = () => {
   // 검색창 클릭 및 터치 핸들러 함수
   const handleSearchClick = () => {
     setIsSearchOpen(true)
+    setIsListSheetShowing(false)
     inputRef?.current?.focus()
   }
 
