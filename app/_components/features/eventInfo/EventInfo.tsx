@@ -14,6 +14,7 @@ import { useSnackbar } from '../../common/snackbar/useSnackbar'
 import Link from 'next/link'
 import useUserAuth from '../my/useUserAuth'
 import Skeleton from 'react-loading-skeleton'
+import { ALL_CATEGORY_LABELS } from '@/app/_constants/event'
 
 const cx = classNames.bind(styles)
 
@@ -192,8 +193,7 @@ const EventInfo = (props: EventInfoProps) => {
               </div>
 
               <div className={cx('hastags')}>
-                <span>#팝업스토어</span>
-                <span>#전시</span>{' '}
+                {eventDetail ? ALL_CATEGORY_LABELS[eventDetail?.ctgyId] : null}
               </div>
             </div>
           </div>

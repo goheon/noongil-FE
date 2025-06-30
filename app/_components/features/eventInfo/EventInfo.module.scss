@@ -46,8 +46,13 @@
         align-items: center;
         gap: 5px;
 
+        .share {
+          cursor: pointer;
+        }
+
         .like {
           box-sizing: border-box;
+          cursor: pointer;
 
           &--exhibition {
             padding-top: 10px;
