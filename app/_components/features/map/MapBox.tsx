@@ -26,6 +26,10 @@ export const MapBox: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const setMap = useMapStore((s) => s.setMap)
   const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
+  const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
+  const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
+  const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
+
   // 내부높이 계산 훅
   useVhUnit()
 
@@ -111,8 +115,14 @@ export const MapBox: React.FC = () => {
         title: event.eventNm,
         type: event.eventTypeCd === '10' ? 'popup' : 'exhibition',
         onClick: () => {
+          // list bottomsheet showing false
+          setIsListSheetShowing(false)
+          // assign data to global state
+          setSelectedEventInfo(event)
           // select bottomsheet showing true
+          setIsSelectSheetShowing(true)
           // select bottomsheet open
+          setIsSelectSheetOpen(true)
           // header back button
           // map center move
           //

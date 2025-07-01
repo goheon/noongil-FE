@@ -76,14 +76,14 @@ interface MarkerWithLabel extends naver.maps.Marker {
 const MIN_ZOOM_FOR_LABELS = 15
 const HIGH_ZOOM_LEVEL = 18
 
-const createLabelStyle = () => {
+const createLabelStyle = (isMobile: Boolean) => {
   const content = (text: string) => `
     <div style="
       background: white;
       padding: 5px;
       border: 1px solid #ccc;
       border-radius: 3px;
-      font-size: 12px;
+      font-size: ${isMobile ? '12px;' : '16px;'}
       text-align: center;
       white-space: nowrap;
     ">${text}</div>
@@ -96,18 +96,35 @@ const createLabelStyle = () => {
 
   const getAnchor = (text: string) => {
     let x = 45
-    console.log(text, text.length)
-    if (text.length >= 12) {
-      x = 70
-    } else if (text.length >= 9) {
-      x = 55
-    } else if (text.length >= 7) {
-      x = 45
-    } else if (text.length >= 4) {
-      x = 35
+
+    if (isMobile) {
+      if (text.length >= 12) {
+        x = 70
+      } else if (text.length >= 9) {
+        x = 55
+      } else if (text.length >= 7) {
+        x = 45
+      } else if (text.length >= 4) {
+        x = 35
+      } else {
+        x = 20
+      }
     } else {
-      x = 20
+      if (text.length >= 14) {
+        x = 100
+      } else if (text.length >= 12) {
+        x = 85
+      } else if (text.length >= 9) {
+        x = 65
+      } else if (text.length >= 7) {
+        x = 55
+      } else if (text.length >= 4) {
+        x = 40
+      } else {
+        x = 20
+      }
     }
+
     return typeof window !== 'undefined' && window?.naver?.maps?.Point
       ? new window.naver.maps.Point(x, 15)
       : { x, y: 15 }
@@ -119,8 +136,6 @@ const createLabelStyle = () => {
     getAnchor,
   }
 }
-
-const LABEL_STYLE = createLabelStyle()
 
 // ===== Location Related Functions =====
 export const checkLocationPermission = async () => {
@@ -389,6 +404,13 @@ export const useMapCenter = (map: MapType | null) => {
 export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
   const [markers, setMarkers] = useState<MarkerInstance[]>([])
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null)
+  const [innerWidth, setInnerWidth] = useState<number>(0)
+
+  useEffect(() => {
+    setInnerWidth(window?.innerWidth || 0)
+  }, [])
+
+  const LABEL_STYLE = createLabelStyle(innerWidth < 940)
 
   // 마커 아이콘 생성
   const createMarkerIcon = useCallback((type: MarkerType) => {

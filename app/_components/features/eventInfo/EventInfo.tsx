@@ -94,16 +94,19 @@ const EventInfo = (props: EventInfoProps) => {
       })
     }
   }
+  const BLANK_IMAGE =
+    'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=='
 
   return (
     <div className={cx('container')}>
       <div className={cx('img-wrapper')}>
-        <Image
-          src={eventDetail?.smallImageUrl || SampleImage}
-          width={430}
-          height={567}
-          alt="img"
-        />
+        <div className={cx('img-frame')}>
+          <Image
+            src={eventDetail?.smallImageUrl ?? BLANK_IMAGE}
+            fill
+            alt="img"
+          />
+        </div>
       </div>
 
       <div className={cx('info-box')}>

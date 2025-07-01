@@ -23,7 +23,14 @@
     overflow-y: auto;
     height: 90%;
 
+    .card-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
     .item-card {
+      width: 430px;
       user-select: none;
       display: flex;
       justify-content: center;

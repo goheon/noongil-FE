@@ -3,13 +3,16 @@
   height: 38dvh;
 
   .item-card {
+    justify-self: center;
     display: flex;
     margin: 43px 0 0 65px;
     box-sizing: border-box;
 
-    .item-image {
+    .image-wrapper {
+      overflow: hidden;
       min-width: 140px;
       height: 163px;
+      position: relative;
     }
 
     .item-info {

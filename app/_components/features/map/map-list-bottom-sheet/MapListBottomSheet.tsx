@@ -40,7 +40,9 @@ const MapListBottomSheet = () => {
         </div>
         <div className={cx('contents')}>
           {(events as MapEventInfo[]).map((event) => (
-            <ItemCard key={event.eventId} event={event as MapEventInfo} />
+            <div className={cx('card-wrapper')} key={event.eventId}>
+              <ItemCard event={event as MapEventInfo} />
+            </div>
           ))}
         </div>
       </div>
@@ -85,7 +87,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ event }) => {
   )
 }
 
-const formatRange = (start: string, end: string) => {
+export const formatRange = (start: string, end: string) => {
   const format = (dateStr: string) => {
     const year = dateStr.slice(0, 4)
     const month = dateStr.slice(4, 6)

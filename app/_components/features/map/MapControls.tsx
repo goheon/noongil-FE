@@ -16,6 +16,7 @@ import { useMapStore } from '@/app/_store/map/useMapStore'
 export const MapControlComponents = () => {
   const { data } = useMapQuery()
   const isListSheetShowing = useMapStore((s) => s.isListSheetShowing)
+  const isSelectSheetShowing = useMapStore((s) => s.isSelectSheetShowing)
 
   return (
     <>
@@ -27,7 +28,7 @@ export const MapControlComponents = () => {
       <CategoryDial />
       <FilterBox />
       {data && isListSheetShowing && <MapListBottomSheet />}
-      {/* <MapSelectBottomSheet /> */}
+      {data && isSelectSheetShowing && <MapSelectBottomSheet />}
     </>
   )
 }

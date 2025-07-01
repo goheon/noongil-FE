@@ -1,17 +1,22 @@
 import { create } from 'zustand'
 import { MapType } from '@/app/_utils/MapHooks'
+import { MapEventInfo } from '@/app/_components'
 
 interface MapState {
   isSearchOpen: boolean
   isFilterOpen: boolean
   isListSheetShowing: boolean
   isSelectSheetShowing: boolean
+  isSelectSheetOpen: boolean
   map: MapType | null
+  selectedEvent: MapEventInfo | null
   setMap: (map: MapType | null) => void
   setIsSearchOpen: (isOpen: boolean) => void
   setIsFilterOpen: (isOpen: boolean) => void
-  setIsListSheetShowing: (isOpen: boolean) => void
-  setIsSelectSheetShowing: (isOpen: boolean) => void
+  setIsListSheetShowing: (isShwoing: boolean) => void
+  setIsSelectSheetShowing: (isShwoing: boolean) => void
+  setIsSelectSheetOpen: (isOpen: boolean) => void
+  setSelectedEventInfo: (eventInfo: MapEventInfo) => void
 }
 
 export const useMapStore = create<MapState>((set) => ({
@@ -19,10 +24,15 @@ export const useMapStore = create<MapState>((set) => ({
   isFilterOpen: false,
   isListSheetShowing: false,
   isSelectSheetShowing: false,
+  isSelectSheetOpen: false,
+  selectedEvent: null,
   map: null,
   setMap: (map) => set({ map }),
   setIsSearchOpen: (isOpen) => set({ isSearchOpen: isOpen }),
   setIsFilterOpen: (isOpen) => set({ isFilterOpen: isOpen }),
-  setIsListSheetShowing: (isOpen) => set({ isListSheetShowing: isOpen }),
-  setIsSelectSheetShowing: (isOpen) => set({ isSelectSheetShowing: isOpen }),
+  setIsListSheetShowing: (isShwoing) => set({ isListSheetShowing: isShwoing }),
+  setIsSelectSheetShowing: (isShwoing) =>
+    set({ isSelectSheetShowing: isShwoing }),
+  setIsSelectSheetOpen: (isOpen) => set({ isSelectSheetOpen: isOpen }),
+  setSelectedEventInfo: (eventInfo) => set({ selectedEvent: eventInfo }),
 }))

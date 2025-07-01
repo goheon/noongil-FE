@@ -12,6 +12,18 @@
     }
   }
 
+  .img-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .img-frame {
+      position: relative;
+      width: min(430px, 567px);
+      height: min(430px, 567px);
+    }
+  }
+
   .info-box {
     padding: 40px 30px 30px;
     display: flex;
