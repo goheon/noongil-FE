@@ -98,14 +98,16 @@ const createLabelStyle = (isMobile: Boolean) => {
     let x = 45
 
     if (isMobile) {
-      if (text.length >= 12) {
+      if (text.length >= 14) {
         x = 70
+      } else if (text.length >= 12) {
+        x = 62
       } else if (text.length >= 9) {
         x = 55
       } else if (text.length >= 7) {
-        x = 45
+        x = 38
       } else if (text.length >= 4) {
-        x = 35
+        x = 28
       } else {
         x = 20
       }
@@ -117,7 +119,7 @@ const createLabelStyle = (isMobile: Boolean) => {
       } else if (text.length >= 9) {
         x = 65
       } else if (text.length >= 7) {
-        x = 55
+        x = 50
       } else if (text.length >= 4) {
         x = 40
       } else {
@@ -126,8 +128,8 @@ const createLabelStyle = (isMobile: Boolean) => {
     }
 
     return typeof window !== 'undefined' && window?.naver?.maps?.Point
-      ? new window.naver.maps.Point(x, 15)
-      : { x, y: 15 }
+      ? new window.naver.maps.Point(x, 5)
+      : { x, y: 5 }
   }
 
   return {
@@ -420,7 +422,7 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
       url: iconUrl,
       size: new naver.maps.Size(48, 48),
       origin: new naver.maps.Point(0, 0),
-      anchor: new naver.maps.Point(24, 48),
+      anchor: new naver.maps.Point(18, 36), // scaledSize 기준으로 수정
       scaledSize: new naver.maps.Size(36, 36),
     }
   }, [])
