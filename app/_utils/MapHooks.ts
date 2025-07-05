@@ -512,6 +512,12 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
             // 현재 줌 레벨이 라벨이 보이는 레벨 이상일 때만 클릭 이벤트 실행
             if (map.getZoom() >= MIN_ZOOM_FOR_LABELS) {
               marker.onClick?.(marker)
+            } else {
+              // 라벨이 보이는 줌레벨로 이동 및 센터 이동
+              map.setCenter(
+                new naver.maps.LatLng(marker.position.lat, marker.position.lng),
+              )
+              map.setZoom(MIN_ZOOM_FOR_LABELS, true)
             }
           }
 
