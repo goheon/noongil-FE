@@ -28,6 +28,7 @@ export const MapBox: React.FC = () => {
   const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
   const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
   const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
+  const selectedEvent = useMapStore((s) => s.selectedEvent)
   const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
 
   // 내부높이 계산 훅
@@ -133,17 +134,25 @@ export const MapBox: React.FC = () => {
       bounds.extend(position)
     })
 
-    map.fitBounds(bounds)
-    map.panToBounds(
-      bounds,
-      {},
-      {
-        top: 50,
-        bottom: 50,
-        left: 50,
-        right: 50,
-      },
-    )
+    if (selectedEvent) {
+      map.setCenter({
+        lat: selectedEvent.addrLttd - 0.001,
+        lng: selectedEvent.addrLotd,
+      })
+      map.setZoom(16, true)
+    } else {
+      map.fitBounds(bounds)
+      map.panToBounds(
+        bounds,
+        {},
+        {
+          top: 50,
+          bottom: 50,
+          left: 50,
+          right: 50,
+        },
+      )
+    }
 
     setIsListSheetShowing(true)
   }, [addMarker, map, data, setIsListSheetShowing])

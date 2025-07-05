@@ -17,7 +17,10 @@ import styles from './MapListBottomSheet.module.scss'
 const cx = classNames.bind(styles)
 
 const MapListBottomSheet = () => {
-  const [isListSheetOpen, setIsListSheetOpen] = useState(false)
+  // const [isListSheetOpen, setIsListSheetOpen] = useState(false)
+  const isListSheetOpen = useMapStore((s) => s.isListSheetOpen)
+  const setIsListSheetOpen = useMapStore((s) => s.setIsListSheetOpen)
+
   const [events, setEvents] = useState([])
   const { data } = useMapQuery()
 
@@ -54,8 +57,33 @@ interface ItemCardProps {
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({ event }) => {
+  const mapInstance = useMapStore((s) => s.map)
+  const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
+  const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
+  const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
+  const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
+
+  console.log(event)
+
+  const handleClick = () => {
+    if (mapInstance) {
+      // 선택 이벤트 데이터 할당
+      setSelectedEventInfo(event)
+      // 지도 이동
+      mapInstance.setCenter({
+        lat: event.addrLttd - 0.001,
+        lng: event.addrLotd,
+      })
+      mapInstance.setZoom(16, true)
+      // 바텀시트 정리
+      setIsListSheetShowing(false)
+      setIsSelectSheetShowing(true)
+      setIsSelectSheetOpen(true)
+    }
+  }
+
   return (
-    <div className={cx('item-card')}>
+    <div className={cx('item-card')} onClick={handleClick}>
       <div className={cx('image-wrapper')}>
         <Image
           className={cx('item-image')}
