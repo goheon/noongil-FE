@@ -5,6 +5,7 @@ import RecentKeyword from './RecentKeyword'
 import { getPopularKeywords } from '@/app/_components/features/searchList/searchApi'
 import { useQuery } from '@tanstack/react-query'
 import useApplySearchParams from '@/app/_components/features/searchList/useApplySearchParams'
+import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 
 const cx = classNames.bind(styles)
 
@@ -17,6 +18,7 @@ const SearchSuggestionBox = (props: SearchSuggestionBoxProps) => {
   const { isExhibition, closeSearchBox } = props
 
   const { applyParams } = useApplySearchParams()
+  const { setKeyword } = useListFilterStore()
 
   useEffect(() => {
     document.body.style.overflow = 'hidden' // 컴포넌트가 보일 때 스크롤 막기
@@ -35,6 +37,7 @@ const SearchSuggestionBox = (props: SearchSuggestionBoxProps) => {
 
   const handleClick = (keyword: string) => {
     setTimeout(() => {
+      setKeyword(keyword)
       applyParams({
         keyword,
       })
