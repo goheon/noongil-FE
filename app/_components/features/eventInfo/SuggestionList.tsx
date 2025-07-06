@@ -13,6 +13,9 @@ import Image from 'next/image'
 import SampleImage from '@/public/free-img.jpg'
 import { formatDateRange } from '@/app/_utils/textFormatter'
 
+import Link from 'next/link'
+import { getEventDetailUrl } from '@/app/_utils/navigation'
+
 const cx = classNames.bind(styles)
 
 interface SuggestionListProps {
@@ -36,39 +39,41 @@ const SuggestionList = (props: SuggestionListProps) => {
         {list &&
           list.map((item, idx) => (
             <SwiperSlide className={cx('list-item-wrapper')} key={item.eventId}>
-              <div className={cx('list-item')}>
-                <Image
-                  className={cx('image')}
-                  src={item.imageUrl || item.smallImageUrl || SampleImage}
-                  width={160}
-                  height={180}
-                  alt="img"
-                />
-                <div className={cx('info-box')}>
-                  {rank && (
-                    <div
-                      className={cx('rank', {
-                        'rank--exhibition': item.eventTypeCd === '20',
-                      })}
-                    >
-                      {idx + 1}
-                    </div>
-                  )}
+              <Link href={getEventDetailUrl(item.eventTypeCd, item.eventId)}>
+                <div className={cx('list-item')}>
+                  <Image
+                    className={cx('image')}
+                    src={item.imageUrl || item.smallImageUrl || SampleImage}
+                    width={160}
+                    height={180}
+                    alt="img"
+                  />
+                  <div className={cx('info-box')}>
+                    {rank && (
+                      <div
+                        className={cx('rank', {
+                          'rank--exhibition': item.eventTypeCd === '20',
+                        })}
+                      >
+                        {idx + 1}
+                      </div>
+                    )}
 
-                  <div className={cx('info')}>
-                    <div
-                      className={cx('title', {
-                        'title--exhibition': item.eventTypeCd === '20',
-                      })}
-                    >
-                      {item.eventNm}
-                    </div>
-                    <div className={cx('event-date')}>
-                      {formatDateRange(item.operStatDt, item.operEndDt)}
+                    <div className={cx('info')}>
+                      <div
+                        className={cx('title', {
+                          'title--exhibition': item.eventTypeCd === '20',
+                        })}
+                      >
+                        {item.eventNm}
+                      </div>
+                      <div className={cx('event-date')}>
+                        {formatDateRange(item.operStatDt, item.operEndDt)}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </SwiperSlide>
           ))}
       </Swiper>
