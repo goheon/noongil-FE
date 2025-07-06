@@ -10,6 +10,7 @@ import 'swiper/css/pagination'
 
 import useApplySearchParams from '@/app/_components/features/searchList/useApplySearchParams'
 import { useKeywordHistoryStore } from '@/app/_store/keywordHistory/useKeywordHistory'
+import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 
 const cx = classNames.bind(styles)
 
@@ -23,9 +24,11 @@ const RecentKeyword = (props: RecentKeywordProps) => {
 
   const { applyParams } = useApplySearchParams()
   const { histories, removeHistory } = useKeywordHistoryStore()
+  const { setKeyword } = useListFilterStore()
 
   const handleClick = (keyword: string) => {
     setTimeout(() => {
+      setKeyword(keyword)
       applyParams({
         keyword,
       })
