@@ -50,19 +50,25 @@ const SearchList = (props: SearchListProps) => {
       {isFetching ? (
         <SkeletonList listType="board" cardType="column" length={6} />
       ) : (
-        <ul className={cx('list')}>
+        <>
           {list && list.length > 0 ? (
-            list.map((data) => (
-              <li key={data.eventId}>
-                <SearchListItem data={data} eventCode={eventCode} />
-              </li>
-            ))
+            <ul className={cx('list')}>
+              {list.map((data) => (
+                <li key={data.eventId}>
+                  <SearchListItem data={data} eventCode={eventCode} />
+                </li>
+              ))}
+              <div ref={ref} />
+            </ul>
           ) : (
-            <div>빈페이지입니다.</div>
+            <div className={cx('empty')}>
+              <div className={cx('notice-box')}>
+                <div className={cx('notice')}>검색 결과가 없습니다.</div>
+                <div className={cx('notice')}>검색어를 변경해 보세요.</div>
+              </div>
+            </div>
           )}
-
-          <div ref={ref} />
-        </ul>
+        </>
       )}
 
       {isFetchingNextPage && (
