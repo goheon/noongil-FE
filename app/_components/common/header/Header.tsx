@@ -194,6 +194,9 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
           setIsSelectSheetShowing(false)
           setIsListSheetShowing(true)
           setIsListSheetOpen(true)
+          if (!pathname.includes('map')) {
+            router.back()
+          }
         } else {
           if (pathname.includes('exhibition')) {
             router.push('/exhibition')
