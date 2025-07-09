@@ -26,6 +26,11 @@ export const MapBox: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const setMap = useMapStore((s) => s.setMap)
   const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
+  const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
+  const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
+  const selectedEvent = useMapStore((s) => s.selectedEvent)
+  const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
+
   // 내부높이 계산 훅
   useVhUnit()
 
@@ -111,8 +116,14 @@ export const MapBox: React.FC = () => {
         title: event.eventNm,
         type: event.eventTypeCd === '10' ? 'popup' : 'exhibition',
         onClick: () => {
+          // list bottomsheet showing false
+          setIsListSheetShowing(false)
+          // assign data to global state
+          setSelectedEventInfo(event)
           // select bottomsheet showing true
+          setIsSelectSheetShowing(true)
           // select bottomsheet open
+          setIsSelectSheetOpen(true)
           // header back button
           // map center move
           //
@@ -123,17 +134,25 @@ export const MapBox: React.FC = () => {
       bounds.extend(position)
     })
 
-    map.fitBounds(bounds)
-    map.panToBounds(
-      bounds,
-      {},
-      {
-        top: 50,
-        bottom: 50,
-        left: 50,
-        right: 50,
-      },
-    )
+    if (selectedEvent) {
+      map.setCenter({
+        lat: selectedEvent.addrLttd - 0.001,
+        lng: selectedEvent.addrLotd,
+      })
+      map.setZoom(16, true)
+    } else {
+      map.fitBounds(bounds)
+      map.panToBounds(
+        bounds,
+        {},
+        {
+          top: 50,
+          bottom: 50,
+          left: 50,
+          right: 50,
+        },
+      )
+    }
 
     setIsListSheetShowing(true)
   }, [addMarker, map, data, setIsListSheetShowing])

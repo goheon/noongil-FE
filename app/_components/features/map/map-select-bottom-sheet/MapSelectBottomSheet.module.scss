@@ -3,13 +3,16 @@
   height: 38dvh;
 
   .item-card {
+    justify-self: center;
     display: flex;
     margin: 43px 0 0 65px;
     box-sizing: border-box;
 
-    .item-image {
+    .image-wrapper {
+      overflow: hidden;
       min-width: 140px;
       height: 163px;
+      position: relative;
     }
 
     .item-info {
@@ -44,8 +47,7 @@
         flex-direction: row;
 
         p {
-          margin-top: 3px;
-          margin-left: 3px;
+          margin: 3px;
           font-size: 13px;
           line-height: 13px;
         }

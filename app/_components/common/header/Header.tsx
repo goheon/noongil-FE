@@ -10,13 +10,14 @@ import { MapPageHeader } from './MapPageHeader/MapPageHeader'
 import { MyPageHeader } from './MyPageHeader/MyPageHeader'
 import { LoginHeader } from './LoginPageHeader/LoginPageHeader'
 
-import { ICON } from '@/public'
-import { HeaderProps, HeaderLogoBoxProps, SearchBoxProps } from '@/app/_types'
-import styles from './header.module.scss'
 import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
-import useApplySearchParams from '../../features/searchList/useApplySearchParams'
-import { useMapStore } from '@/app/_store/map/useMapStore'
 import { useKeywordHistoryStore } from '@/app/_store/keywordHistory/useKeywordHistory'
+import { useMapStore } from '@/app/_store/map/useMapStore'
+import useApplySearchParams from '../../features/searchList/useApplySearchParams'
+
+import { HeaderProps, HeaderLogoBoxProps, SearchBoxProps } from '@/app/_types'
+import { ICON } from '@/public'
+import styles from './header.module.scss'
 
 // 헤더
 const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
@@ -178,7 +179,11 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
 }) => {
   const pathname = usePathname()
   const router = useRouter()
+  const setIsListSheetOpen = useMapStore((s) => s.setIsListSheetOpen)
   const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
+  const isSelectSheetOpen = useMapStore((s) => s.isSelectSheetOpen)
+  const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
+  const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
 
   return (
     <div
@@ -187,6 +192,14 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
         if (isSearchOpen) {
           setIsSearchOpen(false)
           setIsListSheetShowing(true)
+        } else if (isSelectSheetOpen) {
+          setIsSelectSheetOpen(false)
+          setIsSelectSheetShowing(false)
+          setIsListSheetShowing(true)
+          setIsListSheetOpen(true)
+          if (!pathname.includes('map')) {
+            router.back()
+          }
         } else {
           if (pathname.includes('exhibition')) {
             router.push('/exhibition')
@@ -198,7 +211,7 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
         }
       }}
     >
-      {isSearchOpen ? (
+      {isSearchOpen || isSelectSheetOpen ? (
         !isExhibition ? (
           <Image
             className={`${styles['header_search-bar_logo-box_icon']}`}
@@ -233,7 +246,7 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
           height={39}
         />
       )}
-      {!isSearchOpen && (
+      {!isSearchOpen && !isSelectSheetOpen && (
         <span className={`${styles['header_search-bar_logo-box_title']}`}>
           눈 길
         </span>
