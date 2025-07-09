@@ -30,6 +30,7 @@ export const MapBox: React.FC = () => {
   const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
   const selectedEvent = useMapStore((s) => s.selectedEvent)
   const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
+  const setIsFilterOpen = useMapStore((s) => s.setIsFilterOpen)
 
   // 내부높이 계산 훅
   useVhUnit()
@@ -89,6 +90,18 @@ export const MapBox: React.FC = () => {
       naver.maps.Event.removeListener(zoomListener)
     }
   }, [map, updateMarkerLabels])
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsFilterOpen(false)
+    }
+
+    window.addEventListener('popstate', handlePopState)
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [])
 
   // 이벤트 조회 쿼리 데이터
   const { data } = useMapQuery()

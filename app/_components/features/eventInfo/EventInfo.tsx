@@ -4,7 +4,7 @@ import useEventInfo from './useEventInfo'
 import Image from 'next/image'
 import SampleImage from '@/public/free-img.jpg'
 import { ICON } from '@/public'
-import { useCallback, useMemo, useState } from 'react'
+import { useEffect, useCallback, useMemo, useState } from 'react'
 import { formatDateRange } from '@/app/_utils/textFormatter'
 import usePopularList from '../main/PopularList/usePopularList'
 import SuggestionList from './SuggestionList'
@@ -17,6 +17,7 @@ import Skeleton from 'react-loading-skeleton'
 import { ALL_CATEGORY_LABELS } from '@/app/_constants/event'
 import Modal from '../../common/modal/Modal'
 import { useRouter } from 'next/navigation'
+import { useMapStore } from '@/app/_store/map/useMapStore'
 
 const cx = classNames.bind(styles)
 
@@ -41,10 +42,23 @@ const EventInfo = (props: EventInfoProps) => {
   const router = useRouter()
 
   const { showSnackbar } = useSnackbar()
-
   const { onBookmark } = useBookmarkItem()
-
+  const setIsListSheetOpen = useMapStore((s) => s.setIsListSheetOpen)
+  const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
   const { isLoading, eventDetail, nearEvents } = useEventInfo(id)
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsListSheetOpen(false)
+      setIsListSheetShowing(false)
+    }
+
+    window.addEventListener('popstate', handlePopState)
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [])
 
   const heartIcon = useMemo(() => {
     const state = eventDetail?.likeYn === 'Y' ? 'liked' : 'unliked'
