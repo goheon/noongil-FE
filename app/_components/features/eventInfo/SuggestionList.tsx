@@ -35,19 +35,21 @@ const SuggestionList = (props: SuggestionListProps) => {
         className={cx('list')}
         slidesPerView={'auto'}
         modules={[Pagination]}
+        spaceBetween={20}
       >
         {list &&
           list.map((item, idx) => (
             <SwiperSlide className={cx('list-item-wrapper')} key={item.eventId}>
               <Link href={getEventDetailUrl(item.eventTypeCd, item.eventId)}>
                 <div className={cx('list-item')}>
-                  <Image
-                    className={cx('image')}
-                    src={item.imageUrl || item.smallImageUrl || SampleImage}
-                    width={160}
-                    height={180}
-                    alt="img"
-                  />
+                  <div className={cx('img-wrapper')}>
+                    <Image
+                      className={cx('image')}
+                      src={item.imageUrl || item.smallImageUrl || SampleImage}
+                      fill
+                      alt="img"
+                    />
+                  </div>
                   <div className={cx('info-box')}>
                     {rank && (
                       <div

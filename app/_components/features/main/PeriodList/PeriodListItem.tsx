@@ -40,8 +40,7 @@ const PeriodListItem = (props: PeriodListItemProps) => {
           <Image
             src={data.imageUrl ?? SampleImage}
             alt="image"
-            width={125}
-            height={125}
+            fill
             className={cx('image')}
           />
         </div>

@@ -3,11 +3,16 @@
   gap: 20px;
 
   .img-wrapper {
-    width: 125px;
-    height: 125px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 120px;
+    aspect-ratio: 3 / 4;
+    position: relative;
+    overflow: hidden;
 
     .image {
       border-radius: 5px;
+      object-fit: cover;
     }
   }
 

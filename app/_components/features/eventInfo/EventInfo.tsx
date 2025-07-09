@@ -133,7 +133,7 @@ const EventInfo = (props: EventInfoProps) => {
   }, [eventDetail, isLoggedIn, router, onBookmark])
 
   return (
-    <>
+    <div className={cx('container')}>
       {isLoading ? (
         <div className={cx('loading')}>
           <Skeleton width={430} height={567} />
@@ -141,12 +141,12 @@ const EventInfo = (props: EventInfoProps) => {
           <Skeleton width={430} height={200} />
         </div>
       ) : (
-        <div className={cx('container')}>
+        <div className={cx('content-container')}>
           <div className={cx('img-wrapper')}>
             <Image
+              className={cx('main-image')}
               src={eventDetail?.smallImageUrl || SampleImage}
-              width={430}
-              height={567}
+              fill
               alt="img"
             />
           </div>
@@ -238,12 +238,12 @@ const EventInfo = (props: EventInfoProps) => {
               {eventDetail &&
                 eventDetail.imageUrls &&
                 eventDetail.imageUrls.map((item) => (
-                  <li key={item}>
+                  <li key={item} className={cx('content-img-wrapper')}>
                     <Image
                       src={item}
+                      className={cx('content-img')}
                       alt="content-img"
-                      width={369}
-                      height={277}
+                      fill
                     />
                   </li>
                 ))}
@@ -267,7 +267,7 @@ const EventInfo = (props: EventInfoProps) => {
         </div>
       )}
       <Modal {...modalProps} />
-    </>
+    </div>
   )
 }
 export default EventInfo

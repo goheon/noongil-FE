@@ -26,8 +26,7 @@
 
     .list-item-wrapper {
       box-sizing: border-box;
-      width: 200px;
-      margin-right: 50px;
+      width: 150px;
 
       .list-item {
         width: 100%;
@@ -35,8 +34,17 @@
         flex-direction: column;
         gap: 19px;
 
-        .image {
+        .img-wrapper {
           border-radius: 5px;
+          width: 100%;
+          border-radius: 5px;
+          position: relative;
+          aspect-ratio: 3/4;
+
+          .image {
+            border-radius: 5px;
+            object-fit: cover;
+          }
         }
 
         .info-box {
