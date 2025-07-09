@@ -6,13 +6,14 @@ const NAVER_CLIENT_ID = config.NAVER_MAP_CLIENT_ID
 const NAVER_CLIENT_KEY = config.NAVER_MAP_CLIENT_KEY
 
 const headers = {
-  'X-NCP-APIGW-API-KEY-ID': NAVER_CLIENT_ID!,
-  'X-NCP-APIGW-API-KEY': NAVER_CLIENT_KEY!,
+  'x-ncp-apigw-api-key-id': NAVER_CLIENT_ID!,
+  'x-ncp-apigw-api-key': NAVER_CLIENT_KEY!,
+  Accept: 'application/json',
 }
 
 // 주소 → 좌표 변환
 const fetchCoordinates = async (address: string) => {
-  const url = `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode`
+  const url = `https://maps.apigw.ntruss.com/map-geocode/v2/geocode`
   const res = await axios.get(url, {
     headers,
     params: { query: address },
@@ -29,14 +30,13 @@ const fetchCoordinates = async (address: string) => {
 
 // 좌표 → 법정동 코드 변환
 const fetchLegalCode = async (x: string, y: string) => {
-  const url = `https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc`
+  const url = `https://maps.apigw.ntruss.com/map-reversegeocode/v2/gc`
   const res = await axios.get(url, {
     headers,
     params: {
       coords: `${x},${y}`,
-      sourcecrs: 'EPSG:4326',
-      orders: 'legalcode',
       output: 'json',
+      orders: 'legalcode,admcode,addr,roadaddr',
     },
   })
 
