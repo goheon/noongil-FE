@@ -54,7 +54,7 @@ const RecommendListView = (props: RecommendListViewProps) => {
 
   return (
     <div className={cx('container')}>
-      <Swiper slidesPerView="auto" spaceBetween={16} className={cx('tab-list')}>
+      <Swiper slidesPerView="auto" spaceBetween={20} className={cx('tab-list')}>
         {tabs.map((tab) => (
           <SwiperSlide key={tab} style={{ width: 'auto' }}>
             <Chip
@@ -73,6 +73,7 @@ const RecommendListView = (props: RecommendListViewProps) => {
         className={cx('item-list')}
         slidesPerView={'auto'}
         modules={[Pagination]}
+        spaceBetween={20}
         onSwiper={(swiper) => {
           swiperRef.current = swiper
         }}
@@ -81,13 +82,14 @@ const RecommendListView = (props: RecommendListViewProps) => {
           <SwiperSlide className={cx('list-item-wrapper')} key={item.eventId}>
             <Link href={getEventDetailUrl(item.eventTypeCd, item.eventId)}>
               <div className={cx('list-item')}>
-                <Image
-                  className={cx('image')}
-                  src={item.imageUrl ?? SampleImage}
-                  alt="img"
-                  width={200}
-                  height={200}
-                />
+                <div className={cx('img-wrapper')}>
+                  <Image
+                    className={cx('image')}
+                    src={item.imageUrl ?? SampleImage}
+                    alt="img"
+                    fill
+                  />
+                </div>
 
                 <div className={cx('info-box')}>
                   <div className={cx('info')}>

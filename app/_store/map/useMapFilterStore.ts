@@ -1,37 +1,33 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
 
-export type EventType = 'POPUP' | 'EXHIBITION' | 'ALL';
+import { TEventCategory } from '@/app/_types'
+
+export type EventType = 'popup' | 'exhibition' | 'all'
+export type DateType = 'today' | 'weekend' | 'nearOpen' | ''
 
 interface MapFilterState {
-  selectedCategories: string[];
-  selectedType: EventType;
-  selectedDate: Date | null;
-  setSelectedCategories: (categories: string[]) => void;
-  addCategory: (category: string) => void;
-  removeCategory: (category: string) => void;
-  setSelectedType: (type: EventType) => void;
-  setSelectedDate: (date: Date | null) => void;
-  resetFilters: () => void;
+  selectedCategories: TEventCategory[]
+  selectedType: EventType
+  seletedDateType: DateType
+  selectedDates: [Date | null, Date | null]
+  setSelectedCategories: (categories: TEventCategory[]) => void
+  setSelectedType: (type: EventType) => void
+  setSelectedDateType: (dateType: DateType) => void
+  setSelectedDates: (dates: [Date | null, Date | null]) => void
 }
 
 const initialState = {
   selectedCategories: [],
-  selectedType: 'ALL' as EventType,
-  selectedDate: null,
-};
+  selectedType: 'all' as EventType,
+  seletedDateType: '' as DateType,
+  selectedDates: [null, null] as [Date | null, Date | null],
+}
 
 export const useMapFilterStore = create<MapFilterState>((set) => ({
   ...initialState,
-  setSelectedCategories: (categories) => set({ selectedCategories: categories }),
-  addCategory: (category) => 
-    set((state) => ({
-      selectedCategories: [...state.selectedCategories, category]
-    })),
-  removeCategory: (category) =>
-    set((state) => ({
-      selectedCategories: state.selectedCategories.filter((c) => c !== category)
-    })),
+  setSelectedCategories: (categories) =>
+    set({ selectedCategories: categories }),
   setSelectedType: (type) => set({ selectedType: type }),
-  setSelectedDate: (date) => set({ selectedDate: date }),
-  resetFilters: () => set(initialState),
-}));
+  setSelectedDateType: (dateType) => set({ seletedDateType: dateType }),
+  setSelectedDates: (dates) => set({ selectedDates: dates }),
+}))

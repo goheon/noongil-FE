@@ -3,7 +3,10 @@
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-import { useMapFilterStore, EventType } from '@/app/_store/map/useMapFilterStore'
+import {
+  useMapFilterStore,
+  EventType,
+} from '@/app/_store/map/useMapFilterStore'
 import { useMapStore } from '@/app/_store/map/useMapStore'
 
 import styles from './CategoryDial.module.scss'
@@ -14,9 +17,9 @@ const CategoryDial = () => {
   const isSearchOpen = useMapStore((state) => state.isSearchOpen)
 
   const { focused, buttons } = useMemo(() => {
-    if (selectedType === 'POPUP') {
+    if (selectedType === 'popup') {
       return { focused: '팝업', buttons: ['전시', '전체'] }
-    } else if (selectedType === 'EXHIBITION') {
+    } else if (selectedType === 'exhibition') {
       return { focused: '전시', buttons: ['팝업', '전체'] }
     } else {
       return { focused: '전체', buttons: ['팝업', '전시'] }
@@ -27,13 +30,13 @@ const CategoryDial = () => {
     if (!open) return
 
     if (button === '팝업') {
-      setSelectedType('POPUP')
+      setSelectedType('popup')
       setOpen(false)
     } else if (button === '전시') {
-      setSelectedType('EXHIBITION')
+      setSelectedType('exhibition')
       setOpen(false)
     } else {
-      setSelectedType('ALL')
+      setSelectedType('all')
       setOpen(false)
     }
   }

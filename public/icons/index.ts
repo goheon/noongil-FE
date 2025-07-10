@@ -34,8 +34,9 @@ const ICON = {
   heart_black_active: '/icons/heart_black_active.svg',
   target: '/icons/target.svg',
   marker_exhibition: '/icons/exhibition-marker.png',
-  popup_exhibition: '/icons/popup-marker.png',
+  marker_popup: '/icons/popup-marker.png',
   x_icon: '/icons/x-icon.svg',
+  x_icon_black: '/icons/x-icon_black.svg',
   checkbox_off_black: '/icons/checkbox-off-black.svg',
   delete: 'icons/delete-input.svg',
   filter: '/icons/filter-icon_map.svg',
@@ -45,6 +46,9 @@ const ICON = {
   location: '/icons/location.svg',
   share: '/icons/share.svg',
   website: '/icons/website.svg',
+  reset: '/icons/reset-icon.png',
+  location_map_list: '/icons/location_map-list.svg',
+  refresh: '/icons/refresh-icon.svg',
 }
 
 export { ICON }

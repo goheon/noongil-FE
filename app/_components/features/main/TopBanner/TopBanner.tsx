@@ -66,15 +66,19 @@ const TopBanner = (props: TopBannerProps) => {
           {data.map((item: IListItem) => {
             return (
               <SwiperSlide className={cx('slide-item')} key={item.eventId}>
-                <Link href={getEventDetailUrl(item.eventTypeCd, item.eventId)}>
+                <Link
+                  className={cx('link')}
+                  href={getEventDetailUrl(item.eventTypeCd, item.eventId)}
+                >
                   <div className={cx('item-wrapper')}>
-                    <Image
-                      className={cx('banner-img')}
-                      src={item.imageUrl ?? SampleImg}
-                      alt="top-banner"
-                      width={382}
-                      height={429}
-                    />
+                    <div className={cx('img-wrapper')}>
+                      <Image
+                        className={cx('banner-img')}
+                        src={item.imageUrl ?? SampleImg}
+                        alt="top-banner"
+                        fill
+                      />
+                    </div>
 
                     <div className={cx('notice-box')}>
                       <div className={cx('title')}>{item.eventNm}</div>

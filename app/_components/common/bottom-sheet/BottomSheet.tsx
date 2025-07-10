@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import classNames from 'classnames/bind'
 import { motion, useDragControls } from 'framer-motion'
+
 import styles from './BottomSheet.module.scss'
 
 export type BottomSheetType = 'filter' | 'map-list' | 'map-select'
@@ -15,6 +17,8 @@ interface BottomSheetProps {
   isExhibitionPage?: boolean
 }
 
+const cx = classNames.bind(styles)
+
 const BottomSheet = ({
   type,
   children,
@@ -26,6 +30,14 @@ const BottomSheet = ({
   const [isOpen, setIsOpen] = useState<boolean>(isOpenProp ?? false)
   const dragControls = useDragControls()
   const bottomSheetRef = useRef(null)
+  const [dragStartY, setDragStartY] = useState(0)
+  const [height, setHeight] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setHeight(window.innerHeight)
+    }
+  }, [])
 
   // 외부 prop으로 전달된 isOpen 값이 바뀔 때 내부 상태도 업데이트
   useEffect(() => {
@@ -38,23 +50,56 @@ const BottomSheet = ({
     setIsOpen(!isOpen)
   }
 
-  const handleDragEnd = (e: any, info: any) => {
-    if (info.point.y > window.innerHeight * 0.8) {
-      setIsOpen(false)
+  const handleDragStart = (e: any, info: any) => {
+    setDragStartY(info.point.y)
+  }
 
+  const handleDragEnd = (e: any, info: any) => {
+    const dragDistance = info.point.y - dragStartY
+
+    if (dragDistance > 50) {
+      setIsOpen(false)
       if (setIsOpenProp) {
         setIsOpenProp(false)
       }
-    } else if (info.point.y > window.innerHeight * 0.2) {
+    } else if (dragDistance < 0) {
       setIsOpen(true)
+      if (setIsOpenProp) {
+        setIsOpenProp(true)
+      }
     }
   }
 
-  // type에 따라 다른 클래스명을 적용하거나 추가 UI를 렌더링할 수 있음.
-  const bottomSheetClass = `${styles['bottom-sheet']} ${styles[`bottom-sheet--${type}`]} ${isExhibitionPage && styles['bottom-sheet--exhibition']}`
+  // type에 따른 exit 위치와 드래그 범위 설정
+  const getSheetConfig = () => {
+    const isShortHeightView = typeof height === 'number' && height < 741
+
+    switch (type) {
+      case 'map-list':
+        return {
+          animate: { y: isOpen ? 0 : '63dvh' },
+          exitY: '63dvh',
+          dragConstraints: { top: 0, bottom: 0 },
+        }
+      case 'map-select':
+        return {
+          animate: { y: isOpen ? 0 : isShortHeightView ? '35dvh' : '25dvh' },
+          exitY: isShortHeightView ? '35dvh' : '25dvh',
+          dragConstraints: { top: 0, bottom: 0 },
+        }
+      default:
+        return {
+          animate: { y: isOpen ? '0%' : '100%' },
+          exitY: '100%',
+          dragConstraints: { top: 0, bottom: 0 },
+        }
+    }
+  }
+
+  const { animate, exitY, dragConstraints } = getSheetConfig()
 
   return (
-    <div className={styles['bottom-sheet-container']}>
+    <div className={cx('bottom-sheet-container')}>
       {/* <motion.button
         className={styles['open-button']}
         onClick={handleToggle}
@@ -66,34 +111,37 @@ const BottomSheet = ({
 
       <motion.div
         ref={bottomSheetRef}
-        className={bottomSheetClass}
+        className={cx(
+          'bottom-sheet',
+          `bottom-sheet--${type}`,
+          isExhibitionPage && 'bottom-sheet-exhibition',
+        )}
         initial={{ y: '100%' }}
-        animate={{ y: isOpen ? '15%' : '100%' }}
-        exit={{ y: '100%' }}
+        animate={animate}
+        exit={{ y: exitY }}
         transition={{ type: 'spring', stiffness: 300, damping: 50 }}
-        drag="y"
+        // drag="y"
         dragControls={dragControls}
         dragListener={false}
-        dragConstraints={{ top: 0, bottom: 0 }}
+        dragConstraints={dragConstraints}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
         <motion.div
-          className={styles['handle-bar']}
+          className={cx('handle-bar')}
           onPointerDown={(event) => dragControls.start(event)}
           style={{ touchAction: 'none' }}
         >
-          <div className={styles['handle']} />
+          <div className={cx('handle')} />
         </motion.div>
 
-        <div
-          className={`${styles['content']} ${type === 'filter' && `${styles['content--filter']}`}`}
-        >
+        <div className={cx('content', type === 'filter' && 'content--filter')}>
           {/* {type === 'filter' && (
             <div className={styles['header']}>
               <h3>필터 옵션</h3>
             </div>
-          )}
-          {(type === 'map-list' || type === 'map-select') && (
+          )} */}
+          {/* {(type === 'map-list' || type === 'map-select') && (
             <div className={styles['header']}>
               <h3>{type === 'map-list' ? '지도 리스트' : '지도 선택'}</h3>
             </div>

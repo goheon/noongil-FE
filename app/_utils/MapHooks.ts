@@ -1,4 +1,11 @@
-import { useLayoutEffect, useEffect, useState, useRef, useCallback } from 'react'
+import { ICON } from '@/public'
+import {
+  useLayoutEffect,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+} from 'react'
 
 declare global {
   interface Window {
@@ -54,46 +61,83 @@ interface UseMarkerManagerProps {
 }
 
 interface MarkerWithLabel extends naver.maps.Marker {
-  setLabel: (label: { text: string; color: string; fontSize: number; fontWeight: string; offsetY: number } | null) => void;
+  setLabel: (
+    label: {
+      text: string
+      color: string
+      fontSize: number
+      fontWeight: string
+      offsetY: number
+    } | null,
+  ) => void
 }
 
 // ===== Constants =====
-const LABEL_OFFSET = {
-  NORMAL: 0.00015,    // 기본 줌 레벨에서의 오프셋
-  HIGH_ZOOM: 0.00008  // 높은 줌 레벨에서의 오프셋
-}
 const MIN_ZOOM_FOR_LABELS = 15
 const HIGH_ZOOM_LEVEL = 18
 
-const createLabelStyle = () => {
+const createLabelStyle = (isMobile: Boolean) => {
   const content = (text: string) => `
     <div style="
       background: white;
       padding: 5px;
       border: 1px solid #ccc;
       border-radius: 3px;
-      font-size: 12px;
+      font-size: ${isMobile ? '12px;' : '16px;'}
       text-align: center;
       white-space: nowrap;
     ">${text}</div>
   `
 
-  const size = typeof window !== 'undefined' && window?.naver?.maps?.Size ? 
-    new window.naver.maps.Size(100, 30) : 
-    { width: 100, height: 30 }
+  const size =
+    typeof window !== 'undefined' && window?.naver?.maps?.Size
+      ? new window.naver.maps.Size(100, 30)
+      : { width: 100, height: 30 }
 
-  const anchor = typeof window !== 'undefined' && window?.naver?.maps?.Point ? 
-    new window.naver.maps.Point(50, 15) : 
-    { x: 50, y: 15 }
+  const getAnchor = (text: string) => {
+    let x = 45
+
+    if (isMobile) {
+      if (text.length >= 14) {
+        x = 70
+      } else if (text.length >= 12) {
+        x = 62
+      } else if (text.length >= 9) {
+        x = 55
+      } else if (text.length >= 7) {
+        x = 38
+      } else if (text.length >= 4) {
+        x = 28
+      } else {
+        x = 20
+      }
+    } else {
+      if (text.length >= 14) {
+        x = 100
+      } else if (text.length >= 12) {
+        x = 85
+      } else if (text.length >= 9) {
+        x = 65
+      } else if (text.length >= 7) {
+        x = 50
+      } else if (text.length >= 4) {
+        x = 40
+      } else {
+        x = 20
+      }
+    }
+
+    return typeof window !== 'undefined' && window?.naver?.maps?.Point
+      ? new window.naver.maps.Point(x, 5)
+      : { x, y: 5 }
+  }
 
   return {
     content,
     size,
-    anchor
+    getAnchor,
   }
 }
-
-const LABEL_STYLE = createLabelStyle()
 
 // ===== Location Related Functions =====
 export const checkLocationPermission = async () => {
@@ -145,7 +189,7 @@ export const useNaverMapSDK = ({
     }
 
     const script = document.createElement('script')
-    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}&submodules=geocoder`
+    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}&submodules=geocoder`
     script.async = true
 
     script.onload = () => {
@@ -180,13 +224,15 @@ export const useNaverMapSDK = ({
 const createMapEventHandlers = (
   map: MapType,
   zoomingRef: React.MutableRefObject<boolean>,
-  lastZoomRef: React.MutableRefObject<number>
+  lastZoomRef: React.MutableRefObject<number>,
 ) => {
   const onZoomChanged = () => {
     const currentZoom = map.getZoom()
 
     if (Math.abs(currentZoom - lastZoomRef.current) > 2) {
-      map.setZoom(lastZoomRef.current + (currentZoom > lastZoomRef.current ? 2 : -2))
+      map.setZoom(
+        lastZoomRef.current + (currentZoom > lastZoomRef.current ? 2 : -2),
+      )
     } else {
       lastZoomRef.current = currentZoom
     }
@@ -236,15 +282,17 @@ export const useMapInitializer = ({
       }
 
       // 권한 상태 변경 감지
-      navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus) => {
-        permissionStatus.onchange = () => {
-          if (permissionStatus.state === 'granted') {
-            setIsModalOpen(false)
-          } else if (permissionStatus.state === 'denied') {
-            setIsModalOpen(true)
+      navigator.permissions
+        .query({ name: 'geolocation' })
+        .then((permissionStatus) => {
+          permissionStatus.onchange = () => {
+            if (permissionStatus.state === 'granted') {
+              setIsModalOpen(false)
+            } else if (permissionStatus.state === 'denied') {
+              setIsModalOpen(true)
+            }
           }
-        }
-      })
+        })
     }
 
     initLocationPermission()
@@ -256,11 +304,23 @@ export const useMapInitializer = ({
     const { onZoomChanged, onDragStart, onDragEnd } = createMapEventHandlers(
       map,
       zoomingRef,
-      lastZoomRef
+      lastZoomRef,
     )
-    const zoomListener = naver.maps.Event.addListener(map, 'zoom_changed', onZoomChanged)
-    const dragStartListener = naver.maps.Event.addListener(map, 'dragstart', onDragStart)
-    const dragEndListener = naver.maps.Event.addListener(map, 'dragend', onDragEnd)
+    const zoomListener = naver.maps.Event.addListener(
+      map,
+      'zoom_changed',
+      onZoomChanged,
+    )
+    const dragStartListener = naver.maps.Event.addListener(
+      map,
+      'dragstart',
+      onDragStart,
+    )
+    const dragEndListener = naver.maps.Event.addListener(
+      map,
+      'dragend',
+      onDragEnd,
+    )
 
     isInitialized.current = true
 
@@ -278,7 +338,11 @@ export const useMapInitializer = ({
 }
 
 // ===== Map Control Functions =====
-export const moveMapCenter = (map: MapType | null, lat: number, lng: number) => {
+export const moveMapCenter = (
+  map: MapType | null,
+  lat: number,
+  lng: number,
+) => {
   if (!map) return
   map.setCenter(new naver.maps.LatLng(lat, lng))
 }
@@ -288,127 +352,226 @@ export const setMapZoom = (map: MapType | null, zoom: number) => {
   map.setZoom(zoom)
 }
 
+export const getCenter = (map: MapType | null) => {
+  if (!map) return null
+  const center = map.getCenter()
+  return {
+    lat: center.y,
+    lng: center.x,
+  }
+}
+
+// ===== Map Center Monitoring Hook =====
+export const useMapCenter = (map: MapType | null) => {
+  const [center, setCenter] = useState<{ lat: number; lng: number } | null>(
+    null,
+  )
+
+  useEffect(() => {
+    if (!map) {
+      setCenter(null)
+      return
+    }
+
+    // 초기 중심 좌표 설정
+    const initialCenter = map.getCenter()
+    setCenter({
+      lat: initialCenter.y,
+      lng: initialCenter.x,
+    })
+
+    // 중심 이동 이벤트 리스너 등록
+    const centerChangedListener = naver.maps.Event.addListener(
+      map,
+      'center_changed',
+      () => {
+        const newCenter = map.getCenter()
+        setCenter({
+          lat: newCenter.y,
+          lng: newCenter.x,
+        })
+      },
+    )
+
+    // 클린업 함수
+    return () => {
+      naver.maps.Event.removeListener(centerChangedListener)
+    }
+  }, [map])
+
+  return center
+}
+
 // ===== Marker Management Hook =====
 export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
   const [markers, setMarkers] = useState<MarkerInstance[]>([])
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null)
+  const [innerWidth, setInnerWidth] = useState<number>(0)
+
+  useEffect(() => {
+    setInnerWidth(window?.innerWidth || 0)
+  }, [])
+
+  const LABEL_STYLE = createLabelStyle(innerWidth < 940)
 
   // 마커 아이콘 생성
   const createMarkerIcon = useCallback((type: MarkerType) => {
-    const iconUrl = type === 'popup' ? '/icons/popup-marker.png' : '/icons/exhibition-marker.png'
+    const iconUrl =
+      type === 'popup' ? ICON.marker_popup : ICON.marker_exhibition
     return {
       url: iconUrl,
       size: new naver.maps.Size(48, 48),
       origin: new naver.maps.Point(0, 0),
-      anchor: new naver.maps.Point(24, 48),
+      anchor: new naver.maps.Point(18, 36), // scaledSize 기준으로 수정
+      scaledSize: new naver.maps.Size(36, 36),
     }
   }, [])
 
   // 마커 라벨 업데이트
-  const updateMarkerLabels = useCallback((zoomLevel: number) => {
-    if (!map) return
+  const updateMarkerLabels = useCallback(
+    (zoomLevel: number) => {
+      if (!map) return
 
-    const shouldShowLabel = zoomLevel >= MIN_ZOOM_FOR_LABELS
-    const offset = zoomLevel >= HIGH_ZOOM_LEVEL ? LABEL_OFFSET.HIGH_ZOOM : LABEL_OFFSET.NORMAL
+      const shouldShowLabel = zoomLevel >= MIN_ZOOM_FOR_LABELS
 
-    setMarkers(prev => {
-      // 변경이 필요한 경우에만 업데이트
-      const hasChanges = prev.some(marker => 
-        (shouldShowLabel && !marker.labelMarker?.getMap()) || 
-        (!shouldShowLabel && marker.labelMarker?.getMap())
-      )
+      setMarkers((prev) => {
+        // 변경이 필요한 경우에만 업데이트
+        const hasChanges = prev.some(
+          (marker) =>
+            (shouldShowLabel && !marker.labelMarker?.getMap()) ||
+            (!shouldShowLabel && marker.labelMarker?.getMap()),
+        )
 
-      if (!hasChanges) return prev
+        if (!hasChanges) return prev
 
-      return prev.map(marker => {
-        try {
-          const position = marker.instance.getPosition()
-          
-          // 라벨 마커가 없는 경우 새로 생성
-          if (!marker.labelMarker) {
-            const labelMarker = new naver.maps.Marker({
-              position: new naver.maps.LatLng(position.y + offset, position.x),
-              map: shouldShowLabel ? map : undefined,
-              icon: {
+        return prev.map((marker) => {
+          try {
+            const position = marker.instance.getPosition()
+
+            // 라벨 마커가 없는 경우 새로 생성
+            if (!marker.labelMarker) {
+              const labelMarker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(position.y, position.x),
+                map: shouldShowLabel ? map : undefined,
+                icon: {
+                  content: LABEL_STYLE.content(
+                    marker.instance.getTitle() || '',
+                  ),
+                  size: LABEL_STYLE.size,
+                  anchor: LABEL_STYLE.getAnchor(
+                    marker.instance.getTitle() || '',
+                  ),
+                },
+              })
+              marker.labelMarker = labelMarker
+            } else {
+              marker.labelMarker.setPosition(
+                new naver.maps.LatLng(position.y, position.x),
+              )
+              marker.labelMarker.setMap(shouldShowLabel ? map : null)
+              marker.labelMarker.setIcon({
                 content: LABEL_STYLE.content(marker.instance.getTitle() || ''),
                 size: LABEL_STYLE.size,
-                anchor: LABEL_STYLE.anchor
-              }
-            })
-            marker.labelMarker = labelMarker
-          } else {
-            marker.labelMarker.setPosition(new naver.maps.LatLng(position.y, position.x))
-            marker.labelMarker.setMap(shouldShowLabel ? map : null)
+                anchor: LABEL_STYLE.getAnchor(marker.instance.getTitle() || ''),
+              })
+            }
+          } catch (error) {
+            console.error('Failed to update marker label:', error)
           }
-        } catch (error) {
-          console.error('Failed to update marker label:', error)
-        }
 
-        return marker
+          return marker
+        })
       })
-    })
-  }, [map])
+    },
+    [map],
+  )
 
   // 마커 추가
-  const addMarker = useCallback((marker: Marker) => {
-    if (!map) return
+  const addMarker = useCallback(
+    (marker: Marker) => {
+      if (!map) return
 
-    try {
-      const markerInstance = new naver.maps.Marker({
-        position: new naver.maps.LatLng(marker.position.lat, marker.position.lng),
-        map,
-        icon: createMarkerIcon(marker.type),
-        title: marker.title || ''
-      })
-
-      const currentZoom = map.getZoom()
-      let clickListener: naver.maps.MapEventListener | null = null
-      let labelClickListener: naver.maps.MapEventListener | null = null
-
-      // 클릭 이벤트 핸들러 등록
-      if (marker.onClick) {
-        const handleClick = () => {
-          // 현재 줌 레벨이 라벨이 보이는 레벨 이상일 때만 클릭 이벤트 실행
-          if (map.getZoom() >= MIN_ZOOM_FOR_LABELS) {
-            marker.onClick?.(marker)
-          }
-        }
-
-        // 메인 마커 클릭 이벤트
-        clickListener = naver.maps.Event.addListener(markerInstance, 'click', handleClick)
-      }
-
-      // 라벨 마커 생성
-      const labelMarker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(marker.position.lat + LABEL_OFFSET.NORMAL, marker.position.lng),
-        map: currentZoom >= MIN_ZOOM_FOR_LABELS ? map : undefined,
-        icon: {
-          content: LABEL_STYLE.content(marker.title || ''),
-          size: LABEL_STYLE.size,
-          anchor: LABEL_STYLE.anchor
-        }
-      })
-
-      // 라벨 마커 클릭 이벤트
-      if (marker.onClick) {
-        labelClickListener = naver.maps.Event.addListener(labelMarker, 'click', () => {
-          if (map.getZoom() >= MIN_ZOOM_FOR_LABELS) {
-            marker.onClick?.(marker)
-          }
+      try {
+        const markerInstance = new naver.maps.Marker({
+          position: new naver.maps.LatLng(
+            marker.position.lat,
+            marker.position.lng,
+          ),
+          map,
+          icon: createMarkerIcon(marker.type),
+          title: marker.title || '',
         })
-      }
 
-      setMarkers(prev => [...prev, { 
-        id: marker.id, 
-        instance: markerInstance, 
-        labelMarker,
-        clickListener,
-        labelClickListener // 라벨 클릭 리스너 참조 저장
-      }])
-    } catch (error) {
-      console.error('Failed to add marker:', error)
-    }
-  }, [map, createMarkerIcon])
+        const currentZoom = map.getZoom()
+        let clickListener: naver.maps.MapEventListener | null = null
+        let labelClickListener: naver.maps.MapEventListener | null = null
+
+        // 클릭 이벤트 핸들러 등록
+        if (marker.onClick) {
+          const handleClick = () => {
+            // 현재 줌 레벨이 라벨이 보이는 레벨 이상일 때만 클릭 이벤트 실행
+            if (map.getZoom() >= MIN_ZOOM_FOR_LABELS) {
+              marker.onClick?.(marker)
+            } else {
+              // 라벨이 보이는 줌레벨로 이동 및 센터 이동
+              map.setCenter(
+                new naver.maps.LatLng(marker.position.lat, marker.position.lng),
+              )
+              map.setZoom(MIN_ZOOM_FOR_LABELS, true)
+            }
+          }
+
+          // 메인 마커 클릭 이벤트
+          clickListener = naver.maps.Event.addListener(
+            markerInstance,
+            'click',
+            handleClick,
+          )
+        }
+
+        // 라벨 마커 생성
+        const labelMarker = new naver.maps.Marker({
+          position: new naver.maps.LatLng(
+            marker.position.lat,
+            marker.position.lng,
+          ),
+          map: currentZoom >= MIN_ZOOM_FOR_LABELS ? map : undefined,
+          icon: {
+            content: LABEL_STYLE.content(marker.title || ''),
+            size: LABEL_STYLE.size,
+            anchor: LABEL_STYLE.getAnchor(marker.title || ''),
+          },
+        })
+
+        // 라벨 마커 클릭 이벤트
+        if (marker.onClick) {
+          labelClickListener = naver.maps.Event.addListener(
+            labelMarker,
+            'click',
+            () => {
+              if (map.getZoom() >= MIN_ZOOM_FOR_LABELS) {
+                marker.onClick?.(marker)
+              }
+            },
+          )
+        }
+
+        setMarkers((prev) => [
+          ...prev,
+          {
+            id: marker.id,
+            instance: markerInstance,
+            labelMarker,
+            clickListener,
+            labelClickListener, // 라벨 클릭 리스너 참조 저장
+          },
+        ])
+      } catch (error) {
+        console.error('Failed to add marker:', error)
+      }
+    },
+    [map, createMarkerIcon],
+  )
 
   // 마커 제거
   const removeMarker = useCallback((markerId: string) => {
@@ -449,47 +612,62 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
   }, [])
 
   // 마커 선택
-  const selectMarker = useCallback((markerId: string) => {
-    if (!map) return
-    setSelectedMarkerId(markerId)
-  }, [map])
+  const selectMarker = useCallback(
+    (markerId: string) => {
+      if (!map) return
+      setSelectedMarkerId(markerId)
+    },
+    [map],
+  )
 
   // 마커 목록 일괄 업데이트
-  const updateMarkers = useCallback((newMarkers: Marker[]) => {
-    if (!map) return
+  const updateMarkers = useCallback(
+    (newMarkers: Marker[]) => {
+      if (!map) return
 
-    try {
-      // 기존 마커 제거
-      clearMarkers()
+      try {
+        // 기존 마커 제거
+        clearMarkers()
 
-      const currentZoom = map.getZoom()
+        const currentZoom = map.getZoom()
 
-      // 새로운 마커 추가
-      newMarkers.forEach(marker => {
-        const markerInstance = new naver.maps.Marker({
-          position: new naver.maps.LatLng(marker.position.lat, marker.position.lng),
-          map,
-          icon: createMarkerIcon(marker.type),
-          title: marker.title || ''
+        // 새로운 마커 추가
+        newMarkers.forEach((marker) => {
+          const markerInstance = new naver.maps.Marker({
+            position: new naver.maps.LatLng(
+              marker.position.lat,
+              marker.position.lng,
+            ),
+            map,
+            icon: createMarkerIcon(marker.type),
+            title: marker.title || '',
+          })
+
+          // 라벨 마커 생성
+          const labelMarker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(
+              marker.position.lat,
+              marker.position.lng,
+            ),
+            map: currentZoom >= MIN_ZOOM_FOR_LABELS ? map : undefined,
+            icon: {
+              content: LABEL_STYLE.content(marker.title || ''),
+              size: LABEL_STYLE.size,
+              anchor: LABEL_STYLE.getAnchor(marker.title || ''),
+            },
+          })
+
+          setMarkers((prev) => [
+            ...prev,
+            { id: marker.id, instance: markerInstance, labelMarker },
+          ])
         })
-
-        // 라벨 마커 생성
-        const labelMarker = new naver.maps.Marker({
-          position: new naver.maps.LatLng(marker.position.lat + LABEL_OFFSET.NORMAL, marker.position.lng),
-          map: currentZoom >= MIN_ZOOM_FOR_LABELS ? map : undefined,
-          icon: {
-            content: LABEL_STYLE.content(marker.title || ''),
-            size: LABEL_STYLE.size,
-            anchor: LABEL_STYLE.anchor
-          }
-        })
-
-        setMarkers(prev => [...prev, { id: marker.id, instance: markerInstance, labelMarker }])
-      })
-    } catch (error) {
-      console.error('Failed to update markers:', error)
-    }
-  }, [map, clearMarkers, createMarkerIcon])
+      } catch (error) {
+        console.error('Failed to update markers:', error)
+      }
+    },
+    [map, clearMarkers, createMarkerIcon],
+  )
 
   // 컴포넌트 언마운트 시 마커 정리
   useEffect(() => {
@@ -508,4 +686,4 @@ export const useMarkerManager = ({ map }: UseMarkerManagerProps) => {
     updateMarkers,
     updateMarkerLabels,
   }
-} 
+}

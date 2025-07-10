@@ -159,6 +159,7 @@ export const registerMainImage = async ({
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      timeout: 5000,
     })
   } catch (err) {
     console.log('err :', err)
@@ -184,6 +185,7 @@ export const registerContentImage = async ({
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      timeout: 5000,
     })
   } catch (err) {
     console.log('err :', err)

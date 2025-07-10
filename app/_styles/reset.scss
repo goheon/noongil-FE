@@ -90,6 +90,8 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  touch-action: pan-x pan-y; /* 핀치 확대, 더블탭 확대 방지 */
+  overscroll-behavior: contain;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -133,4 +135,8 @@ a:hover,
 a:active {
   text-decoration: none;
   color: inherit;
+}
+
+*:focus-visible {
+  outline: none;
 }

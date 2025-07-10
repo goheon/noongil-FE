@@ -60,6 +60,7 @@ const PopularList = (props: PopularListProps) => {
           slidesPerView={'auto'}
           modules={[Pagination]}
           className={cx('list')}
+          spaceBetween={20}
         >
           {popularList.length > 0 &&
             popularList.map((data: IListItem, idx: number) => (
@@ -67,7 +68,7 @@ const PopularList = (props: PopularListProps) => {
                 className={cx('list-item-wrapper')}
                 key={data.eventId}
               >
-                <PopularListItem data={data} idx={idx} />
+                <PopularListItem data={data} idx={idx} eventCode={eventCode} />
               </SwiperSlide>
             ))}
         </Swiper>

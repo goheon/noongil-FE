@@ -1,6 +1,6 @@
 import { getUserCategories, updateUserCategories } from './myApi'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import {
   TEventCategory,
   TPopupCategory,
@@ -10,9 +10,13 @@ import {
   POPUP_CATEGORY_VALUES,
   EXHIBITION_CATEGORY_VALUES,
 } from '@/app/_constants/event'
+import debounce from 'lodash/debounce'
+import { useSnackbar } from '../../common/snackbar/useSnackbar'
 
 const useMyCategories = () => {
   const queryClient = useQueryClient()
+
+  const { showSnackbar } = useSnackbar()
 
   const [selectedPopupCategories, setSelectedPopupCategories] = useState<
     TPopupCategory[]
@@ -24,6 +28,14 @@ const useMyCategories = () => {
     queryKey: ['user-interest'],
     queryFn: getUserCategories,
   })
+
+  const debouncedUpdate = useMemo(
+    () =>
+      debounce(() => {
+        updateCategoriesMutation.mutate()
+      }, 500),
+    [selectedPopupCategories, selectedExhibitionCategories],
+  )
 
   const updateCategoriesMutation = useMutation({
     mutationFn: () =>
@@ -72,6 +84,11 @@ const useMyCategories = () => {
     }
 
     if (prev.length >= limit) {
+      showSnackbar({
+        message: '카테고리별 3개까지 지정할 수 있습니다.',
+        type: 'info',
+        duration: 2000,
+      })
       return prev
     }
 
@@ -79,13 +96,20 @@ const useMyCategories = () => {
   }
 
   const handlePopupCategories = (category: TPopupCategory) => {
-    setSelectedPopupCategories((prev) => toggleCategory(category, prev))
+    setSelectedPopupCategories((prev) => {
+      const updated = toggleCategory(category, prev)
+      debouncedUpdate()
+      return updated
+    })
   }
 
   const handleExhibitionCategories = (category: TExhibitionCategory) => {
-    setSelectedExhibitionCategories((prev) => toggleCategory(category, prev))
+    setSelectedExhibitionCategories((prev) => {
+      const updated = toggleCategory(category, prev)
+      debouncedUpdate()
+      return updated
+    })
   }
-
   return {
     updateCategories: updateCategoriesMutation.mutate,
     selectedPopupCategories,

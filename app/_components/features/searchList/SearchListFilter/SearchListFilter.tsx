@@ -1,7 +1,7 @@
 import { BottomSheet } from '@/app/_components/common'
 import styles from './SearchListFilter.module.scss'
 import classNames from 'classnames/bind'
-import DateFilter from './DateFilter'
+import { DateFilter } from './DateFilter'
 import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 import OrderFilter from './OrderFilter'
 import CategoryFilter from './CategoryFilter'

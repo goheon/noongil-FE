@@ -16,7 +16,16 @@ interface DateFilterProps {
   isExhibitionPage?: boolean
 }
 
-const DateFilter = (props: DateFilterProps) => {
+interface DateSelectBoxProps {
+  isExhibitionPage?: boolean
+  isMapPage?: boolean
+  startDate: Date | null
+  endDate: Date | null
+  handleDateChange: (dates: [Date | null, Date | null]) => void
+  isInRange: (date: Date) => boolean
+}
+
+export const DateFilter = (props: DateFilterProps) => {
   const { isExhibitionPage } = props
   const { startDate, endDate, setStartDate, setEndDate } = useListFilterStore()
 
@@ -32,17 +41,6 @@ const DateFilter = (props: DateFilterProps) => {
     if (!startDate || !endDate) return false // startDate 또는 endDate가 없으면 범위 적용 안함
     return date > startDate && date < endDate // 범위 내 날짜인지 확인
   }
-
-  const formattedStartDate = useMemo(
-    () =>
-      startDate ? format(startDate, 'MM.dd') : format(new Date(), 'MM.dd'),
-    [startDate],
-  )
-
-  const formattedEndDate = useMemo(
-    () => (endDate ? format(endDate, 'MM.dd') : format(new Date(), 'MM.dd')),
-    [endDate],
-  )
 
   // 오늘 날짜 설정
   const handleTodayChange = () => {
@@ -124,70 +122,99 @@ const DateFilter = (props: DateFilterProps) => {
             isExhibitionPage={isExhibitionPage}
           />
         </div>
-
-        <div className={cx('date-select-box')}>
-          <div className={cx('notice')}>직접 입력</div>
-
-          <DatePicker
-            calendarClassName={cx('custom-calendar', {
-              'custom-calendar--exhibition': isExhibitionPage,
-            })}
-            dateFormat="yyyy.MM.dd"
-            shouldCloseOnSelect // 날짜를 선택하면 datepicker가 자동으로 닫힘
-            minDate={new Date('2000-01-01')}
-            selected={startDate}
-            onChange={handleDateChange}
-            startDate={startDate}
-            endDate={endDate}
-            selectsRange
-            selectsStart
-            selectsEnd
-            dayClassName={(date) =>
-              cx('custom-day', {
-                'custom-day--range': isInRange(date),
-                'custom-day--selected':
-                  date.getTime() === startDate?.getTime() ||
-                  date.getTime() === endDate?.getTime(),
-              })
-            }
-            locale={ko} // 한국어 로케일 적용
-            renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
-              <div
-                className={cx('custom-header', {
-                  'custom-header--exhibition': isExhibitionPage,
-                })}
-              >
-                <button onClick={decreaseMonth}>&lt;</button>
-                <span>{date.toLocaleString('ko-KR', { month: 'long' })}</span>
-                <button onClick={increaseMonth}>&gt;</button>
-              </div>
-            )}
-            customInput={
-              <div className={cx('select-info')}>
-                <Chip
-                  className={cx('date-select', {
-                    'date-select--exhibition': isExhibitionPage,
-                  })}
-                  suffixIcon="calendar"
-                >
-                  {formattedStartDate}
-                </Chip>
-                <div className={cx('bar')}>-</div>
-                <Chip
-                  className={cx('date-select', {
-                    'date-select--exhibition': isExhibitionPage,
-                  })}
-                  suffixIcon="calendar"
-                >
-                  {formattedEndDate}
-                </Chip>
-              </div>
-            }
-          />
-        </div>
       </div>
+      <DateSelectBox
+        isExhibitionPage={isExhibitionPage}
+        startDate={startDate}
+        endDate={endDate}
+        handleDateChange={handleDateChange}
+        isInRange={isInRange}
+      />
     </FilterLayout>
   )
 }
 
-export default DateFilter
+export const DateSelectBox = ({
+  isExhibitionPage,
+  isMapPage,
+  startDate,
+  endDate,
+  handleDateChange,
+  isInRange,
+}: DateSelectBoxProps) => {
+  const formattedStartDate = useMemo(
+    () =>
+      startDate ? format(startDate, 'MM.dd') : format(new Date(), 'MM.dd'),
+    [startDate],
+  )
+
+  const formattedEndDate = useMemo(
+    () => (endDate ? format(endDate, 'MM.dd') : format(new Date(), 'MM.dd')),
+    [endDate],
+  )
+
+  return (
+    <div
+      className={cx('date-select-box', { 'date-select-box--map': isMapPage })}
+    >
+      <div className={cx('notice')}>직접 입력</div>
+
+      <DatePicker
+        calendarClassName={cx('custom-calendar', {
+          'custom-calendar--exhibition': isExhibitionPage,
+        })}
+        dateFormat="yyyy.MM.dd"
+        shouldCloseOnSelect // 날짜를 선택하면 datepicker가 자동으로 닫힘
+        minDate={new Date('2000-01-01')}
+        selected={startDate}
+        onChange={handleDateChange}
+        startDate={startDate}
+        endDate={endDate}
+        selectsRange
+        selectsStart
+        selectsEnd
+        dayClassName={(date) =>
+          cx('custom-day', {
+            'custom-day--range': isInRange(date),
+            'custom-day--selected':
+              date.getTime() === startDate?.getTime() ||
+              date.getTime() === endDate?.getTime(),
+          })
+        }
+        locale={ko} // 한국어 로케일 적용
+        renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
+          <div
+            className={cx('custom-header', {
+              'custom-header--exhibition': isExhibitionPage,
+            })}
+          >
+            <button onClick={decreaseMonth}>&lt;</button>
+            <span>{date.toLocaleString('ko-KR', { month: 'long' })}</span>
+            <button onClick={increaseMonth}>&gt;</button>
+          </div>
+        )}
+        customInput={
+          <div className={cx('select-info')}>
+            <Chip
+              className={cx('date-select', {
+                'date-select--exhibition': isExhibitionPage,
+              })}
+              suffixIcon="calendar"
+            >
+              {formattedStartDate}
+            </Chip>
+            <div className={cx('bar')}>-</div>
+            <Chip
+              className={cx('date-select', {
+                'date-select--exhibition': isExhibitionPage,
+              })}
+              suffixIcon="calendar"
+            >
+              {formattedEndDate}
+            </Chip>
+          </div>
+        }
+      />
+    </div>
+  )
+}

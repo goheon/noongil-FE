@@ -26,11 +26,13 @@
 
   .list {
     width: 100%;
+    padding: 0px 30px;
+    overflow: visible;
 
     .list-item-wrapper {
       box-sizing: border-box;
-      width: 260px;
-      padding: 0px 30px;
+      width: 150px;
+      overflow: visible;
     }
   }
 }

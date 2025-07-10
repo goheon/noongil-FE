@@ -4,15 +4,18 @@
   justify-content: space-between;
   padding: 25px 26px;
   position: fixed;
+  z-index: 120;
   bottom: 0;
   width: 100%;
-  max-width: 430px;
+  max-width: 940px;
   box-sizing: border-box;
   color: #000000;
   background-color: #ffffff;
 
   &_button {
     padding: 0 10px;
+    cursor: pointer;
+
     > p {
       margin-top: 3px;
       text-align: center;

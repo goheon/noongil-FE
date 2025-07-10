@@ -77,6 +77,7 @@ const PeriodList = (props: PeriodListProps) => {
           slidesPerView="auto"
           modules={[Pagination]}
           className={cx('list')}
+          spaceBetween={20}
         >
           {listData.map((data: IListItem) => (
             <SwiperSlide key={data.eventId} className={cx('list-item-wrapper')}>
