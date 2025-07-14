@@ -1,12 +1,12 @@
 .container {
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 15px;
   margin-top: -40px;
+  padding: 0px 30px;
+  // overflow: hidden;
 
   .top-section {
-    padding: 0px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -24,15 +24,20 @@
     }
   }
 
-  .list {
+  .list-wrapper {
     width: 100%;
-    padding: 0px 30px;
-    overflow: visible;
+    overflow: hidden;
+    padding-top: 20px;
+    padding-left: 25px;
 
-    .list-item-wrapper {
-      box-sizing: border-box;
-      width: 150px;
+    .list {
+      width: 100%;
       overflow: visible;
+
+      .list-item-wrapper {
+        box-sizing: border-box;
+        width: 150px;
+      }
     }
   }
 }

@@ -56,22 +56,28 @@ const PopularList = (props: PopularListProps) => {
       {isLoading ? (
         <SkeletonList listType="carousel" cardType="column" length={3} />
       ) : (
-        <Swiper
-          slidesPerView={'auto'}
-          modules={[Pagination]}
-          className={cx('list')}
-          spaceBetween={20}
-        >
-          {popularList.length > 0 &&
-            popularList.map((data: IListItem, idx: number) => (
-              <SwiperSlide
-                className={cx('list-item-wrapper')}
-                key={data.eventId}
-              >
-                <PopularListItem data={data} idx={idx} eventCode={eventCode} />
-              </SwiperSlide>
-            ))}
-        </Swiper>
+        <div className={cx('list-wrapper')}>
+          <Swiper
+            slidesPerView={'auto'}
+            modules={[Pagination]}
+            className={cx('list')}
+            spaceBetween={20}
+          >
+            {popularList.length > 0 &&
+              popularList.map((data: IListItem, idx: number) => (
+                <SwiperSlide
+                  className={cx('list-item-wrapper')}
+                  key={data.eventId}
+                >
+                  <PopularListItem
+                    data={data}
+                    idx={idx}
+                    eventCode={eventCode}
+                  />
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        </div>
       )}
     </div>
   )
