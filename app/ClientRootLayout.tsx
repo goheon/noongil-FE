@@ -12,6 +12,7 @@ import { BottomNavigation, Header } from '@/app/_components/common'
 const ClientRootLayout = ({ children }: React.PropsWithChildren) => {
   const pathname = usePathname()
   const isExhibition: boolean = pathname.includes('exhibition')
+  const isLists: boolean = pathname.includes('lists')
   const isRegister: boolean = pathname.includes('register')
   const isAdmin: boolean = pathname.includes('admin')
 
@@ -35,7 +36,7 @@ const ClientRootLayout = ({ children }: React.PropsWithChildren) => {
           <main className="content">{children}</main>
         ) : (
           <div
-            className={`pages pages_wrapper ${isExhibition ? 'exhibition' : ''}`}
+            className={`pages pages_wrapper ${isExhibition ? 'exhibition' : ''} ${isLists ? 'lists' : ''}`}
           >
             <Suspense>
               {isRegister ? (
