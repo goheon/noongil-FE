@@ -28,6 +28,12 @@ $navigation-height: 103px;
       margin-top: auto;
     }
   }
+
+  &.exhibition.lists {
+    .content {
+      height: 100%;
+    }
+  }
 }
 
 .pages.exhibition {

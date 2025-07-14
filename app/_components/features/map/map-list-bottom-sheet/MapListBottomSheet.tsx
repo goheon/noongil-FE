@@ -63,8 +63,6 @@ const ItemCard: React.FC<ItemCardProps> = ({ event }) => {
   const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
   const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
 
-  console.log(event)
-
   const handleClick = () => {
     if (mapInstance) {
       // 선택 이벤트 데이터 할당
