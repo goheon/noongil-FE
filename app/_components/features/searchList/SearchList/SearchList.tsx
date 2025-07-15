@@ -48,13 +48,13 @@ const SearchList = (props: SearchListProps) => {
       </div>
 
       {isFetching ? (
-        <SkeletonList listType="board" cardType="column" length={6} />
+        <SkeletonList listType="board" cardType="column" length={8} />
       ) : (
         <>
           {list && list.length > 0 ? (
             <ul className={cx('list')}>
               {list.map((data) => (
-                <li key={data.eventId}>
+                <li key={data.eventId} className={cx('list-item')}>
                   <SearchListItem data={data} eventCode={eventCode} />
                 </li>
               ))}
