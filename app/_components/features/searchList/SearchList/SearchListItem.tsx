@@ -83,12 +83,14 @@ const SearchListItem = (props: SearchListItemProps) => {
   return (
     <Link href={detailUrl}>
       <div className={cx('container')}>
-        <Image
-          src={imageUrl ?? ExampleImg}
-          width={215}
-          height={235}
-          alt="image"
-        />
+        <div className={cx('img-wrapper')}>
+          <Image
+            className={cx('img')}
+            src={imageUrl ?? ExampleImg}
+            alt="image"
+            fill
+          />
+        </div>
         <div className={cx('info-section')}>
           <div className={cx('top')}>
             <div className={cx('title')}>{eventNm}</div>

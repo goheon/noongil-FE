@@ -16,14 +16,19 @@
   }
 
   .list {
-    display: flex;
-    flex-wrap: wrap;
-    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
     width: 100%;
     overflow-y: scroll;
     scrollbar-width: none;
+
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    .list-item {
+      width: 100%;
     }
   }
 
