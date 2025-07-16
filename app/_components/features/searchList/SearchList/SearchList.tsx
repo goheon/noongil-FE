@@ -48,7 +48,7 @@ const SearchList = (props: SearchListProps) => {
       </div>
 
       {isFetching ? (
-        <SkeletonList listType="board" cardType="column" length={8} />
+        <SkeletonList listType="board" cardType="column" length={10} />
       ) : (
         <>
           {list && list.length > 0 ? (

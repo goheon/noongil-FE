@@ -54,7 +54,7 @@ const PopularList = (props: PopularListProps) => {
       </div>
 
       {isLoading ? (
-        <SkeletonList listType="carousel" cardType="column" length={3} />
+        <SkeletonList listType="carousel" cardType="column" length={6} />
       ) : (
         <div className={cx('list-wrapper')}>
           <Swiper

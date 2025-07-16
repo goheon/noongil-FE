@@ -20,7 +20,7 @@ $navigation-height: 103px;
     .content {
       position: relative;
       width: 100%;
-      height: calc(100 * var(--vh) - #{$header-height} - #{$navigation-height});
+      height: calc(var(--vh) * 100 - #{$header-height} - #{$navigation-height});
       margin-top: $header-height;
     }
 
@@ -31,7 +31,7 @@ $navigation-height: 103px;
 
   &.exhibition.lists {
     .content {
-      height: 100%;
+      height: calc(var(--vh) * 100 - #{$header-height} - #{$navigation-height});
     }
   }
 }
