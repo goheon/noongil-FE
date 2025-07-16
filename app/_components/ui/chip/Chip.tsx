@@ -44,7 +44,7 @@ const Chip = (props: ChipProps) => {
       onClick={onClick}
       {...rest}
     >
-      {children}
+      <div className={cx('text-wrapper')}>{children}</div>
 
       {suffixIcon && (
         <div
