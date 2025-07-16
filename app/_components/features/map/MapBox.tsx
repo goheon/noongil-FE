@@ -66,7 +66,8 @@ export const MapBox: React.FC = () => {
   }, [permissionModalOpen])
 
   // 마커 매니저 훅
-  const { addMarker, markers, updateMarkerLabels } = useMarkerManager({ map })
+  const { addMarker, markers, clearMarkers, updateMarkerLabels } =
+    useMarkerManager({ map })
 
   // 지도 중심좌표 반환 훅
   const monitoredCenter = useMapCenter(map)
@@ -109,6 +110,7 @@ export const MapBox: React.FC = () => {
   // 테스트용 마커 추가
   useEffect(() => {
     if (!map || !data) return
+    clearMarkers()
 
     const { events } = data
     if (!events || events.length === 0) return
@@ -138,8 +140,6 @@ export const MapBox: React.FC = () => {
           // select bottomsheet open
           setIsSelectSheetOpen(true)
           // header back button
-          // map center move
-          //
           console.log(`${event.eventNm} 마커 클릭됨`)
         },
       })
