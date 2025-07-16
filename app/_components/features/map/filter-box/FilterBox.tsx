@@ -48,7 +48,7 @@ const FilterBox = () => {
   const setSelectedCategories = useMapFilterStore(
     (state) => state.setSelectedCategories,
   )
-  const selectedDateType = useMapFilterStore((state) => state.seletedDateType)
+  const selectedDateType = useMapFilterStore((state) => state.selectedDateType)
   const setSelectedDateType = useMapFilterStore(
     (state) => state.setSelectedDateType,
   )
