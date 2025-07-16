@@ -3,15 +3,16 @@
 
   &--carousel {
     display: flex;
-    gap: 30px;
+    gap: 10px;
     overflow-x: hidden;
     padding-left: 30px;
   }
 
   &--board {
-    display: flex;
-    flex-wrap: wrap;
-    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    width: 100%;
     overflow-y: scroll;
     scrollbar-width: none;
 
