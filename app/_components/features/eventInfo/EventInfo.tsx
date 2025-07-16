@@ -277,6 +277,8 @@ const EventInfo = (props: EventInfoProps) => {
                 list={nearEvents}
               />
             )}
+
+            <div className={cx('spacer')} />
           </div>
         </div>
       )}
