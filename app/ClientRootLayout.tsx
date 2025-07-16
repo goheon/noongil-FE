@@ -36,7 +36,7 @@ const ClientRootLayout = ({ children }: React.PropsWithChildren) => {
           <main className="content">{children}</main>
         ) : (
           <div
-            className={`pages pages_wrapper ${isExhibition ? 'exhibition' : ''} ${isLists ? 'lists' : ''}`}
+            className={`pages pages_wrapper ${isExhibition ? 'exhibition' : ''} ${isLists ? 'lists' : ''} ${pathname.split('/').length > 3 ? 'detail' : ''}`}
           >
             <Suspense>
               {isRegister ? (

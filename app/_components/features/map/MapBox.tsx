@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react'
 
 import { LocationPermissionModal } from './location-permission-modal/LocationPermissionModal'
 
-import { useVhUnit } from '@/app/_lib'
 import {
   useNaverMapSDK,
   useMapInitializer,
@@ -31,9 +30,6 @@ export const MapBox: React.FC = () => {
   const selectedEvent = useMapStore((s) => s.selectedEvent)
   const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
   const setIsFilterOpen = useMapStore((s) => s.setIsFilterOpen)
-
-  // 내부높이 계산 훅
-  useVhUnit()
 
   // 지도 인스턴스 할당
   const map = useNaverMapSDK({

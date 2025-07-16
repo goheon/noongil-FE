@@ -29,9 +29,9 @@ $navigation-height: 103px;
     }
   }
 
-  &.exhibition.lists {
+  &.exhibition.lists.detail {
     .content {
-      height: calc(var(--vh) * 100 - #{$header-height} - #{$navigation-height});
+      height: 100%;
     }
   }
 }
