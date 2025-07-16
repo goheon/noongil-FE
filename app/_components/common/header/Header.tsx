@@ -185,6 +185,17 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
   const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
   const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
 
+  useEffect(() => {
+    if (
+      !pathname.includes('map') &&
+      !pathname.includes('lists') &&
+      pathname.split('/').length < 4
+    ) {
+      setIsSelectSheetOpen(false)
+      setIsSelectSheetShowing(false)
+    }
+  }, [pathname])
+
   return (
     <div
       className={`${styles['header_search-bar_logo-box']}`}
