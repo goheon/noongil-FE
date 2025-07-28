@@ -49,6 +49,7 @@ const ICON = {
   reset: '/icons/reset-icon.png',
   location_map_list: '/icons/location_map-list.svg',
   refresh: '/icons/refresh-icon.svg',
+  search_location: '/icons/map-search-location-icon.png',
 }
 
 export { ICON }

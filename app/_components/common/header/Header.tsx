@@ -71,21 +71,29 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   isSearchOpen,
   closeSearchBox,
   isListSearch,
+  value,
+  setValue,
 }) => {
   const { keyword, setKeyword } = useListFilterStore()
   const { addHistory } = useKeywordHistoryStore()
+  const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
+  const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
 
   const [searchValue, setSearchValue] = useState('')
+
+  const usingSearchValue = value ?? searchValue
+  const usingSetSearchValue = setValue ?? setSearchValue
+
   const handleDeleteClick = (evt: React.MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation()
-    setSearchValue('')
+    usingSetSearchValue('')
   }
 
   const { applyParams } = useApplySearchParams()
 
   useEffect(() => {
     if (isListSearch && keyword) {
-      setSearchValue(keyword)
+      usingSetSearchValue(keyword)
     }
   }, [isListSearch, keyword])
 
@@ -94,7 +102,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       return
     }
 
-    const value = searchValue.trim()
+    const value = usingSearchValue.trim()
 
     setKeyword(value || '')
 
@@ -109,7 +117,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       })
       addHistory(value)
     }, 0)
-  }, [searchValue, setKeyword, isListSearch, closeSearchBox])
+  }, [usingSearchValue, setKeyword, isListSearch, closeSearchBox])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -120,21 +128,25 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   return (
     <div
       className={`${styles['header_search-bar_search-box']}`}
-      onClick={() => handleSearchClick()}
+      onClick={() => {
+        handleSearchClick()
+        setIsSelectSheetOpen(false)
+        setIsSelectSheetShowing(false)
+      }}
     >
       {/* 검색 인풋 */}
       <input
         className={`${styles['header_search-bar_search-box_input']} ${isExhibition && `${styles['header_search-bar_search-box_input_exhibition']}`}`}
         type="text"
         name="search"
-        value={searchValue}
+        value={usingSearchValue}
         ref={inputRef}
-        onChange={(evt) => setSearchValue(evt.target.value)}
+        onChange={(evt) => usingSetSearchValue(evt.target.value)}
         placeholder={isSearchOpen ? '장소, 테마를 검색해보세요.' : undefined}
         autoComplete="off"
         onKeyDown={handleKeyDown}
       />
-      {searchValue.length > 0 && (
+      {usingSearchValue.length > 0 && (
         <button
           className={`${styles['header_search-bar_search-box_button']} ${styles['delete-button']}`}
           type="button"
@@ -176,6 +188,7 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
   isSearchOpen,
   setIsSearchOpen,
   isExhibition,
+  resetSearchValue,
 }) => {
   const pathname = usePathname()
   const router = useRouter()
@@ -203,11 +216,13 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
         if (isSearchOpen) {
           setIsSearchOpen(false)
           setIsListSheetShowing(true)
+          resetSearchValue && resetSearchValue()
         } else if (isSelectSheetOpen) {
           setIsSelectSheetOpen(false)
           setIsSelectSheetShowing(false)
           setIsListSheetShowing(true)
           setIsListSheetOpen(true)
+          resetSearchValue && resetSearchValue()
           if (!pathname.includes('map')) {
             router.back()
           }
