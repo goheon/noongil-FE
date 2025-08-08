@@ -30,17 +30,17 @@ const SkeletonList = (props: SkeletonListProps) => {
                 'card--column--board': listType === 'board',
               })}
             >
-              <Skeleton width={160} height={200} borderRadius={5} />
-              <Skeleton width={160} />
-              <Skeleton width={160} />
+              <Skeleton width="100%" height={200} borderRadius={5} />
+              <Skeleton width="100%" />
+              <Skeleton width="100%" />
             </div>
           ) : (
             <div className={cx('card--row')}>
               <Skeleton width={125} height={125} borderRadius={5} />
 
               <div className={cx('infos')}>
-                <Skeleton width={200} />
-                <Skeleton width={200} />
+                <Skeleton width={180} />
+                <Skeleton width={180} />
               </div>
             </div>
           )}
