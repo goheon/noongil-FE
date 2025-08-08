@@ -39,7 +39,7 @@ const Page: React.FC = () => {
     }
 
     checkLogin()
-  }, [])
+  }, [router, setLoadEnd])
 
   if (!loadEnd) return null
   return <MyPage />

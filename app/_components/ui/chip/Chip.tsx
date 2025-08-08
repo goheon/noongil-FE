@@ -49,8 +49,8 @@ const Chip = (props: ChipProps) => {
       {suffixIcon && (
         <div
           onClick={(e) => {
-            e.stopPropagation()
             if (handleIconClick) {
+              e.stopPropagation()
               handleIconClick()
             }
           }}

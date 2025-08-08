@@ -3,7 +3,8 @@
 import styles from './MyFavorites.module.scss'
 import classNames from 'classnames/bind'
 import useMyFavorites from '../useMyFavorites'
-import FavoriteItem from './FavoriteItem'
+import SkeletonList from '@/app/_components/common/skeleton-list/SkeletonList'
+import SearchListItem from '../../searchList/SearchList/SearchListItem'
 
 const cx = classNames.bind(styles)
 
@@ -13,14 +14,14 @@ const MyFavorites = () => {
   return (
     <div className={cx('container')}>
       {isLoading ? (
-        <div>데이터를 가져오고 있습니다.</div>
+        <SkeletonList listType="board" cardType="column" length={6} />
       ) : (
         <>
           {data ? (
             <ul className={cx('list')}>
               {data.map((value) => (
                 <li key={value.eventId}>
-                  <FavoriteItem data={value} />
+                  <SearchListItem data={value} eventCode="all" />
                 </li>
               ))}
             </ul>

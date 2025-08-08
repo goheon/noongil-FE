@@ -59,7 +59,9 @@ const TopBanner = (props: TopBannerProps) => {
   return (
     <div className={cx('container')}>
       {isLoading ? (
-        <Skeleton width={382} height={429} borderRadius={10} />
+        <div className={cx('skeleton-wrapper')}>
+          <Skeleton width="100%" height={429} borderRadius={10} />
+        </div>
       ) : (
         <Swiper
           className={cx('slide')}

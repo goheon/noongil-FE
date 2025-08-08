@@ -6,11 +6,16 @@
     gap: 10px;
     overflow-x: hidden;
     padding-left: 30px;
+
+    li {
+      min-width: 150px;
+      flex-shrink: 0;
+    }
   }
 
   &--board {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 20px;
     width: 100%;
     overflow-y: scroll;
@@ -28,19 +33,19 @@
 
     &--column {
       box-sizing: border-box;
-      width: 260px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 10px;
 
       &--board {
-        width: 215px;
+        width: 100%;
         padding-bottom: 20px;
       }
     }
 
     &--row {
-      width: 320px;
+      width: 100%;
       display: flex;
       gap: 10px;
 
