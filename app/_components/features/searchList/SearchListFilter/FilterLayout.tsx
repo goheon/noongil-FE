@@ -53,7 +53,7 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
       endDate: endDate ? format(endDate, 'yyyyMMdd') : null,
       regions: regions.length ? regions.map((r) => r.rgntCd).join(',') : null,
     })
-  }, [category, startDate, endDate, regions])
+  }, [applyParams, category, startDate, endDate, regions])
 
   useSetGeoFilterOption()
 
