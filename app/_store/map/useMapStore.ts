@@ -18,7 +18,7 @@ interface MapState {
   setIsListSheetOpen: (isOpen: boolean) => void
   setIsSelectSheetShowing: (isShwoing: boolean) => void
   setIsSelectSheetOpen: (isOpen: boolean) => void
-  setSelectedEventInfo: (eventInfo: MapEventInfo) => void
+  setSelectedEventInfo: (eventInfo: MapEventInfo | null) => void
 }
 
 export const useMapStore = create<MapState>((set) => ({

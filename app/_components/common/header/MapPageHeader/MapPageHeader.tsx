@@ -11,6 +11,7 @@ import LoadingSpinner from '../../loading-spinner/LoadingSpinner'
 
 import { axiosApi } from '@/app/_lib'
 import { useMapStore } from '@/app/_store/map/useMapStore'
+import { useMarkerStore } from '@/app/_store/map/useMapMarkerStore'
 import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
 
 import { HeaderProps } from '@/app/_types'
@@ -143,6 +144,7 @@ const SearchResultList = ({ events }: { events: Events }) => {
   const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
   const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
   const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
+  const { clearAll, addOne } = useMarkerStore()
 
   return (
     <div className={cx('search-result-list')}>
@@ -150,6 +152,23 @@ const SearchResultList = ({ events }: { events: Events }) => {
         const handleClick = () => {
           if (mapInstance) {
             setSelectedEventInfo(el)
+            clearAll()
+            addOne({
+              id: String(el.eventId),
+              position: { lat: el.addrLttd, lng: el.addrLotd },
+              title: el.eventNm,
+              type: el.eventTypeCd === '10' ? 'popup' : 'exhibition',
+              onClick: () => {
+                // list bottomsheet showing false
+                setIsListSheetShowing(false)
+                // assign data to global state
+                setSelectedEventInfo(el)
+                // select bottomsheet showing true
+                setIsSelectSheetShowing(true)
+                // select bottomsheet open
+                setIsSelectSheetOpen(true)
+              },
+            })
             mapInstance.setCenter({
               lat: el.addrLttd - 0.001,
               lng: el.addrLotd,
