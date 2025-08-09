@@ -7,10 +7,10 @@ import { LocationPermissionModal } from './location-permission-modal/LocationPer
 import {
   useNaverMapSDK,
   useMapInitializer,
-  useMarkerManager,
   useMapCenter,
 } from '@/app/_utils/MapHooks'
 import { useMapStore } from '@/app/_store/map/useMapStore'
+import { useMarkerStore } from '@/app/_store/map/useMapMarkerStore'
 import { useMapQuery } from './useMapQuery'
 
 import { IEventInfo } from '../eventInfo/type'
@@ -43,6 +43,11 @@ export const MapBox: React.FC = () => {
   // 지도 인스턴스를 전역 상태에 저장
   useEffect(() => {
     setMap(map)
+    useMarkerStore.getState().setMap(map)
+    return () => {
+      useMarkerStore.getState().clearAll()
+      useMarkerStore.getState().setMap(null)
+    }
   }, [map, setMap])
 
   // 지도 마운트 시 초기화 훅, 위치권한 핸들링
@@ -62,8 +67,11 @@ export const MapBox: React.FC = () => {
   }, [permissionModalOpen])
 
   // 마커 매니저 훅
-  const { addMarker, markers, clearMarkers, updateMarkerLabels } =
-    useMarkerManager({ map })
+  // const { addMarker, markers, clearMarkers, updateMarkerLabels } =
+  //   useMarkerManager({ map })
+  const addMarker = useMarkerStore((s) => s.addOne)
+  const clearMarkers = useMarkerStore((s) => s.clearAll)
+  const updateLabels = useMarkerStore((s) => s.updateLabels)
 
   // 지도 중심좌표 반환 훅
   const monitoredCenter = useMapCenter(map)
@@ -79,14 +87,24 @@ export const MapBox: React.FC = () => {
       () => {
         const currentZoom = map.getZoom()
         console.log('현재 줌 레벨:', currentZoom)
-        updateMarkerLabels(currentZoom)
+        updateLabels(currentZoom)
       },
     )
 
     return () => {
       naver.maps.Event.removeListener(zoomListener)
     }
-  }, [map, updateMarkerLabels])
+  }, [map, updateLabels])
+
+  // 3) 반응형 라벨 사이즈(모바일/데스크톱)
+  useEffect(() => {
+    const apply = () =>
+      useMarkerStore.getState().setCompact(window.innerWidth < 940)
+    apply()
+    const onResize = () => apply()
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   useEffect(() => {
     const handlePopState = () => {
