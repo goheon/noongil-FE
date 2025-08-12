@@ -39,7 +39,7 @@ const MapListBottomSheet = () => {
     >
       <div className={cx('list-wrap')}>
         <div className={cx('counts')}>
-          <span className={cx('counts-text')}>전체 {events.length}개</span>
+          <span className={cx('counts-text')}>전체 {data?.totalCount}개</span>
         </div>
         <div className={cx('contents')}>
           {(events as MapEventInfo[]).map((event) => (

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 
 import { LocationPermissionModal } from './location-permission-modal/LocationPermissionModal'
 
@@ -8,9 +8,10 @@ import {
   useNaverMapSDK,
   useMapInitializer,
   useMapCenter,
-} from '@/app/_utils/MapHooks'
+} from '@/app/_store/map/MapHooks'
 import { useMapStore } from '@/app/_store/map/useMapStore'
 import { useMarkerStore } from '@/app/_store/map/useMapMarkerStore'
+import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
 import { useMapQuery } from './useMapQuery'
 
 import { IEventInfo } from '../eventInfo/type'
@@ -25,11 +26,17 @@ export const MapBox: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const setMap = useMapStore((s) => s.setMap)
   const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
+  const isSelectSheetShowing = useMapStore((s) => s.isSelectSheetShowing)
   const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
   const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
   const selectedEvent = useMapStore((s) => s.selectedEvent)
   const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
   const setIsFilterOpen = useMapStore((s) => s.setIsFilterOpen)
+  const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
+  const page = useMapFilterStore((s) => s.page)
+  // 이벤트 조회 쿼리 데이터
+  const { data } = useMapQuery()
+  console.log(data)
 
   // 지도 인스턴스 할당
   const map = useNaverMapSDK({
@@ -42,13 +49,18 @@ export const MapBox: React.FC = () => {
 
   // 지도 인스턴스를 전역 상태에 저장
   useEffect(() => {
+    // map store
     setMap(map)
+    // marker store
     useMarkerStore.getState().setMap(map)
+
     return () => {
       useMarkerStore.getState().clearAll()
       useMarkerStore.getState().setMap(null)
     }
   }, [map, setMap])
+
+  const updateLabels = useMarkerStore((s) => s.updateLabels)
 
   // 지도 마운트 시 초기화 훅, 위치권한 핸들링
   const { isModalOpen: permissionModalOpen } = useMapInitializer({
@@ -59,6 +71,31 @@ export const MapBox: React.FC = () => {
       })
       return state === 'granted'
     },
+    // 마운트 후 초기 줌 레벨에 맞춰 라벨 초기화
+    onZoomInit: (zoom) => {
+      updateLabels(zoom)
+    },
+    // 줌할 때마다 라벨/상태 갱신
+    onZoomChange: (zoom) => {
+      updateLabels(zoom)
+      console.log('현재 줌 레벨:', zoom)
+    },
+    // 줌이 N회 이상 변경되면 분기
+    onZoomThreshold: ({ zoom, count }) => {
+      // ex) 토스트, 트래킹, 쿼리 무효화 등
+      console.log('임계치 도달', zoom, count)
+      console.log(page)
+      console.log(data?.totalPageCount)
+      if (page + 1 !== data?.totalPageCount && isSelectSheetShowing === false) {
+        console.log('더불러오기활성화')
+        setIsLoadmoreShowing(true)
+      } else {
+        setIsLoadmoreShowing(false)
+      }
+    },
+    zoomChangeThreshold: 5, // 기본 5
+    zoomDebounceMs: 500, // 기본 500ms
+    maxZoomStep: 2, // 기본 2
   })
 
   // permissionModalOpen 값이 변경될 때 isModalOpen 상태 업데이트
@@ -66,35 +103,8 @@ export const MapBox: React.FC = () => {
     setIsModalOpen(permissionModalOpen)
   }, [permissionModalOpen])
 
-  // 마커 매니저 훅
-  // const { addMarker, markers, clearMarkers, updateMarkerLabels } =
-  //   useMarkerManager({ map })
-  const addMarker = useMarkerStore((s) => s.addOne)
-  const clearMarkers = useMarkerStore((s) => s.clearAll)
-  const updateLabels = useMarkerStore((s) => s.updateLabels)
-
   // 지도 중심좌표 반환 훅
   const monitoredCenter = useMapCenter(map)
-  console.log(monitoredCenter)
-
-  // 줌 레벨 변경 감지 후 라벨 마커 컨트롤
-  useEffect(() => {
-    if (!map) return
-
-    const zoomListener = naver.maps.Event.addListener(
-      map,
-      'zoom_changed',
-      () => {
-        const currentZoom = map.getZoom()
-        console.log('현재 줌 레벨:', currentZoom)
-        updateLabels(currentZoom)
-      },
-    )
-
-    return () => {
-      naver.maps.Event.removeListener(zoomListener)
-    }
-  }, [map, updateLabels])
 
   // 3) 반응형 라벨 사이즈(모바일/데스크톱)
   useEffect(() => {
@@ -106,6 +116,8 @@ export const MapBox: React.FC = () => {
     return () => window.removeEventListener('resize', onResize)
   }, [])
 
+  // 뒤로가기 이벤트 핸들러
+  // 뒤로가기 시 필터 열림 상태 강제 닫기
   useEffect(() => {
     const handlePopState = () => {
       setIsFilterOpen(false)
@@ -118,8 +130,9 @@ export const MapBox: React.FC = () => {
     }
   }, [])
 
-  // 이벤트 조회 쿼리 데이터
-  const { data } = useMapQuery()
+  // 마커 매니저 훅
+  const addMarker = useMarkerStore((s) => s.addOne)
+  const clearMarkers = useMarkerStore((s) => s.clearAll)
 
   // 테스트용 마커 추가
   useEffect(() => {

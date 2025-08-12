@@ -3,10 +3,7 @@
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-import {
-  useMapFilterStore,
-  EventType,
-} from '@/app/_store/map/useMapFilterStore'
+import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
 import { useMapStore } from '@/app/_store/map/useMapStore'
 
 import styles from './CategoryDial.module.scss'
@@ -15,6 +12,9 @@ const CategoryDial = () => {
   const [open, setOpen] = useState(false)
   const { selectedType, setSelectedType } = useMapFilterStore()
   const isSearchOpen = useMapStore((state) => state.isSearchOpen)
+  const setPage = useMapFilterStore((s) => s.setPage)
+  const setZoomCount = useMapStore((s) => s.setZoomCount)
+  const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
 
   const { focused, buttons } = useMemo(() => {
     if (selectedType === 'popup') {
@@ -29,6 +29,9 @@ const CategoryDial = () => {
   const handleButtonClick = (button: string) => {
     if (!open) return
 
+    setPage(0)
+    setZoomCount(0)
+    setIsLoadmoreShowing(false)
     if (button === '팝업') {
       setSelectedType('popup')
       setOpen(false)

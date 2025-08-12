@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { MapType } from '@/app/_utils/MapHooks'
+import { MapType } from '@/app/_store/map/MapHooks'
 import { MapEventInfo } from '@/app/_components'
 
 interface MapState {
@@ -9,6 +9,8 @@ interface MapState {
   isListSheetOpen: boolean
   isSelectSheetShowing: boolean
   isSelectSheetOpen: boolean
+  isLoadmoreShowing: boolean
+  zoomCount: number
   map: MapType | null
   selectedEvent: MapEventInfo | null
   setMap: (map: MapType | null) => void
@@ -18,6 +20,8 @@ interface MapState {
   setIsListSheetOpen: (isOpen: boolean) => void
   setIsSelectSheetShowing: (isShwoing: boolean) => void
   setIsSelectSheetOpen: (isOpen: boolean) => void
+  setIsLoadmoreShowing: (isShwoing: boolean) => void
+  setZoomCount: (count: number) => void
   setSelectedEventInfo: (eventInfo: MapEventInfo | null) => void
 }
 
@@ -28,6 +32,8 @@ export const useMapStore = create<MapState>((set) => ({
   isListSheetOpen: false,
   isSelectSheetShowing: false,
   isSelectSheetOpen: false,
+  isLoadmoreShowing: false,
+  zoomCount: 0,
   selectedEvent: null,
   map: null,
   setMap: (map) => set({ map }),
@@ -38,5 +44,7 @@ export const useMapStore = create<MapState>((set) => ({
   setIsSelectSheetShowing: (isShwoing) =>
     set({ isSelectSheetShowing: isShwoing }),
   setIsSelectSheetOpen: (isOpen) => set({ isSelectSheetOpen: isOpen }),
+  setIsLoadmoreShowing: (isShwoing) => set({ isLoadmoreShowing: isShwoing }),
+  setZoomCount: (count) => set({ zoomCount: count }),
   setSelectedEventInfo: (eventInfo) => set({ selectedEvent: eventInfo }),
 }))

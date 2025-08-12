@@ -31,7 +31,7 @@ export const searchMapInfo = async (filter: {
           : ''
 
     if (eventTypeCd) {
-      queryString += `&eventTypeCd=${eventTypeCd}&`
+      queryString += `&eventTypeCd=${eventTypeCd}`
     }
   }
   if (filter.selectedDates?.every((d) => d !== null)) {
@@ -43,8 +43,9 @@ export const searchMapInfo = async (filter: {
       ?.toISOString()
       .slice(0, 10)
       .replace(/-/g, '')
-    queryString += `operStatDt=${startDate}&operEndDt=${endDate}`
+    queryString += `&operStatDt=${startDate}&operEndDt=${endDate}`
   }
+  if (filter.page) queryString += `&page=${filter.page}`
   console.log(queryString)
 
   try {
