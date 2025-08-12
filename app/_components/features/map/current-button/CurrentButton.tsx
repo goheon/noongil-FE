@@ -6,7 +6,7 @@ import { ICON } from '@/public'
 import Image from 'next/image'
 
 import { useMapStore } from '@/app/_store/map/useMapStore'
-import { getCurrentLocation, moveMapCenter } from '@/app/_utils/MapHooks'
+import { getCurrentLocation, moveMapCenter } from '@/app/_store/map/MapHooks'
 import { useSnackbar } from '@/app/_components/common/snackbar/useSnackbar'
 import styles from './CurrentButton.module.scss'
 

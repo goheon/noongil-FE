@@ -9,14 +9,6 @@ export const useMapQuery = () => {
   const selectedDates = useMapFilterStore((s) => s.selectedDates)
   const page = useMapFilterStore((s) => s.page)
 
-  console.log({
-    selectedCategories,
-    selectedType,
-    selectedDateType,
-    selectedDates,
-    page,
-  })
-
   const filter = {
     selectedCategories,
     selectedType,

@@ -1,14 +1,30 @@
 import classNames from 'classnames/bind'
+import { useMapQuery } from '../useMapQuery'
+import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
+import { useMapStore } from '@/app/_store/map/useMapStore'
 
 import styles from './LoadMoreButton.module.scss'
 
 const cx = classNames.bind(styles)
 
 const LoadMoreButton = () => {
+  const { data } = useMapQuery()
+  const page = useMapFilterStore((s) => s.page)
+  const setPage = useMapFilterStore((s) => s.setPage)
+  const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
+
+  console.log(data)
+  const handleClick = () => {
+    setPage(page + 1)
+    setIsLoadmoreShowing(false)
+  }
+
   return (
-    <button className={cx('load-more-button')}>
+    <button className={cx('load-more-button')} onClick={handleClick}>
       <p className={cx('button-text')}>이 주변 더 살펴보기</p>
-      <p className={cx('counts')}>( 1/4 )</p>
+      <p className={cx('counts')}>
+        ( {page + 1} / {data?.totalPageCount} )
+      </p>
     </button>
   )
 }
