@@ -144,15 +144,21 @@ const EventInfo = (props: EventInfoProps) => {
       eventId: eventDetail.eventId,
       likeYn: eventDetail.likeYn === 'Y' ? 'N' : 'Y',
     })
-  }, [eventDetail, isLoggedIn, router, onBookmark])
+  }, [isLoggedIn, eventDetail, onBookmark, modalProps, router])
 
   return (
     <div className={cx('container')}>
       {isLoading ? (
         <div className={cx('loading')}>
-          <Skeleton width={430} height={567} />
-          <Skeleton width={430} height={200} />
-          <Skeleton width={430} height={200} />
+          <div className={cx('skeleton-wrapper')}>
+            <Skeleton width="100%" height={567} />
+          </div>
+          <div className={cx('skeleton-wrapper')}>
+            <Skeleton className={cx('item')} width="100%" height={200} />
+          </div>
+          <div className={cx('skeleton-wrapper')}>
+            <Skeleton className={cx('item')} width="100%" height={200} />
+          </div>
         </div>
       ) : (
         <div className={cx('content-container')}>

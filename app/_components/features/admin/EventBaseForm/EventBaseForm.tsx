@@ -177,11 +177,16 @@ const EventBaseForm: React.FC<EventBaseFormProps> = (props) => {
                 <textarea {...register('operDttmCntn')} />
               </div>
             </div>
+          </div>
 
+          <div className={`${styles['section']}`}>
             <div className={`${styles['content']}`}>
               <div className={`${styles['title']}`}>이벤트 내용</div>
               <div className={`${styles['data']}`}>
-                <textarea {...register('eventCntn')} />
+                <textarea
+                  className={`${styles['text-area']}`}
+                  {...register('eventCntn')}
+                />
               </div>
             </div>
           </div>
