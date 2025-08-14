@@ -114,7 +114,7 @@ const BottomSheet = ({
         className={cx(
           'bottom-sheet',
           `bottom-sheet--${type}`,
-          isExhibitionPage && 'bottom-sheet-exhibition',
+          isExhibitionPage && 'bottom-sheet--exhibition',
         )}
         initial={{ y: '100%' }}
         animate={animate}
