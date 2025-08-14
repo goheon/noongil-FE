@@ -11,13 +11,15 @@ const cx = classNames.bind(styles)
 const MyFavorites = () => {
   const { data, isLoading } = useMyFavorites()
 
+  console.log('d :', data)
+
   return (
     <div className={cx('container')}>
       {isLoading ? (
         <SkeletonList listType="board" cardType="column" length={6} />
       ) : (
         <>
-          {data ? (
+          {data && data.length > 0 ? (
             <ul className={cx('list')}>
               {data.map((value) => (
                 <li key={value.eventId}>
@@ -26,7 +28,7 @@ const MyFavorites = () => {
               ))}
             </ul>
           ) : (
-            <div>즐겨찾기 이벤트가 없습니다.</div>
+            <div className={cx('empty')}>즐겨찾기 이벤트가 없습니다.</div>
           )}
         </>
       )}
