@@ -6,6 +6,7 @@
   flex-direction: column;
   gap: 45px;
   box-sizing: border-box;
+  overflow-y: scroll;
 
   .section {
     display: flex;
