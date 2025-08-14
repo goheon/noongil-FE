@@ -97,6 +97,7 @@ const SearchListItem = (props: SearchListItemProps) => {
             <div
               className={cx('icon-wrapper')}
               onClick={(e) => {
+                e.preventDefault()
                 e.stopPropagation()
                 handleClick()
               }}
