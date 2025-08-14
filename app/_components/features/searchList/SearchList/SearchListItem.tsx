@@ -94,7 +94,13 @@ const SearchListItem = (props: SearchListItemProps) => {
         <div className={cx('info-section')}>
           <div className={cx('top')}>
             <div className={cx('title')}>{eventNm}</div>
-            <div className={cx('icon-wrapper')} onClick={handleClick}>
+            <div
+              className={cx('icon-wrapper')}
+              onClick={(e) => {
+                e.stopPropagation()
+                handleClick()
+              }}
+            >
               <Image
                 className={cx('icon')}
                 src={heartIcon}
