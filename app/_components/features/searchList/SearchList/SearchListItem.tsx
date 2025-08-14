@@ -16,7 +16,7 @@ import { getEventDetailUrl } from '@/app/_utils/navigation'
 
 const heartIconMap = {
   exhibition: {
-    liked: ICON.heart_black,
+    liked: ICON.heart_white_active,
     unliked: ICON.heart_white,
   },
   popup: {
