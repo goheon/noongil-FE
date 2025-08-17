@@ -1,9 +1,13 @@
+import { useEffect } from 'react'
+
 import { LogoBox, SearchBox } from '../Header'
+import SearchSuggestionBox from './SearchSuggestionBox'
+
+import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 
 import { MainHeaderProps } from '@/app/_types'
 
 import styles from './MainHeader.module.scss'
-import SearchSuggestionBox from './SearchSuggestionBox'
 
 // 메인페이지헤더
 const MainHeader: React.FC<MainHeaderProps> = ({
@@ -13,6 +17,10 @@ const MainHeader: React.FC<MainHeaderProps> = ({
   inputRef,
   handleSearchClick,
 }) => {
+  const setOpen = useListFilterStore((s) => s.setOpen)
+  useEffect(() => {
+    if (isSearchOpen) setOpen(false)
+  }, [isSearchOpen])
   const closeSearchBox = () => {
     setIsSearchOpen(false)
   }

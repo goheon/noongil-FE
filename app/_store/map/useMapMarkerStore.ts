@@ -126,7 +126,7 @@ export const useMarkerStore = create<MarkerState>((set, get) => ({
           map.setCenter(
             new naver.maps.LatLng(marker.position.lat, marker.position.lng),
           )
-          map.setZoom(MIN_ZOOM_FOR_LABELS, true)
+          map.setZoom(MIN_ZOOM_FOR_LABELS, false)
         }
       })
     }
