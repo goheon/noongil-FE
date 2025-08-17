@@ -11,8 +11,6 @@ const cx = classNames.bind(styles)
 const MyFavorites = () => {
   const { data, isLoading } = useMyFavorites()
 
-  console.log('d :', data)
-
   return (
     <div className={cx('container')}>
       {isLoading ? (

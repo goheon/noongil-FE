@@ -32,12 +32,13 @@ const heartIconMap = {
 interface SearchListItemProps {
   data: ISearchListItem
   eventCode: TEventCodeName
+  requireAuth?: () => boolean
 }
 
 const cx = classNames.bind(styles)
 
 const SearchListItem = (props: SearchListItemProps) => {
-  const { data, eventCode } = props
+  const { data, eventCode, requireAuth } = props
 
   const {
     eventId,
@@ -70,6 +71,15 @@ const SearchListItem = (props: SearchListItemProps) => {
   }, [eventCode, likeYn])
 
   const handleClick = () => {
+    let isAllowed = true
+
+    // requireAuth가 함수일 때만 실행
+    if (typeof requireAuth === 'function') {
+      isAllowed = requireAuth()
+    }
+
+    if (!isAllowed) return
+
     onBookmark({
       eventId,
       likeYn: likeYn === 'Y' ? 'N' : 'Y',
