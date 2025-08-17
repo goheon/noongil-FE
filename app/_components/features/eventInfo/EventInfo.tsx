@@ -27,7 +27,7 @@ const heartIconMap: Record<string, any> = {
     unliked: ICON.heart_black,
   },
   '20': {
-    liked: ICON.heart_black,
+    liked: ICON.heart_white_active,
     unliked: ICON.heart_white,
   },
 }
