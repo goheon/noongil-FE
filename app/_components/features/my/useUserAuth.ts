@@ -5,9 +5,6 @@ import { useRouter } from 'next/navigation'
 const useUserAuth = () => {
   const router = useRouter()
   const queryClient = useQueryClient()
-  const isCheckable = document.cookie
-    .split('; ')
-    .some((cookie) => cookie.startsWith(`access_token=`))
 
   const {
     data: userInfo,
@@ -19,7 +16,6 @@ const useUserAuth = () => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     retry: false,
-    enabled: isCheckable,
   })
 
   const logoutMutation = useMutation({
