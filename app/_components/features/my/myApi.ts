@@ -10,22 +10,17 @@ interface IUserInfoResponse {
 }
 
 // API URL, cookie 이슈 해결시 url 변경 필요
-export const getUserInfo = async (): Promise<IUserInfoResponse> => {
+export const getUserInfo = async (): Promise<IUserInfoResponse | null> => {
   try {
-    // const response = await axios.get(
-    //   'http://localhost:8080/api/auth/user-info',
-    //   {
-    //     withCredentials: true,
-    //   },
-    // )
-    const response = await axiosApi.get('auth/user-info', {
+    const response = await axiosApi.get<IUserInfoResponse>('auth/user-info', {
       withCredentials: true,
     })
-
     return response.data
-  } catch (err) {
-    console.log('get user info :', err)
-    throw err
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      return null
+    }
+    throw error
   }
 }
 

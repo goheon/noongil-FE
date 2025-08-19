@@ -18,6 +18,7 @@ import useApplySearchParams from '../../features/searchList/useApplySearchParams
 import { HeaderProps, HeaderLogoBoxProps, SearchBoxProps } from '@/app/_types'
 import { ICON } from '@/public'
 import styles from './header.module.scss'
+import { useMapQuery } from '../../features/map/useMapQuery'
 
 // 헤더
 const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
@@ -198,6 +199,7 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
   const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
   const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
   const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
+  const { data } = useMapQuery()
 
   useEffect(() => {
     if (
