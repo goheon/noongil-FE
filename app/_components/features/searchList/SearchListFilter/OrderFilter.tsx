@@ -3,6 +3,7 @@ import classNames from 'classnames/bind'
 import { TOrder } from '../type'
 import { useCallback } from 'react'
 import useApplySearchParams from '../useApplySearchParams'
+import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 
 const cx = classNames.bind(styles)
 
@@ -23,13 +24,20 @@ const ORDER_FILER_VALUE_MAP: Record<TOrder, string> = {
 const OrderFilter = () => {
   const { applyParams } = useApplySearchParams()
 
-  const applyFilter = useCallback((value: TOrder) => {
-    const orderValue = ORDER_FILER_VALUE_MAP[value]
+  const { setOpen } = useListFilterStore()
 
-    applyParams({
-      sortType: orderValue,
-    })
-  }, [])
+  const applyFilter = useCallback(
+    (value: TOrder) => {
+      const orderValue = ORDER_FILER_VALUE_MAP[value]
+
+      setOpen(false)
+
+      applyParams({
+        sortType: orderValue,
+      })
+    },
+    [applyParams, setOpen],
+  )
 
   return (
     <ul className={cx('list')}>
