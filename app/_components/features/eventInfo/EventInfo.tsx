@@ -58,7 +58,7 @@ const EventInfo = (props: EventInfoProps) => {
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [])
+  }, [setIsListSheetOpen, setIsListSheetShowing])
 
   const heartIcon = useMemo(() => {
     const state = eventDetail?.likeYn === 'Y' ? 'liked' : 'unliked'
