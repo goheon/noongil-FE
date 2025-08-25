@@ -19,12 +19,13 @@
     .img-wrapper {
       box-sizing: border-box;
       width: 100%;
-      max-width: 475px;
+      max-width: 280px;
       max-height: 570px;
       position: relative;
       overflow: hidden;
       aspect-ratio: 3/4;
       margin: 0 auto;
+      margin-top: 20px;
 
       .main-image {
         object-fit: cover;
