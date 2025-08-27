@@ -1,7 +1,19 @@
 .container {
-  width: 215px;
+  max-width: 215px;
   display: flex;
   flex-direction: column;
+
+  .img-wrapper {
+    width: 100%;
+    max-height: 285px;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+
+    .img {
+      object-fit: contain;
+    }
+  }
 
   .info-section {
     padding: 20px 15px;

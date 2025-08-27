@@ -4,7 +4,7 @@ import useEventInfo from './useEventInfo'
 import Image from 'next/image'
 import SampleImage from '@/public/free-img.jpg'
 import { ICON } from '@/public'
-import { useCallback, useMemo, useState } from 'react'
+import { useEffect, useCallback, useMemo, useState } from 'react'
 import { formatDateRange } from '@/app/_utils/textFormatter'
 import usePopularList from '../main/PopularList/usePopularList'
 import SuggestionList from './SuggestionList'
@@ -17,6 +17,7 @@ import Skeleton from 'react-loading-skeleton'
 import { ALL_CATEGORY_LABELS } from '@/app/_constants/event'
 import Modal from '../../common/modal/Modal'
 import { useRouter } from 'next/navigation'
+import { useMapStore } from '@/app/_store/map/useMapStore'
 
 const cx = classNames.bind(styles)
 
@@ -26,7 +27,7 @@ const heartIconMap: Record<string, any> = {
     unliked: ICON.heart_black,
   },
   '20': {
-    liked: ICON.heart_black,
+    liked: ICON.heart_white_active,
     unliked: ICON.heart_white,
   },
 }
@@ -41,10 +42,23 @@ const EventInfo = (props: EventInfoProps) => {
   const router = useRouter()
 
   const { showSnackbar } = useSnackbar()
-
   const { onBookmark } = useBookmarkItem()
-
+  const setIsListSheetOpen = useMapStore((s) => s.setIsListSheetOpen)
+  const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
   const { isLoading, eventDetail, nearEvents } = useEventInfo(id)
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsListSheetOpen(false)
+      setIsListSheetShowing(false)
+    }
+
+    window.addEventListener('popstate', handlePopState)
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [setIsListSheetOpen, setIsListSheetShowing])
 
   const heartIcon = useMemo(() => {
     const state = eventDetail?.likeYn === 'Y' ? 'liked' : 'unliked'
@@ -130,15 +144,21 @@ const EventInfo = (props: EventInfoProps) => {
       eventId: eventDetail.eventId,
       likeYn: eventDetail.likeYn === 'Y' ? 'N' : 'Y',
     })
-  }, [eventDetail, isLoggedIn, router, onBookmark])
+  }, [isLoggedIn, eventDetail, onBookmark, modalProps, router])
 
   return (
     <div className={cx('container')}>
       {isLoading ? (
         <div className={cx('loading')}>
-          <Skeleton width={430} height={567} />
-          <Skeleton width={430} height={200} />
-          <Skeleton width={430} height={200} />
+          <div className={cx('skeleton-wrapper')}>
+            <Skeleton width="100%" height={567} />
+          </div>
+          <div className={cx('skeleton-wrapper')}>
+            <Skeleton className={cx('item')} width="100%" height={200} />
+          </div>
+          <div className={cx('skeleton-wrapper')}>
+            <Skeleton className={cx('item')} width="100%" height={200} />
+          </div>
         </div>
       ) : (
         <div className={cx('content-container')}>
@@ -263,6 +283,8 @@ const EventInfo = (props: EventInfoProps) => {
                 list={nearEvents}
               />
             )}
+
+            <div className={cx('spacer')} />
           </div>
         </div>
       )}

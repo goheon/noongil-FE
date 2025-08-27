@@ -6,6 +6,10 @@ import { usePathname, useSearchParams } from 'next/navigation'
 
 import { ICON } from '@/public'
 import styles from './BottomNavigation.module.scss'
+import Link from 'next/link'
+
+const REPORT_URL =
+  'https://www.notion.so/ex2-8f16dd42375a4e3da597943bb85f90b2?source=copy_link'
 
 const BottomNavigation: React.FC = () => {
   const pathname = usePathname()
@@ -87,26 +91,28 @@ const BottomNavigation: React.FC = () => {
       </div>
       <div
         className={`${styles[`bottom-navigation_button`]}`}
-        onClick={() => router.push('/report')}
+        // onClick={() => router.push('/report')}
       >
-        {pathname.includes('/report') ? (
-          <Image
-            className={`${styles['header_search-bar_search-box_icon']}`}
-            src={ICON.report_active}
-            alt="Report Icon"
-            width={30}
-            height={30}
-          />
-        ) : (
-          <Image
-            className={`${styles['header_search-bar_search-box_icon']}`}
-            src={ICON.report}
-            alt="Report Icon"
-            width={30}
-            height={30}
-          />
-        )}
-        <p>제보</p>
+        <Link href={REPORT_URL} target="_blank" rel="noopener noreferrer">
+          {pathname.includes('/report') ? (
+            <Image
+              className={`${styles['header_search-bar_search-box_icon']}`}
+              src={ICON.report_active}
+              alt="Report Icon"
+              width={30}
+              height={30}
+            />
+          ) : (
+            <Image
+              className={`${styles['header_search-bar_search-box_icon']}`}
+              src={ICON.report}
+              alt="Report Icon"
+              width={30}
+              height={30}
+            />
+          )}
+          <p>제보</p>
+        </Link>
       </div>
       <div
         className={`${styles[`bottom-navigation_button`]}`}

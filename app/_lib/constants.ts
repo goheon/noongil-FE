@@ -7,7 +7,8 @@ const NAVER_MAP_CLIENT_KEY = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_KEY
 
 const API_BASE_URL_OBJ = {
   production: 'https://api.noongil.org/api',
-  development: 'http://localhost:8080/api',
+  development: 'http://localhost:8080/api', // admin page token 을 위해 필요
+  // development: 'https://api.noongil.org/api',
   test: '',
 }
 

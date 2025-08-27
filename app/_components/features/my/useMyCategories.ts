@@ -29,14 +29,6 @@ const useMyCategories = () => {
     queryFn: getUserCategories,
   })
 
-  const debouncedUpdate = useMemo(
-    () =>
-      debounce(() => {
-        updateCategoriesMutation.mutate()
-      }, 500),
-    [selectedPopupCategories, selectedExhibitionCategories],
-  )
-
   const updateCategoriesMutation = useMutation({
     mutationFn: () =>
       updateUserCategories([
@@ -49,6 +41,14 @@ const useMyCategories = () => {
       })
     },
   })
+
+  const debouncedUpdate = useMemo(
+    () =>
+      debounce(() => {
+        updateCategoriesMutation.mutate()
+      }, 500),
+    [updateCategoriesMutation],
+  )
 
   const handleFetchedCategories = (categories: TEventCategory[]) => {
     const popupCategories = categories.filter(
@@ -89,8 +89,15 @@ const useMyCategories = () => {
         type: 'info',
         duration: 2000,
       })
+
       return prev
     }
+
+    showSnackbar({
+      message: '카테고리가 저장 되었습니다.',
+      type: 'success',
+      duration: 2000,
+    })
 
     return [...prev, category]
   }

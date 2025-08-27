@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   gap: 7px;
+  padding: 0 27px;
 
   .notice {
     font-size: 20px;
@@ -34,6 +35,7 @@
       font-size: 17px;
       display: flex;
       align-items: center;
+      cursor: pointer;
 
       &--exhibition {
         background-color: white;
@@ -49,6 +51,7 @@
   &--map {
     position: relative;
     min-width: 344px;
+    padding: 0px -27px;
 
     .notice {
       min-width: max-content;

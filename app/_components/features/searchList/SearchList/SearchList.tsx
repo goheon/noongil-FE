@@ -9,8 +9,11 @@ import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
 import { TEventCodeName } from '@/app/_types'
 import useSyncStoreWithURL from '../useSyncStoreWithURL'
 import { useInView } from 'react-intersection-observer'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import SkeletonList from '@/app/_components/common/skeleton-list/SkeletonList'
+import { useRouter } from 'next/navigation'
+import Modal from '@/app/_components/common/modal/Modal'
+import useUserAuth from '../../my/useUserAuth'
 
 const cx = classNames.bind(styles)
 
@@ -21,6 +24,8 @@ interface SearchListProps {
 const SearchList = (props: SearchListProps) => {
   const { eventCode } = props
   const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
+  const router = useRouter()
+  const { isLoggedIn } = useUserAuth()
 
   useSyncStoreWithURL()
 
@@ -37,6 +42,33 @@ const SearchList = (props: SearchListProps) => {
     }
   }, [inView, hasNextPage, fetchNextPage])
 
+  const [modalProps, setModalProps] = useState<{
+    isOpen: boolean
+    title?: string
+    message: string
+    onOk: () => void
+    onCancel?: () => void
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    onOk: () => {},
+  })
+
+  const requireAuth = () => {
+    if (isLoggedIn) return true
+    setModalProps({
+      isOpen: true,
+      message: '로그인이 필요합니다.',
+      onCancel: () => setModalProps((p) => ({ ...p, isOpen: false })),
+      onOk: () => {
+        setModalProps((p) => ({ ...p, isOpen: false }))
+        router.replace('/login')
+      },
+    })
+    return false
+  }
+
   return (
     <div className={cx('container')}>
       <div
@@ -48,14 +80,18 @@ const SearchList = (props: SearchListProps) => {
       </div>
 
       {isFetching ? (
-        <SkeletonList listType="board" cardType="column" length={6} />
+        <SkeletonList listType="board" cardType="column" length={10} />
       ) : (
         <>
           {list && list.length > 0 ? (
             <ul className={cx('list')}>
               {list.map((data) => (
-                <li key={data.eventId}>
-                  <SearchListItem data={data} eventCode={eventCode} />
+                <li key={data.eventId} className={cx('list-item')}>
+                  <SearchListItem
+                    data={data}
+                    eventCode={eventCode}
+                    requireAuth={requireAuth}
+                  />
                 </li>
               ))}
               <div ref={ref} />
@@ -74,6 +110,8 @@ const SearchList = (props: SearchListProps) => {
       {isFetchingNextPage && (
         <SkeletonList listType="board" cardType="column" length={6} />
       )}
+
+      <Modal {...modalProps} />
     </div>
   )
 }

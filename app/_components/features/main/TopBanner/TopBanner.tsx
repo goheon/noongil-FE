@@ -12,9 +12,11 @@ import { ALL_EVENT_CODE_MAP } from '@/app/_constants/event'
 import { TEventCodeName } from '@/app/_types'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { EffectCoverflow, Pagination } from 'swiper/modules'
 
 // Import Swiper styles
 import 'swiper/css'
+import 'swiper/css/effect-coverflow'
 
 import Skeleton from 'react-loading-skeleton'
 
@@ -57,11 +59,27 @@ const TopBanner = (props: TopBannerProps) => {
   return (
     <div className={cx('container')}>
       {isLoading ? (
-        <Skeleton width={382} height={429} borderRadius={10} />
+        <div className={cx('skeleton-wrapper')}>
+          <Skeleton width="100%" height={429} borderRadius={10} />
+        </div>
       ) : (
         <Swiper
           className={cx('slide')}
-          onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
+          onSlideChange={(swiper) => setCurrentSlideIndex(swiper.realIndex)}
+          effect={'coverflow'}
+          grabCursor={true}
+          centeredSlides={true}
+          loop={true}
+          slidesPerView={'auto'}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 20, // 슬라이드 간 간격 겹치게
+            depth: 150, // Z축 깊이 증가 (멀리 보임)
+            modifier: 1.4, // 효과 강도 증가
+            slideShadows: true,
+          }}
+          pagination={true}
+          modules={[EffectCoverflow]}
         >
           {data.map((item: IListItem) => {
             return (

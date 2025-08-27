@@ -33,6 +33,7 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
     setEndDate,
     regions,
     setRegion,
+    setOpen,
   } = useListFilterStore()
 
   const { applyParams } = useApplySearchParams()
@@ -47,13 +48,15 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
   }
 
   const applyFilter = useCallback(() => {
+    setOpen(false)
+
     applyParams({
       categories: category.length ? category.join(',') : null,
       startDate: startDate ? format(startDate, 'yyyyMMdd') : null,
       endDate: endDate ? format(endDate, 'yyyyMMdd') : null,
       regions: regions.length ? regions.map((r) => r.rgntCd).join(',') : null,
     })
-  }, [category, startDate, endDate, regions])
+  }, [setOpen, applyParams, category, startDate, endDate, regions])
 
   useSetGeoFilterOption()
 

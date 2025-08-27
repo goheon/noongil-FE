@@ -17,11 +17,12 @@ export const MapControlComponents = () => {
   const { data } = useMapQuery()
   const isListSheetShowing = useMapStore((s) => s.isListSheetShowing)
   const isSelectSheetShowing = useMapStore((s) => s.isSelectSheetShowing)
+  const isLoadmoreShowing = useMapStore((s) => s.isLoadmoreShowing)
 
   return (
     <>
       {/* <ResearchButton /> */}
-      {/* <LoadMoreButton /> */}
+      {data && isLoadmoreShowing && <LoadMoreButton />}
       <CategoryFilterBox />
       <FilterButton />
       <CurrentButton />

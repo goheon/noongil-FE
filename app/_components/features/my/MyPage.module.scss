@@ -4,6 +4,13 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  box-sizing: border-box;
 
   .logout-btn {
     width: 375px;

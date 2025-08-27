@@ -32,6 +32,7 @@ const ICON = {
   heart_white: '/icons/heart_white.svg',
   heart_black: '/icons/heart_black.svg',
   heart_black_active: '/icons/heart_black_active.svg',
+  heart_white_active: '/icons/heart_white_active.svg',
   target: '/icons/target.svg',
   marker_exhibition: '/icons/exhibition-marker.png',
   marker_popup: '/icons/popup-marker.png',
@@ -49,6 +50,7 @@ const ICON = {
   reset: '/icons/reset-icon.png',
   location_map_list: '/icons/location_map-list.svg',
   refresh: '/icons/refresh-icon.svg',
+  search_location: '/icons/map-search-location-icon.png',
 }
 
 export { ICON }

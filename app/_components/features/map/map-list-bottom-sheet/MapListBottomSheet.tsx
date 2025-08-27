@@ -39,7 +39,7 @@ const MapListBottomSheet = () => {
     >
       <div className={cx('list-wrap')}>
         <div className={cx('counts')}>
-          <span className={cx('counts-text')}>전체 {events.length}개</span>
+          <span className={cx('counts-text')}>전체 {data?.totalCount}개</span>
         </div>
         <div className={cx('contents')}>
           {(events as MapEventInfo[]).map((event) => (
@@ -62,8 +62,6 @@ const ItemCard: React.FC<ItemCardProps> = ({ event }) => {
   const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
   const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
   const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
-
-  console.log(event)
 
   const handleClick = () => {
     if (mapInstance) {

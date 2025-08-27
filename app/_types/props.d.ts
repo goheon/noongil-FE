@@ -16,6 +16,7 @@ export interface MainHeaderProps extends HeaderProps {
 // 마이페이지 헤더 props
 export interface HeaderLogoBoxProps extends HeaderProps {
   isSearchOpen: boolean
+  resetSearchValue?: () => void
   setIsSearchOpen:
     | React.Dispatch<React.SetStateAction<boolean>>
     | IMapStore['setIsSearchOpen']
@@ -29,6 +30,8 @@ export interface SearchBoxProps {
   isSearchOpen: boolean
   closeSearchBox?: () => void
   isListSearch?: boolean
+  value?: string
+  setValue?: Dispatch<SetStateAction<string>>
 }
 
 // 전시 상세 페이지 props

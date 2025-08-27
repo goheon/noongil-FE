@@ -48,12 +48,15 @@ const FilterBox = () => {
   const setSelectedCategories = useMapFilterStore(
     (state) => state.setSelectedCategories,
   )
-  const selectedDateType = useMapFilterStore((state) => state.seletedDateType)
+  const selectedDateType = useMapFilterStore((state) => state.selectedDateType)
   const setSelectedDateType = useMapFilterStore(
     (state) => state.setSelectedDateType,
   )
   const selectedDates = useMapFilterStore((state) => state.selectedDates)
   const setSelectedDates = useMapFilterStore((state) => state.setSelectedDates)
+  const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
+  const setZoomCount = useMapStore((s) => s.setZoomCount)
+  const setPage = useMapFilterStore((s) => s.setPage)
 
   // 전역 상태 적용 전 필터 내부 상태
   const [onType, setOnType] = useState(selectedType)
@@ -103,6 +106,9 @@ const FilterBox = () => {
     setSelectedDateType(onDateType)
     setSelectedDates(onDates)
     setIsFilterOpen(false)
+    setIsLoadmoreShowing(false)
+    setZoomCount(0)
+    setPage(0)
   }
 
   // 필터가 열렸을 때 전역상태를 필터 내부 상태로 최신화

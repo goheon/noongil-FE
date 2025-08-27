@@ -18,6 +18,7 @@ import useApplySearchParams from '../../features/searchList/useApplySearchParams
 import { HeaderProps, HeaderLogoBoxProps, SearchBoxProps } from '@/app/_types'
 import { ICON } from '@/public'
 import styles from './header.module.scss'
+import { useMapQuery } from '../../features/map/useMapQuery'
 
 // 헤더
 const Header: React.FC<HeaderProps> = ({ isExhibition }) => {
@@ -71,21 +72,29 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   isSearchOpen,
   closeSearchBox,
   isListSearch,
+  value,
+  setValue,
 }) => {
   const { keyword, setKeyword } = useListFilterStore()
   const { addHistory } = useKeywordHistoryStore()
+  const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
+  const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
 
   const [searchValue, setSearchValue] = useState('')
+
+  const usingSearchValue = value ?? searchValue
+  const usingSetSearchValue = setValue ?? setSearchValue
+
   const handleDeleteClick = (evt: React.MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation()
-    setSearchValue('')
+    usingSetSearchValue('')
   }
 
   const { applyParams } = useApplySearchParams()
 
   useEffect(() => {
     if (isListSearch && keyword) {
-      setSearchValue(keyword)
+      usingSetSearchValue(keyword)
     }
   }, [isListSearch, keyword])
 
@@ -94,7 +103,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       return
     }
 
-    const value = searchValue.trim()
+    const value = usingSearchValue.trim()
 
     setKeyword(value || '')
 
@@ -109,7 +118,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       })
       addHistory(value)
     }, 0)
-  }, [searchValue, setKeyword, isListSearch, closeSearchBox])
+  }, [usingSearchValue, setKeyword, isListSearch, closeSearchBox])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -120,21 +129,25 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   return (
     <div
       className={`${styles['header_search-bar_search-box']}`}
-      onClick={() => handleSearchClick()}
+      onClick={() => {
+        handleSearchClick()
+        setIsSelectSheetOpen(false)
+        setIsSelectSheetShowing(false)
+      }}
     >
       {/* 검색 인풋 */}
       <input
         className={`${styles['header_search-bar_search-box_input']} ${isExhibition && `${styles['header_search-bar_search-box_input_exhibition']}`}`}
         type="text"
         name="search"
-        value={searchValue}
+        value={usingSearchValue}
         ref={inputRef}
-        onChange={(evt) => setSearchValue(evt.target.value)}
+        onChange={(evt) => usingSetSearchValue(evt.target.value)}
         placeholder={isSearchOpen ? '장소, 테마를 검색해보세요.' : undefined}
         autoComplete="off"
         onKeyDown={handleKeyDown}
       />
-      {searchValue.length > 0 && (
+      {usingSearchValue.length > 0 && (
         <button
           className={`${styles['header_search-bar_search-box_button']} ${styles['delete-button']}`}
           type="button"
@@ -176,14 +189,28 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
   isSearchOpen,
   setIsSearchOpen,
   isExhibition,
+  resetSearchValue,
 }) => {
   const pathname = usePathname()
   const router = useRouter()
   const setIsListSheetOpen = useMapStore((s) => s.setIsListSheetOpen)
   const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
-  const isSelectSheetOpen = useMapStore((s) => s.isSelectSheetOpen)
+  const isSelectSheetShowing = useMapStore((s) => s.isSelectSheetShowing)
   const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
   const setIsSelectSheetShowing = useMapStore((s) => s.setIsSelectSheetShowing)
+  const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
+  const { data } = useMapQuery()
+
+  useEffect(() => {
+    if (
+      !pathname.includes('map') &&
+      !pathname.includes('lists') &&
+      pathname.split('/').length < 4
+    ) {
+      setIsSelectSheetOpen(false)
+      setIsSelectSheetShowing(false)
+    }
+  }, [pathname])
 
   return (
     <div
@@ -192,11 +219,14 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
         if (isSearchOpen) {
           setIsSearchOpen(false)
           setIsListSheetShowing(true)
-        } else if (isSelectSheetOpen) {
+          resetSearchValue && resetSearchValue()
+        } else if (isSelectSheetShowing) {
           setIsSelectSheetOpen(false)
           setIsSelectSheetShowing(false)
           setIsListSheetShowing(true)
           setIsListSheetOpen(true)
+          setSelectedEventInfo(null)
+          resetSearchValue && resetSearchValue()
           if (!pathname.includes('map')) {
             router.back()
           }
@@ -211,7 +241,7 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
         }
       }}
     >
-      {isSearchOpen || isSelectSheetOpen ? (
+      {isSearchOpen || isSelectSheetShowing ? (
         !isExhibition ? (
           <Image
             className={`${styles['header_search-bar_logo-box_icon']}`}
@@ -246,7 +276,7 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
           height={39}
         />
       )}
-      {!isSearchOpen && !isSelectSheetOpen && (
+      {!isSearchOpen && !isSelectSheetShowing && (
         <span className={`${styles['header_search-bar_logo-box_title']}`}>
           눈 길
         </span>
@@ -254,71 +284,5 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
     </div>
   )
 }
-
-// const RnPsearchBox: React.FC = () => {
-//   return (
-//     <div className={`${styles['header_search-focus-box']}`}>
-//       <p className={`${styles['header_search-focus-box_title']}`}>
-//         최근 검색어
-//       </p>
-//       <div className={`${styles['header_search-focus-box_recent-search-box']}`}>
-//         <div
-//           className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
-//         >
-//           <span>데이식스</span>
-//           <button type="button">X</button>
-//         </div>
-
-//         <div
-//           className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
-//         >
-//           <span>트와이스</span>
-//           <button type="button">X</button>
-//         </div>
-//         <div
-//           className={`${styles['header_search-focus-box_recent-search-box_recent-search']}`}
-//         >
-//           <span>세상에서 제일가는 포테이토 칩</span>
-//           <button type="button">X</button>
-//         </div>
-//       </div>
-//       <p className={`${styles['header_search-focus-box_title']}`}>
-//         인기 검색어
-//       </p>
-//       <ol className={`${styles['header_search-focus-box_popular-list']}`}>
-//         <li
-//           className={`${styles['header_search-focus-box_popular-list_line']}`}
-//         >
-//           데이식스
-//         </li>
-//         <li
-//           className={`${styles['header_search-focus-box_popular-list_line']}`}
-//         >
-//           트와이스
-//         </li>
-//         <li
-//           className={`${styles['header_search-focus-box_popular-list_line']}`}
-//         >
-//           루피
-//         </li>
-//         <li
-//           className={`${styles['header_search-focus-box_popular-list_line']}`}
-//         >
-//           데이식스
-//         </li>
-//         <li
-//           className={`${styles['header_search-focus-box_popular-list_line']}`}
-//         >
-//           트와이스
-//         </li>
-//         <li
-//           className={`${styles['header_search-focus-box_popular-list_line']}`}
-//         >
-//           루피
-//         </li>
-//       </ol>
-//     </div>
-//   )
-// }
 
 export { Header, LogoBox, SearchBox }

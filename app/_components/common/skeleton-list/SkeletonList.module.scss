@@ -3,17 +3,25 @@
 
   &--carousel {
     display: flex;
-    gap: 30px;
+    gap: 10px;
     overflow-x: hidden;
     padding-left: 30px;
+
+    li {
+      min-width: 150px;
+      flex-shrink: 0;
+    }
   }
 
   &--board {
-    display: flex;
-    flex-wrap: wrap;
-    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
+    width: 100%;
     overflow-y: scroll;
     scrollbar-width: none;
+    padding: 0px 20px;
+    box-sizing: border-box;
 
     &::-webkit-scrollbar {
       display: none;
@@ -25,19 +33,19 @@
 
     &--column {
       box-sizing: border-box;
-      width: 260px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 10px;
 
       &--board {
-        width: 215px;
+        width: 100%;
         padding-bottom: 20px;
       }
     }
 
     &--row {
-      width: 320px;
+      width: 100%;
       display: flex;
       gap: 10px;
 
