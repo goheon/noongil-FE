@@ -1,4 +1,5 @@
 import ClientRootLayout from './ClientRootLayout'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 
 import 'react-loading-skeleton/dist/skeleton.css'
 import '@/app/_styles'
@@ -20,6 +21,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
+      <GoogleTagManager gtmId={process.env.NEXT_GA4_ID as string} />
+      <GoogleAnalytics gaId={process.env.NEXT_GTM_ID as string} />
       <body className="pages">
         <ClientRootLayout>{children}</ClientRootLayout>
       </body>
