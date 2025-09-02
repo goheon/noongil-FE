@@ -46,7 +46,7 @@ export const searchMapInfo = async (filter: {
     queryString += `&operStatDt=${startDate}&operEndDt=${endDate}`
   }
   if (filter.page) queryString += `&page=${filter.page}`
-  console.log(queryString)
+  // console.log(queryString)
 
   try {
     const response = await axiosApi.get(
@@ -55,7 +55,7 @@ export const searchMapInfo = async (filter: {
 
     return response.data
   } catch (err) {
-    console.log('get event info :', err)
+    // console.log('get event info :', err)
     throw err
   }
 }

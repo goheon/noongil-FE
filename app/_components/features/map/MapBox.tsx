@@ -36,7 +36,7 @@ export const MapBox: React.FC = () => {
   const page = useMapFilterStore((s) => s.page)
   // 이벤트 조회 쿼리 데이터
   const { data } = useMapQuery()
-  console.log(data)
+  // console.log(data)
 
   // 지도 인스턴스 할당
   const map = useNaverMapSDK({
@@ -78,16 +78,16 @@ export const MapBox: React.FC = () => {
     // 줌할 때마다 라벨/상태 갱신
     onZoomChange: (zoom) => {
       updateLabels(zoom)
-      console.log('현재 줌 레벨:', zoom)
+      // console.log('현재 줌 레벨:', zoom)
     },
     // 줌이 N회 이상 변경되면 분기
     onZoomThreshold: ({ zoom, count }) => {
       // ex) 토스트, 트래킹, 쿼리 무효화 등
-      console.log('임계치 도달', zoom, count)
-      console.log(page)
-      console.log(data?.totalPageCount)
+      // console.log('임계치 도달', zoom, count)
+      // console.log(page)
+      // console.log(data?.totalPageCount)
       if (page + 1 !== data?.totalPageCount && isSelectSheetShowing === false) {
-        console.log('더불러오기활성화')
+        // console.log('더불러오기활성화')
         setIsLoadmoreShowing(true)
       } else {
         setIsLoadmoreShowing(false)
@@ -167,7 +167,7 @@ export const MapBox: React.FC = () => {
           // select bottomsheet open
           setIsSelectSheetOpen(true)
           // header back button
-          console.log(`${event.eventNm} 마커 클릭됨`)
+          // console.log(`${event.eventNm} 마커 클릭됨`)
         },
       })
 
