@@ -70,6 +70,7 @@ const SpeedDial = () => {
       <motion.button
         className={cx('speed-dial-btn', 'main', {
           isSmall: isSmall,
+          exhibition: focused === '전시',
         })}
         onClick={() => setOpen(!open)}
         whileTap={{ scale: 0.94 }}
