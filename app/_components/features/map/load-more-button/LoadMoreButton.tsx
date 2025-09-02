@@ -13,7 +13,7 @@ const LoadMoreButton = () => {
   const setPage = useMapFilterStore((s) => s.setPage)
   const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
 
-  console.log(data)
+  // console.log(data)
   const handleClick = () => {
     setPage(page + 1)
     setIsLoadmoreShowing(false)
