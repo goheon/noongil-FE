@@ -7,71 +7,71 @@
   gap: 45px;
   box-sizing: border-box;
   overflow-y: scroll;
+}
 
-  .section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 
-    .title {
-      font-weight: 600;
-      font-size: 17px;
+  .title {
+    font-weight: 600;
+    font-size: 17px;
+  }
+
+  .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 16px 42px;
+
+    input {
+      display: none;
     }
 
-    .list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 16px 42px;
+    .list-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
 
-      input {
-        display: none;
-      }
+      .img-wrapper {
+        position: relative;
+        // width: 100%;
+        min-width: 120px;
+        height: 120px;
+        max-height: 120px;
+        aspect-ratio: 1/1;
 
-      .list-item {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        align-items: center;
-        cursor: pointer;
-
-        .img-wrapper {
-          position: relative;
+        .img {
           width: 100%;
-          min-width: 120px;
-          height: 120px;
-          max-height: 120px;
-          aspect-ratio: 1/1;
-
-          .img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 5px;
-          }
-
-          .checkbox {
-            width: 23px;
-            height: 23px;
-            background-color: white;
-            border-radius: 50px;
-            position: absolute;
-            right: 8px;
-            bottom: 7px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
+          height: 100%;
+          object-fit: cover;
+          border-radius: 5px;
         }
 
-        .label {
-          font-weight: 400;
-          font-size: 10px;
+        .checkbox {
+          width: 23px;
+          height: 23px;
+          background-color: white;
+          border-radius: 50px;
+          position: absolute;
+          right: 8px;
+          bottom: 7px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
+      }
+
+      .label {
+        font-weight: 400;
+        font-size: 10px;
       }
     }
   }
+}
 
-  .update-btn {
-    width: 128px;
-  }
+.update-btn {
+  width: 128px;
 }
