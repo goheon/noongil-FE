@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import classNames from 'classnames/bind'
 import { motion, useDragControls } from 'framer-motion'
 
 import styles from './BottomSheet.module.scss'
+import useOnClickOutside from '@/app/_hooks/useOnClickOutside'
 
 export type BottomSheetType = 'filter' | 'map-list' | 'map-select'
 
@@ -97,6 +98,18 @@ const BottomSheet = ({
   }
 
   const { animate, exitY, dragConstraints } = getSheetConfig()
+
+  const handleClose = useCallback(() => {
+    // 내부 상태가 열려있을 때만 닫기 로직 실행
+    if (isOpen) {
+      setIsOpen(false)
+      if (setIsOpenProp) {
+        setIsOpenProp(false)
+      }
+    }
+  }, [isOpen, setIsOpenProp])
+
+  useOnClickOutside(bottomSheetRef, handleClose)
 
   return (
     <div className={cx('bottom-sheet-container')}>
