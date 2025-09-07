@@ -90,13 +90,19 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     usingSetSearchValue('')
   }
 
+  useEffect(() => {
+    if (!keyword) {
+      setSearchValue('')
+    }
+  }, [keyword])
+
   const { applyParams } = useApplySearchParams()
 
   useEffect(() => {
     if (isListSearch && keyword) {
       usingSetSearchValue(keyword)
     }
-  }, [isListSearch, keyword])
+  }, [isListSearch, keyword, usingSetSearchValue])
 
   const searchKeyword = useCallback(() => {
     if (!isListSearch) {
@@ -118,7 +124,14 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       })
       addHistory(value)
     }, 0)
-  }, [usingSearchValue, setKeyword, isListSearch, closeSearchBox])
+  }, [
+    isListSearch,
+    usingSearchValue,
+    setKeyword,
+    closeSearchBox,
+    applyParams,
+    addHistory,
+  ])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -210,7 +223,7 @@ const LogoBox: React.FC<HeaderLogoBoxProps> = ({
       setIsSelectSheetOpen(false)
       setIsSelectSheetShowing(false)
     }
-  }, [pathname])
+  }, [pathname, setIsSelectSheetOpen, setIsSelectSheetShowing])
 
   return (
     <div

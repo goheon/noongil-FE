@@ -29,7 +29,8 @@ interface IListFilter {
   setSeoulCheck: (checked: boolean) => void
   setGyenggiCheck: (checked: boolean) => void
   setKeyword: (keyword: string) => void
-  reset: () => void
+  filterReset: () => void
+  allReset: () => void
 }
 
 export const useListFilterStore = create<IListFilter>((set) => ({
@@ -68,8 +69,19 @@ export const useListFilterStore = create<IListFilter>((set) => ({
   setSeoulCheck: (checked: boolean) => set({ isSeoulChecked: checked }),
   setGyenggiCheck: (checked: boolean) => set({ isGyeonggiChecked: checked }),
   setKeyword: (keyword: string) => set({ keyword: keyword }),
-  reset: () =>
+  filterReset: () =>
     set({
+      order: null,
+      category: [],
+      startDate: null,
+      endDate: null,
+      regions: [],
+      isSeoulChecked: false,
+      isGyeonggiChecked: false,
+    }),
+  allReset: () =>
+    set({
+      keyword: '',
       order: null,
       category: [],
       startDate: null,
