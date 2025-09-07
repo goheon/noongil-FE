@@ -7,6 +7,7 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import { ICON } from '@/public'
 import styles from './BottomNavigation.module.scss'
 import Link from 'next/link'
+import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 
 const REPORT_URL =
   'https://www.notion.so/ex2-8f16dd42375a4e3da597943bb85f90b2?source=copy_link'
@@ -15,6 +16,8 @@ const BottomNavigation: React.FC = () => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const router = useRouter()
+
+  const { allReset } = useListFilterStore()
 
   return (
     <div className={`${styles[`bottom-navigation`]}`}>
@@ -43,7 +46,9 @@ const BottomNavigation: React.FC = () => {
       </div>
       <div
         className={`${styles[`bottom-navigation_button`]}`}
-        onClick={() => router.push('/map')}
+        onClick={() => {
+          router.push('/map')
+        }}
       >
         {pathname.includes('/map') ? (
           <Image
@@ -66,7 +71,10 @@ const BottomNavigation: React.FC = () => {
       </div>
       <div
         className={`${styles[`bottom-navigation_button`]}`}
-        onClick={() => router.push('/')}
+        onClick={() => {
+          allReset()
+          router.push('/')
+        }}
       >
         {pathname === '/' ||
         pathname === '/exhibition' ||

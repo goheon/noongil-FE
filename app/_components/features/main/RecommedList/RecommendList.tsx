@@ -33,7 +33,7 @@ const RecommendList = (props: RecommendListProps) => {
   const { isLoggedIn } = useUserAuth()
 
   const { data } = useQuery({
-    queryKey: ['user-recommend-list'],
+    queryKey: ['user-recommend-list', currentEventCode],
     queryFn: () => getUserRecommendList(currentEventCode),
     enabled: isLoggedIn,
   })
