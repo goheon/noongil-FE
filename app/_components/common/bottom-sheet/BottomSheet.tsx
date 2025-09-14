@@ -7,7 +7,11 @@ import { motion, useDragControls } from 'framer-motion'
 import styles from './BottomSheet.module.scss'
 import useOnClickOutside from '@/app/_hooks/useOnClickOutside'
 
-export type BottomSheetType = 'filter' | 'map-list' | 'map-select'
+export type BottomSheetType =
+  | 'filter'
+  | 'map-list'
+  | 'map-select'
+  | 'filter-order'
 
 interface BottomSheetProps {
   type: BottomSheetType
@@ -148,7 +152,13 @@ const BottomSheet = ({
           <div className={cx('handle')} />
         </motion.div>
 
-        <div className={cx('content', type === 'filter' && 'content--filter')}>
+        <div
+          className={cx(
+            'content',
+            type === 'filter' && 'content--filter',
+            type === 'filter-order' && 'content--order-filter',
+          )}
+        >
           {/* {type === 'filter' && (
             <div className={styles['header']}>
               <h3>필터 옵션</h3>
