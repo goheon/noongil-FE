@@ -6,6 +6,12 @@ import { useEffect } from 'react'
 import { parseISO, isValid } from 'date-fns'
 import { IGeoData } from './type'
 
+const ORDER_FILER_VALUE_MAP: Record<string, TOrder> = {
+  '10': 'popular',
+  '20': 'newest',
+  '30': 'ending',
+}
+
 export const useSyncStoreWithURL = () => {
   const searchParams = useSearchParams()
 
@@ -50,8 +56,10 @@ export const useSyncStoreWithURL = () => {
     }
 
     // 정렬
-    const order = searchParams.get('order') as TOrder
-    if (order) setOrder(order)
+    const order = searchParams.get('sortType') as TOrder
+
+    console.log('sync :', order)
+    if (order) setOrder(ORDER_FILER_VALUE_MAP[order])
 
     // 날짜
     const start = searchParams.get('startDate')
@@ -79,7 +87,18 @@ export const useSyncStoreWithURL = () => {
     // 검색어
     const keyword = searchParams.get('keyword') ?? ''
     setKeyword(keyword)
-  }, [regionFilter])
+  }, [
+    regionFilter,
+    searchParams,
+    setCategory,
+    setEndDate,
+    setGyenggiCheck,
+    setKeyword,
+    setOrder,
+    setRegion,
+    setSeoulCheck,
+    setStartDate,
+  ])
 }
 
 export default useSyncStoreWithURL
