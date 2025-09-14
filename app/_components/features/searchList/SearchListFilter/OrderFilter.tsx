@@ -24,20 +24,18 @@ const ORDER_FILER_VALUE_MAP: Record<TOrder, string> = {
 const OrderFilter = () => {
   const { applyParams } = useApplySearchParams()
 
-  const { setOpen } = useListFilterStore()
+  const { setOpen, setOrder } = useListFilterStore()
 
-  const applyFilter = useCallback(
-    (value: TOrder) => {
-      const orderValue = ORDER_FILER_VALUE_MAP[value]
+  const applyFilter = (value: TOrder) => {
+    const orderValue = ORDER_FILER_VALUE_MAP[value]
 
-      setOpen(false)
+    setOrder(value)
+    setOpen(false)
 
-      applyParams({
-        sortType: orderValue,
-      })
-    },
-    [applyParams, setOpen],
-  )
+    applyParams({
+      sortType: orderValue,
+    })
+  }
 
   return (
     <ul className={cx('list')}>
