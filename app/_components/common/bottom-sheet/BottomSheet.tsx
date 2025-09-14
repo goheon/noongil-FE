@@ -125,6 +125,15 @@ const BottomSheet = ({
 
   useOnClickOutside(bottomSheetRef, handleClose)
 
+  const handleHeaderClick = useCallback(() => {
+    // 버튼을 '클릭하는 순간'에 기기 환경을 확인합니다.
+    const isPcEnvironment = window.matchMedia('(pointer: fine)').matches
+
+    if (isPcEnvironment) {
+      handleOpen()
+    }
+  }, [handleOpen])
+
   return (
     <div className={cx('bottom-sheet-container')}>
       {/* <motion.button
@@ -158,7 +167,7 @@ const BottomSheet = ({
           className={cx('handle-bar')}
           onPointerDown={(event) => dragControls.start(event)}
           style={{ touchAction: 'none' }}
-          onClick={handleOpen}
+          onClick={handleHeaderClick}
         >
           <div className={cx('handle')} />
         </motion.div>
