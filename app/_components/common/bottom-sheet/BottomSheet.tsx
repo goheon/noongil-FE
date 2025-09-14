@@ -113,6 +113,16 @@ const BottomSheet = ({
     }
   }, [isOpen, setIsOpenProp])
 
+  const handleOpen = useCallback(() => {
+    if (!isOpen) {
+      setIsOpen(true)
+
+      if (setIsOpenProp) {
+        setIsOpenProp(true)
+      }
+    }
+  }, [isOpen, setIsOpenProp])
+
   useOnClickOutside(bottomSheetRef, handleClose)
 
   return (
@@ -148,6 +158,7 @@ const BottomSheet = ({
           className={cx('handle-bar')}
           onPointerDown={(event) => dragControls.start(event)}
           style={{ touchAction: 'none' }}
+          onClick={handleOpen}
         >
           <div className={cx('handle')} />
         </motion.div>
