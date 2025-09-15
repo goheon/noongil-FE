@@ -33,8 +33,8 @@ const useSearchList = (eventCode: TAllEventCode) => {
           sortType,
           eventCode,
           keyword,
-          operEndDt: startDate,
-          operStatDt: endDate,
+          operEndDt: endDate,
+          operStatDt: startDate,
           categories,
           regionGroups: regions,
         }),
@@ -50,6 +50,8 @@ const useSearchList = (eventCode: TAllEventCode) => {
       return acc.concat(item?.events ?? [])
     }, [])
   }, [data])
+
+  console.log('d :', data)
 
   return {
     list,

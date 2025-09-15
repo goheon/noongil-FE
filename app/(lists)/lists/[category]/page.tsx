@@ -29,10 +29,15 @@ const CategoryPage = ({
     notFound()
   }
 
+  const uniqueKey = new URLSearchParams(searchParams).toString()
+
   return (
     <>
       {/* fix categort type */}
-      <SearchList eventCode={category as 'popup' | 'exhibition' | 'all'} />
+      <SearchList
+        key={uniqueKey}
+        eventCode={category as 'popup' | 'exhibition' | 'all'}
+      />
       <SpeedDial />
       <SearchListFilter
         eventCode={category as 'popup' | 'exhibition' | 'all'}

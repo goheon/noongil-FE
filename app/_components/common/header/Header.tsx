@@ -88,6 +88,10 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   const handleDeleteClick = (evt: React.MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation()
     usingSetSearchValue('')
+
+    applyParams({
+      keyword: '',
+    })
   }
 
   useEffect(() => {

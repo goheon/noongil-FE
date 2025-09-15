@@ -23,14 +23,7 @@ const useApplySearchParams = () => {
       updateParam(newParams, key, value)
     })
 
-    // 체크할 경로 키워드 목록
-    const paths = ['exhibition', 'popup']
-
-    // 현재 pathname에서 키워드 찾기
-    const matchedPath = paths.find((p) => pathname.includes(`/${p}`))
-
-    // matchedPath가 있으면 `/lists/${matchedPath}`, 없으면 기본 `/lists`
-    const basePath = matchedPath ? `/lists/${matchedPath}` : '/lists'
+    const basePath = pathname
 
     router.push(`${basePath}?${newParams.toString()}`)
   }
