@@ -21,8 +21,13 @@
 
   .list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 16px 42px;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 16px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 16px;
+    }
 
     input {
       display: none;
@@ -42,6 +47,16 @@
         height: 120px;
         max-height: 120px;
         aspect-ratio: 1/1;
+
+        @media (max-width: 768px) {
+          min-width: 100px;
+          height: 100px;
+          max-height: 100px;
+
+          .main-image {
+            object-fit: contain;
+          }
+        }
 
         .img {
           width: 100%;
