@@ -12,7 +12,7 @@ const useSearchList = (eventCode: TAllEventCode) => {
   const startDate = searchParams.get('startDate') ?? ''
   const endDate = searchParams.get('endDate') ?? ''
   const regions = searchParams.get('regions') ?? ''
-  const sortType = searchParams.get('sortType') ?? ''
+  const sortType = searchParams.get('sortType') ?? '10'
   const keyword = searchParams.get('keyword') ?? ''
 
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
@@ -50,8 +50,6 @@ const useSearchList = (eventCode: TAllEventCode) => {
       return acc.concat(item?.events ?? [])
     }, [])
   }, [data])
-
-  console.log('d :', data)
 
   return {
     list,
