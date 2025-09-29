@@ -39,7 +39,7 @@ const ICON = {
   x_icon: '/icons/x-icon.svg',
   x_icon_black: '/icons/x-icon_black.svg',
   checkbox_off_black: '/icons/checkbox-off-black.svg',
-  delete: 'icons/delete-input.svg',
+  delete: '/icons/delete-input.svg',
   filter: '/icons/filter-icon_map.svg',
   check_mark: '/icons/check-mark.svg',
   check_mark_active: '/icons/check-mark-active.svg',
