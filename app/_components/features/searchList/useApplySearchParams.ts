@@ -23,7 +23,12 @@ const useApplySearchParams = () => {
       updateParam(newParams, key, value)
     })
 
-    const basePath = pathname
+    const basePath =
+      pathname === '/lists' ||
+      pathname === '/lists/exhibition' ||
+      pathname === '/lists/popup'
+        ? pathname
+        : '/lists'
 
     router.push(`${basePath}?${newParams.toString()}`)
   }

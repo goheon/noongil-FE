@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import styles from './SearchSuggestionBox.module.scss'
 import classNames from 'classnames/bind'
 import RecentKeyword from './RecentKeyword'
-import { getPopularKeywords } from '@/app/_components/features/searchList/searchApi'
-import { useQuery } from '@tanstack/react-query'
+// import { getPopularKeywords } from '@/app/_components/features/searchList/searchApi'
+// import { useQuery } from '@tanstack/react-query'
 import useApplySearchParams from '@/app/_components/features/searchList/useApplySearchParams'
 import { useListFilterStore } from '@/app/_store/listFilter/useListFilterStore'
 
@@ -28,12 +28,13 @@ const SearchSuggestionBox = (props: SearchSuggestionBoxProps) => {
     }
   }, [])
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['popular-keyword'],
-    queryFn: getPopularKeywords,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  })
+  // TODO : 인기검색어
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ['popular-keyword'],
+  //   queryFn: getPopularKeywords,
+  //   refetchOnMount: false,
+  //   refetchOnWindowFocus: false,
+  // })
 
   const handleClick = (keyword: string) => {
     setTimeout(() => {
@@ -53,6 +54,8 @@ const SearchSuggestionBox = (props: SearchSuggestionBoxProps) => {
         closeSearchBox={closeSearchBox}
       />
 
+      {/* TODO : 인기검색어 
+      
       <div className={cx('popular-keyword')}>
         <div className={cx('title')}>인기 검색어</div>
 
@@ -70,7 +73,7 @@ const SearchSuggestionBox = (props: SearchSuggestionBoxProps) => {
             ))}
           </ul>
         ) : null}
-      </div>
+      </div> */}
     </div>
   )
 }
