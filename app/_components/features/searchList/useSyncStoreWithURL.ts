@@ -46,7 +46,7 @@ export const useSyncStoreWithURL = () => {
         .map((code) => allRegions.find((region) => region.rgntCd === code))
         .filter(Boolean) as IGeoData[]
 
-      selectedRegions.forEach(setRegion)
+      selectedRegions.forEach((region) => setRegion(region))
 
       const hasSeoul = selectedRegions.some((r) => r.rgntTypeCd === '10')
       const hasGyeonggi = selectedRegions.some((r) => r.rgntTypeCd === '20')
