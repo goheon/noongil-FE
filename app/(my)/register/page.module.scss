@@ -49,36 +49,32 @@
   .button-wrap {
     display: flex;
     padding: 26px;
+    margin: 0 auto;
+    justify-content: center;
+    gap: 9px;
 
     .button {
-      padding-top: 20px;
-      padding-bottom: 20px;
-      border-radius: 35px;
-      font-size: 17px;
-      border: none;
+      width: 180px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
       box-sizing: border-box;
-      transition:
-        transform 0.1s ease,
-        background-color 0.2s ease;
-
-      &:active {
-        transform: scale(0.97);
-      }
     }
 
     .reset-button {
-      display: block;
-      margin-right: 8px;
-      width: 40%;
-      color: #000000;
+      border: 1px solid #d9d9d9;
+      font-weight: 400;
+      font-size: 17px;
       background-color: #ffffff;
-      border: 2px solid #d0d9d9;
     }
 
     .submit-button {
-      width: 60%;
+      background-color: #000000;
+      font-weight: 400;
+      font-size: 17px;
       color: #ffffff;
-      background-color: #5899ed;
     }
   }
 }
