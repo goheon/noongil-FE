@@ -17,7 +17,7 @@ const useSetGeoFilterOption = () => {
     if (data) {
       setRegionFilter(data)
     }
-  }, [data])
+  }, [data, setRegionFilter])
 }
 
 export default useSetGeoFilterOption
