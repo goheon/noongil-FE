@@ -1,6 +1,6 @@
-import { useLayoutEffect, useEffect, useState, useRef } from 'react'
-import { useMapStore } from './useMapStore'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useMapQuery } from '../../_components/features/map/useMapQuery'
+import { useMapStore } from './useMapStore'
 
 declare global {
   interface Window {
@@ -45,6 +45,26 @@ export const checkLocationPermission = async () => {
     name: 'geolocation',
   })
   return state === 'granted'
+}
+
+// ===== Distance Calculation (Haversine formula) =====
+export const calculateDistance = (
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number,
+): number => {
+  const R = 6371 // Earth's radius in kilometers
+  const dLat = ((lat2 - lat1) * Math.PI) / 180
+  const dLng = ((lng2 - lng1) * Math.PI) / 180
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  return R * c // Distance in kilometers
 }
 
 export const getCurrentLocation = async (): Promise<Position> => {
@@ -158,7 +178,6 @@ const createMapEventHandlers = (
     }
 
     // 2) 줌 변경 카운트 및 임계치 체크
-
     setZoomCount((zoomCount += 1))
     onZoomChange?.(currentZoom)
     if (zoomCount >= threshold) {
@@ -358,4 +377,93 @@ export const useMapCenter = (map: MapType | null) => {
   }, [map])
 
   return center
+}
+
+// ===== Map Center Movement Tracking Hook =====
+export const useMapCenterMovement = (map: MapType | null) => {
+  const labelRenderCenter = useMapStore((s) => s.labelRenderCenter)
+  const setLabelRenderCenter = useMapStore((s) => s.setLabelRenderCenter)
+  const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
+  const { dataUpdatedAt } = useMapQuery()
+
+  // 데이터가 업데이트되면 기준점 초기화
+  useEffect(() => {
+    if (map) {
+      const currentZoom = map.getZoom()
+      if (currentZoom >= 15) {
+        const center = map.getCenter()
+        setLabelRenderCenter({ lat: center.y, lng: center.x })
+      } else {
+        setLabelRenderCenter(null)
+      }
+      setIsLoadmoreShowing(false)
+    }
+  }, [dataUpdatedAt, map, setLabelRenderCenter, setIsLoadmoreShowing])
+
+  useEffect(() => {
+    if (!map) return
+
+    const MIN_ZOOM_FOR_LABELS = 15
+    const MIN_DISTANCE_KM = 1
+
+    const handleZoomChanged = () => {
+      const currentZoom = map.getZoom()
+      const currentCenter = map.getCenter()
+
+      if (currentZoom >= MIN_ZOOM_FOR_LABELS) {
+        // 라벨 렌더링 조건 충족
+        if (!labelRenderCenter) {
+          // 최초 기준점 설정
+          setLabelRenderCenter({
+            lat: currentCenter.y,
+            lng: currentCenter.x,
+          })
+          setIsLoadmoreShowing(false)
+        }
+      } else {
+        // 라벨 렌더링 조건 미충족 - 초기화
+        setLabelRenderCenter(null)
+        setIsLoadmoreShowing(false)
+      }
+    }
+
+    const handleCenterChanged = () => {
+      const currentZoom = map.getZoom()
+      const currentCenter = map.getCenter()
+
+      if (currentZoom >= MIN_ZOOM_FOR_LABELS && labelRenderCenter) {
+        // 라벨이 렌더링되는 상태에서 중심 이동 체크
+        const distance = calculateDistance(
+          labelRenderCenter.lat,
+          labelRenderCenter.lng,
+          currentCenter.y,
+          currentCenter.x,
+        )
+
+        if (distance >= MIN_DISTANCE_KM) {
+          // 1km 이상 이동 시 LoadMoreButton 표시
+          setIsLoadmoreShowing(true)
+        }
+      }
+    }
+
+    const zoomListener = naver.maps.Event.addListener(
+      map,
+      'zoom_changed',
+      handleZoomChanged,
+    )
+    const centerListener = naver.maps.Event.addListener(
+      map,
+      'center_changed',
+      handleCenterChanged,
+    )
+
+    // 초기 상태 설정
+    handleZoomChanged()
+
+    return () => {
+      naver.maps.Event.removeListener(zoomListener)
+      naver.maps.Event.removeListener(centerListener)
+    }
+  }, [map, labelRenderCenter, setLabelRenderCenter, setIsLoadmoreShowing])
 }

@@ -1,6 +1,6 @@
-import { create } from 'zustand'
-import { MapType } from '@/app/_store/map/MapHooks'
 import { MapEventInfo } from '@/app/_components'
+import { MapType } from '@/app/_store/map/MapHooks'
+import { create } from 'zustand'
 
 interface MapState {
   isSearchOpen: boolean
@@ -13,6 +13,7 @@ interface MapState {
   zoomCount: number
   map: MapType | null
   selectedEvent: MapEventInfo | null
+  labelRenderCenter: { lat: number; lng: number } | null
   setMap: (map: MapType | null) => void
   setIsSearchOpen: (isOpen: boolean) => void
   setIsFilterOpen: (isOpen: boolean) => void
@@ -23,6 +24,7 @@ interface MapState {
   setIsLoadmoreShowing: (isShwoing: boolean) => void
   setZoomCount: (count: number) => void
   setSelectedEventInfo: (eventInfo: MapEventInfo | null) => void
+  setLabelRenderCenter: (center: { lat: number; lng: number } | null) => void
 }
 
 export const useMapStore = create<MapState>((set) => ({
@@ -36,6 +38,7 @@ export const useMapStore = create<MapState>((set) => ({
   zoomCount: 0,
   selectedEvent: null,
   map: null,
+  labelRenderCenter: null,
   setMap: (map) => set({ map }),
   setIsSearchOpen: (isOpen) => set({ isSearchOpen: isOpen }),
   setIsFilterOpen: (isOpen) => set({ isFilterOpen: isOpen }),
@@ -47,4 +50,5 @@ export const useMapStore = create<MapState>((set) => ({
   setIsLoadmoreShowing: (isShwoing) => set({ isLoadmoreShowing: isShwoing }),
   setZoomCount: (count) => set({ zoomCount: count }),
   setSelectedEventInfo: (eventInfo) => set({ selectedEvent: eventInfo }),
+  setLabelRenderCenter: (center) => set({ labelRenderCenter: center }),
 }))
