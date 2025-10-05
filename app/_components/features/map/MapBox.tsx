@@ -181,12 +181,12 @@ export const MapBox: React.FC = () => {
       })
       map.setZoom(16, true)
     } else {
-      map.fitBounds(bounds, {
-        top: 50,
-        bottom: 50,
-        left: 50,
-        right: 50,
-      })
+      // map.fitBounds(bounds, {
+      //   top: 50,
+      //   bottom: 50,
+      //   left: 50,
+      //   right: 50,
+      // })
       map.panToBounds(
         bounds,
         {},
