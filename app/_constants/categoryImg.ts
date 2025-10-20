@@ -37,31 +37,25 @@ export const CATEGORY_IMG_LIST: Record<
     img: FoodImg,
     value: 'FANDB',
   },
-  BEAU: {
-    label: ALL_CATEGORY_LABELS['BEAU'],
-    img: BeautyImg,
-    value: 'BEAU',
-  },
+
   IT: {
     label: ALL_CATEGORY_LABELS['IT'],
     img: ItImg,
     value: 'IT',
   },
-  LIFT: {
-    label: ALL_CATEGORY_LABELS['LIFT'],
-    img: LifeImg,
-    value: 'LIFT',
-  },
+
   ENTER: {
     label: ALL_CATEGORY_LABELS['ENTER'],
     img: EnterImg,
     value: 'ENTER',
   },
-  SPORT: {
-    label: ALL_CATEGORY_LABELS['SPORT'],
-    img: HealthImg,
-    value: 'SPORT',
+
+  FLMA: {
+    label: ALL_CATEGORY_LABELS['FLMA'],
+    img: BeautyImg,
+    value: 'FLMA',
   },
+
   PHOT: {
     label: ALL_CATEGORY_LABELS['PHOT'],
     img: PictureImg,
@@ -72,11 +66,7 @@ export const CATEGORY_IMG_LIST: Record<
     img: PaintingImg,
     value: 'PAINT',
   },
-  MEDIA: {
-    label: ALL_CATEGORY_LABELS['MEDIA'],
-    img: MediaImg,
-    value: 'MEDIA',
-  },
+
   SCULP: {
     label: ALL_CATEGORY_LABELS['SCULP'],
     img: SculpImg,
@@ -87,16 +77,7 @@ export const CATEGORY_IMG_LIST: Record<
     img: DesignImg,
     value: 'DESIGN',
   },
-  EXPER: {
-    label: ALL_CATEGORY_LABELS['EXPER'],
-    img: ExpImg,
-    value: 'EXPER',
-  },
-  CHILD: {
-    label: ALL_CATEGORY_LABELS['CHILD'],
-    img: KidImg,
-    value: 'CHILD',
-  },
+
   COMIC: {
     label: ALL_CATEGORY_LABELS['COMIC'],
     img: ComicImg,
