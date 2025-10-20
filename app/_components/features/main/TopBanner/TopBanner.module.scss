@@ -18,6 +18,14 @@
       max-width: 370px;
       height: 480px;
 
+      @media (max-width: 768px) {
+        height: 370px;
+
+        .banner-img {
+          object-fit: fill !important;
+        }
+      }
+
       .link {
         box-sizing: border-box;
         width: 100%;
