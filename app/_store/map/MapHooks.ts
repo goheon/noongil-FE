@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useMapQuery } from '../../_components/features/map/useMapQuery'
+import { useMapFilterStore } from './useMapFilterStore'
 import { useMapStore } from './useMapStore'
 
 declare global {
@@ -380,59 +381,65 @@ export const useMapCenter = (map: MapType | null) => {
 }
 
 // ===== Map Center Movement Tracking Hook =====
+const MIN_ZOOM_FOR_LABELS = 15
+const MIN_DISTANCE_FOR_REQUERY_KM = 1
+
 export const useMapCenterMovement = (map: MapType | null) => {
   const labelRenderCenter = useMapStore((s) => s.labelRenderCenter)
   const setLabelRenderCenter = useMapStore((s) => s.setLabelRenderCenter)
-  const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
+  const setCurrentZoom = useMapStore((s) => s.setCurrentZoom)
+  const setLocationFilter = useMapFilterStore((s) => s.setLocationFilter)
   const { dataUpdatedAt } = useMapQuery()
 
   // 데이터가 업데이트되면 기준점 초기화
   useEffect(() => {
     if (map) {
       const currentZoom = map.getZoom()
-      if (currentZoom >= 15) {
+      if (currentZoom >= MIN_ZOOM_FOR_LABELS) {
         const center = map.getCenter()
         setLabelRenderCenter({ lat: center.y, lng: center.x })
       } else {
         setLabelRenderCenter(null)
       }
-      setIsLoadmoreShowing(false)
     }
-  }, [dataUpdatedAt, map, setLabelRenderCenter, setIsLoadmoreShowing])
+  }, [dataUpdatedAt, map, setLabelRenderCenter])
 
   useEffect(() => {
     if (!map) return
-
-    const MIN_ZOOM_FOR_LABELS = 15
-    const MIN_DISTANCE_KM = 1
 
     const handleZoomChanged = () => {
       const currentZoom = map.getZoom()
       const currentCenter = map.getCenter()
 
+      // 현재 줌 레벨 상태 업데이트
+      setCurrentZoom(currentZoom)
+
       if (currentZoom >= MIN_ZOOM_FOR_LABELS) {
         // 라벨 렌더링 조건 충족
         if (!labelRenderCenter) {
-          // 최초 기준점 설정
+          // 최초 기준점 설정 (조건 3 - 데이터 재조회 로직 제거)
           setLabelRenderCenter({
             lat: currentCenter.y,
             lng: currentCenter.x,
           })
-          setIsLoadmoreShowing(false)
+          // setLocationFilter(currentCenter.y, currentCenter.x)
         }
       } else {
         // 라벨 렌더링 조건 미충족 - 초기화
         setLabelRenderCenter(null)
-        setIsLoadmoreShowing(false)
       }
     }
 
     const handleCenterChanged = () => {
       const currentZoom = map.getZoom()
       const currentCenter = map.getCenter()
+      const isProgrammaticMove = useMapStore.getState().isProgrammaticMove
+
+      // 프로그래밍된 센터 이동인 경우 데이터 재조회하지 않음
+      if (isProgrammaticMove) return
 
       if (currentZoom >= MIN_ZOOM_FOR_LABELS && labelRenderCenter) {
-        // 라벨이 렌더링되는 상태에서 중심 이동 체크
+        // 라벨이 렌더링되는 상태에서 중심 이동 체크 (조건 1)
         const distance = calculateDistance(
           labelRenderCenter.lat,
           labelRenderCenter.lng,
@@ -440,9 +447,14 @@ export const useMapCenterMovement = (map: MapType | null) => {
           currentCenter.x,
         )
 
-        if (distance >= MIN_DISTANCE_KM) {
-          // 1km 이상 이동 시 LoadMoreButton 표시
-          setIsLoadmoreShowing(true)
+        if (distance >= MIN_DISTANCE_FOR_REQUERY_KM) {
+          // 1km 이상 이동 시 위치 필터 업데이트 및 데이터 재조회
+          setLocationFilter(currentCenter.y, currentCenter.x)
+          // 새로운 기준점으로 업데이트
+          setLabelRenderCenter({
+            lat: currentCenter.y,
+            lng: currentCenter.x,
+          })
         }
       }
     }
@@ -465,5 +477,11 @@ export const useMapCenterMovement = (map: MapType | null) => {
       naver.maps.Event.removeListener(zoomListener)
       naver.maps.Event.removeListener(centerListener)
     }
-  }, [map, labelRenderCenter, setLabelRenderCenter, setIsLoadmoreShowing])
+  }, [
+    map,
+    labelRenderCenter,
+    setLabelRenderCenter,
+    setLocationFilter,
+    setCurrentZoom,
+  ])
 }
