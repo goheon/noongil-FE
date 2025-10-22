@@ -1,5 +1,5 @@
 import { axiosApi } from '@/app/_lib'
-import { EventType, DateType } from '@/app/_store/map/useMapFilterStore'
+import { DateType, EventType } from '@/app/_store/map/useMapFilterStore'
 
 export const searchMapInfo = async (filter: {
   selectedCategories?: any
@@ -7,6 +7,8 @@ export const searchMapInfo = async (filter: {
   selectedDateType?: DateType
   selectedDates?: [Date | null, Date | null]
   page?: number
+  latitude?: number | null
+  longitude?: number | null
 }) => {
   let queryString = ''
   if (
@@ -45,8 +47,16 @@ export const searchMapInfo = async (filter: {
       .replace(/-/g, '')
     queryString += `&operStatDt=${startDate}&operEndDt=${endDate}`
   }
-  if (filter.page) queryString += `&page=${filter.page}`
-  // console.log(queryString)
+  if (filter.page !== undefined && filter.page >= 0)
+    queryString += `&page=${filter.page}`
+
+  // 위도/경도 필터 추가
+  if (filter.latitude !== null && filter.latitude !== undefined) {
+    queryString += `&latitude=${filter.latitude}`
+  }
+  if (filter.longitude !== null && filter.longitude !== undefined) {
+    queryString += `&longitude=${filter.longitude}`
+  }
 
   try {
     const response = await axiosApi.get(

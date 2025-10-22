@@ -9,11 +9,13 @@ interface MapState {
   isListSheetOpen: boolean
   isSelectSheetShowing: boolean
   isSelectSheetOpen: boolean
-  isLoadmoreShowing: boolean
   zoomCount: number
+  currentZoom: number
   map: MapType | null
   selectedEvent: MapEventInfo | null
   labelRenderCenter: { lat: number; lng: number } | null
+  isProgrammaticMove: boolean
+  isInitialDataLoaded: boolean
   setMap: (map: MapType | null) => void
   setIsSearchOpen: (isOpen: boolean) => void
   setIsFilterOpen: (isOpen: boolean) => void
@@ -21,10 +23,12 @@ interface MapState {
   setIsListSheetOpen: (isOpen: boolean) => void
   setIsSelectSheetShowing: (isShwoing: boolean) => void
   setIsSelectSheetOpen: (isOpen: boolean) => void
-  setIsLoadmoreShowing: (isShwoing: boolean) => void
   setZoomCount: (count: number) => void
+  setCurrentZoom: (zoom: number) => void
   setSelectedEventInfo: (eventInfo: MapEventInfo | null) => void
   setLabelRenderCenter: (center: { lat: number; lng: number } | null) => void
+  setIsProgrammaticMove: (isProgrammatic: boolean) => void
+  setIsInitialDataLoaded: (isLoaded: boolean) => void
 }
 
 export const useMapStore = create<MapState>((set) => ({
@@ -34,11 +38,13 @@ export const useMapStore = create<MapState>((set) => ({
   isListSheetOpen: false,
   isSelectSheetShowing: false,
   isSelectSheetOpen: false,
-  isLoadmoreShowing: false,
   zoomCount: 0,
+  currentZoom: 15,
   selectedEvent: null,
   map: null,
   labelRenderCenter: null,
+  isProgrammaticMove: false,
+  isInitialDataLoaded: false,
   setMap: (map) => set({ map }),
   setIsSearchOpen: (isOpen) => set({ isSearchOpen: isOpen }),
   setIsFilterOpen: (isOpen) => set({ isFilterOpen: isOpen }),
@@ -47,8 +53,11 @@ export const useMapStore = create<MapState>((set) => ({
   setIsSelectSheetShowing: (isShwoing) =>
     set({ isSelectSheetShowing: isShwoing }),
   setIsSelectSheetOpen: (isOpen) => set({ isSelectSheetOpen: isOpen }),
-  setIsLoadmoreShowing: (isShwoing) => set({ isLoadmoreShowing: isShwoing }),
   setZoomCount: (count) => set({ zoomCount: count }),
+  setCurrentZoom: (zoom) => set({ currentZoom: zoom }),
   setSelectedEventInfo: (eventInfo) => set({ selectedEvent: eventInfo }),
   setLabelRenderCenter: (center) => set({ labelRenderCenter: center }),
+  setIsProgrammaticMove: (isProgrammatic) =>
+    set({ isProgrammaticMove: isProgrammatic }),
+  setIsInitialDataLoaded: (isLoaded) => set({ isInitialDataLoaded: isLoaded }),
 }))

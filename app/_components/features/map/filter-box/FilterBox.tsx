@@ -54,7 +54,6 @@ const FilterBox = () => {
   )
   const selectedDates = useMapFilterStore((state) => state.selectedDates)
   const setSelectedDates = useMapFilterStore((state) => state.setSelectedDates)
-  const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
   const setZoomCount = useMapStore((s) => s.setZoomCount)
   const setPage = useMapFilterStore((s) => s.setPage)
 
@@ -106,7 +105,6 @@ const FilterBox = () => {
     setSelectedDateType(onDateType)
     setSelectedDates(onDates)
     setIsFilterOpen(false)
-    setIsLoadmoreShowing(false)
     setZoomCount(0)
     setPage(0)
   }
@@ -119,7 +117,7 @@ const FilterBox = () => {
       setOnDateType(selectedDateType)
       setOnDates(selectedDates)
     }
-  }, [isFilterOpen])
+  }, [isFilterOpen, selectedType, selectedCategories, selectedDateType, selectedDates])
 
   // 주말 날짜 계산
   const getWeekend = (date: Date) => {

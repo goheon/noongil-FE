@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import classNames from 'classnames/bind'
 import Image from 'next/image'
+import { useMemo } from 'react'
 
 import { BottomSheet } from '@/app/_components/common'
 
-import { useMapQuery } from '../useMapQuery'
 import { useMapStore } from '@/app/_store/map/useMapStore'
+import { useMapQuery } from '../useMapQuery'
 
 import { MapEventInfo } from '../MapBox'
 
@@ -21,15 +21,15 @@ const MapListBottomSheet = () => {
   const isListSheetOpen = useMapStore((s) => s.isListSheetOpen)
   const setIsListSheetOpen = useMapStore((s) => s.setIsListSheetOpen)
 
-  const [events, setEvents] = useState([])
   const { data } = useMapQuery()
 
-  useEffect(() => {
-    if (data) {
-      const { events } = data
-      if (events) setEvents(events)
+  // useMemo를 사용하여 데이터 변경 시에만 이벤트 배열을 재계산하고 컴포넌트 리렌더링 방지
+  const events = useMemo(() => {
+    if (data?.events) {
+      return data.events
     }
-  }, [data])
+    return []
+  }, [data?.events])
 
   return (
     <BottomSheet
@@ -62,9 +62,13 @@ const ItemCard: React.FC<ItemCardProps> = ({ event }) => {
   const setIsListSheetShowing = useMapStore((s) => s.setIsListSheetShowing)
   const setIsSelectSheetOpen = useMapStore((s) => s.setIsSelectSheetOpen)
   const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
+  const setIsProgrammaticMove = useMapStore((s) => s.setIsProgrammaticMove)
 
   const handleClick = () => {
     if (mapInstance) {
+      // 프로그래밍된 센터 이동 플래그 설정 (데이터 재조회 방지)
+      setIsProgrammaticMove(true)
+
       // 선택 이벤트 데이터 할당
       setSelectedEventInfo(event)
       // 지도 이동
@@ -73,6 +77,12 @@ const ItemCard: React.FC<ItemCardProps> = ({ event }) => {
         lng: event.addrLotd,
       })
       mapInstance.setZoom(16, true)
+
+      // 지도 이동 후 플래그 초기화 (다음 사용자 이동부터 데이터 재조회 가능)
+      setTimeout(() => {
+        setIsProgrammaticMove(false)
+      }, 500)
+
       // 바텀시트 정리
       setIsListSheetShowing(false)
       setIsSelectSheetShowing(true)
