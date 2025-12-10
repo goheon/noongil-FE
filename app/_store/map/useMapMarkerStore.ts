@@ -34,8 +34,8 @@ const createLabelStyle = (isMobile: boolean) => {
       x = text.length * 4.85
     }
     return typeof window !== 'undefined' && window?.naver?.maps?.Point
-      ? new window.naver.maps.Point(x, 5)
-      : { x, y: 5 }
+      ? new window.naver.maps.Point(x, -12)
+      : { x, y: -12 }
   }
   return { content, size, getAnchor }
 }
@@ -43,7 +43,7 @@ const createMarkerIcon = (type: MarkerType) => ({
   url: type === 'popup' ? ICON.marker_popup : ICON.marker_exhibition,
   size: new naver.maps.Size(48, 48),
   origin: new naver.maps.Point(0, 0),
-  anchor: new naver.maps.Point(18, 36),
+  anchor: new naver.maps.Point(18, 18),
   scaledSize: new naver.maps.Size(36, 36),
 })
 

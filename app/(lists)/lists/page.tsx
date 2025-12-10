@@ -14,9 +14,11 @@ const ListsPage = () => {
   // 검색어가 없다면 전체 목록을 보여줌
   // const isSearchEmpty = searchQuery === ''
 
+  const uniqueKey = new URLSearchParams(searchParams).toString()
+
   return (
     <>
-      <SearchList eventCode="all" />
+      <SearchList key={uniqueKey} eventCode="all" />
       <SpeedDial />
       <SearchListFilter eventCode="all" />
     </>

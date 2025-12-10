@@ -1,15 +1,31 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
+import classNames from 'classnames/bind'
 
 import styles from './SpeedDial.module.scss'
+
+const cx = classNames.bind(styles)
 
 const SpeedDial = () => {
   const pathname = usePathname()
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const [isSmall, setIsSmall] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < 600 : false,
+  )
+
+  // 페이지 너비 감시
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmall(window.innerWidth < 600)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const { focused, buttons } = useMemo(() => {
     if (pathname.includes('popup')) {
@@ -49,10 +65,13 @@ const SpeedDial = () => {
   }
 
   return (
-    <div className={styles['speed-dial']}>
+    <div className={cx('speed-dial')}>
       {/* 메인 버튼 */}
       <motion.button
-        className={`${styles['speed-dial-btn']} ${styles['main']}`}
+        className={cx('speed-dial-btn', 'main', {
+          isSmall: isSmall,
+          exhibition: focused === '전시',
+        })}
         onClick={() => setOpen(!open)}
         whileTap={{ scale: 0.94 }}
         transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
@@ -64,7 +83,9 @@ const SpeedDial = () => {
       <AnimatePresence>
         {open && (
           <motion.div
-            className={styles['speed-dial-actions']}
+            className={cx('speed-dial-actions', {
+              isSmall: isSmall,
+            })}
             initial={{ opacity: 0, scale: 1, x: 0 }}
             animate={{ opacity: 1, scale: 1, x: -25 }}
             exit={{ opacity: 0, scale: 1, x: 0 }}
@@ -73,7 +94,9 @@ const SpeedDial = () => {
             {buttons.map((button) => (
               <motion.button
                 key={button}
-                className={`${styles['speed-dial-btn']}`}
+                className={cx('speed-dial-btn', {
+                  isSmall: isSmall,
+                })}
                 onClick={() => handleButtonClick(button)}
                 disabled={!open}
               >

@@ -1,7 +1,8 @@
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import ClientRootLayout from './ClientRootLayout'
 
-import 'react-loading-skeleton/dist/skeleton.css'
 import '@/app/_styles'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export const metadata = {
   title: {
@@ -9,8 +10,13 @@ export const metadata = {
     template: '%s | 눈길 noongil',
   },
   description: '...',
-  viewport:
-    'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -20,6 +26,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
+      <GoogleTagManager gtmId={process.env.NEXT_GA4_ID as string} />
+      <GoogleAnalytics gaId={process.env.NEXT_GTM_ID as string} />
       <body className="pages">
         <ClientRootLayout>{children}</ClientRootLayout>
       </body>

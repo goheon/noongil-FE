@@ -1,7 +1,6 @@
+import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
 import classNames from 'classnames/bind'
 import { useMapQuery } from '../useMapQuery'
-import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
-import { useMapStore } from '@/app/_store/map/useMapStore'
 
 import styles from './LoadMoreButton.module.scss'
 
@@ -11,12 +10,9 @@ const LoadMoreButton = () => {
   const { data } = useMapQuery()
   const page = useMapFilterStore((s) => s.page)
   const setPage = useMapFilterStore((s) => s.setPage)
-  const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
 
-  console.log(data)
   const handleClick = () => {
     setPage(page + 1)
-    setIsLoadmoreShowing(false)
   }
 
   return (

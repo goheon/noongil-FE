@@ -39,7 +39,7 @@ const TopBanner = (props: TopBannerProps) => {
   const currentEventCode = ALL_EVENT_CODE_MAP[eventCode]
 
   const { data, isLoading } = useQuery({
-    queryKey: ['banner-event'],
+    queryKey: ['banner-event', currentEventCode],
     queryFn: () => getBannerEvent(currentEventCode),
   })
 

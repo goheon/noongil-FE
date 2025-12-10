@@ -1,12 +1,17 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import classNames from 'classnames/bind'
 import { motion, useDragControls } from 'framer-motion'
 
 import styles from './BottomSheet.module.scss'
+import useOnClickOutside from '@/app/_hooks/useOnClickOutside'
 
-export type BottomSheetType = 'filter' | 'map-list' | 'map-select'
+export type BottomSheetType =
+  | 'filter'
+  | 'map-list'
+  | 'map-select'
+  | 'filter-order'
 
 interface BottomSheetProps {
   type: BottomSheetType
@@ -98,6 +103,37 @@ const BottomSheet = ({
 
   const { animate, exitY, dragConstraints } = getSheetConfig()
 
+  const handleClose = useCallback(() => {
+    // 내부 상태가 열려있을 때만 닫기 로직 실행
+    if (isOpen) {
+      setIsOpen(false)
+      if (setIsOpenProp) {
+        setIsOpenProp(false)
+      }
+    }
+  }, [isOpen, setIsOpenProp])
+
+  const handleOpen = useCallback(() => {
+    if (!isOpen) {
+      setIsOpen(true)
+
+      if (setIsOpenProp) {
+        setIsOpenProp(true)
+      }
+    }
+  }, [isOpen, setIsOpenProp])
+
+  useOnClickOutside(bottomSheetRef, handleClose)
+
+  const handleHeaderClick = useCallback(() => {
+    // 버튼을 '클릭하는 순간'에 기기 환경을 확인합니다.
+    const isPcEnvironment = window.matchMedia('(pointer: fine)').matches
+
+    if (isPcEnvironment) {
+      handleOpen()
+    }
+  }, [handleOpen])
+
   return (
     <div className={cx('bottom-sheet-container')}>
       {/* <motion.button
@@ -131,11 +167,18 @@ const BottomSheet = ({
           className={cx('handle-bar')}
           onPointerDown={(event) => dragControls.start(event)}
           style={{ touchAction: 'none' }}
+          onClick={handleHeaderClick}
         >
           <div className={cx('handle')} />
         </motion.div>
 
-        <div className={cx('content', type === 'filter' && 'content--filter')}>
+        <div
+          className={cx(
+            'content',
+            type === 'filter' && 'content--filter',
+            type === 'filter-order' && 'content--order-filter',
+          )}
+        >
           {/* {type === 'filter' && (
             <div className={styles['header']}>
               <h3>필터 옵션</h3>

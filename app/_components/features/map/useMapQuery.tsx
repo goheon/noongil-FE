@@ -1,6 +1,6 @@
+import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
 import { useQuery } from '@tanstack/react-query'
 import { searchMapInfo } from './mapSearchApi'
-import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
 
 export const useMapQuery = () => {
   const selectedCategories = useMapFilterStore((s) => s.selectedCategories)
@@ -8,6 +8,8 @@ export const useMapQuery = () => {
   const selectedDateType = useMapFilterStore((s) => s.selectedDateType)
   const selectedDates = useMapFilterStore((s) => s.selectedDates)
   const page = useMapFilterStore((s) => s.page)
+  const latitude = useMapFilterStore((s) => s.latitude)
+  const longitude = useMapFilterStore((s) => s.longitude)
 
   const filter = {
     selectedCategories,
@@ -15,6 +17,8 @@ export const useMapQuery = () => {
     selectedDateType,
     selectedDates,
     page,
+    latitude,
+    longitude,
   }
 
   return useQuery({

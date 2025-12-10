@@ -1,7 +1,7 @@
 'use client'
 
+import { AnimatePresence, motion } from 'framer-motion'
 import { useMemo, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 
 import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
 import { useMapStore } from '@/app/_store/map/useMapStore'
@@ -14,7 +14,7 @@ const CategoryDial = () => {
   const isSearchOpen = useMapStore((state) => state.isSearchOpen)
   const setPage = useMapFilterStore((s) => s.setPage)
   const setZoomCount = useMapStore((s) => s.setZoomCount)
-  const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
+  const setLocationFilter = useMapFilterStore((s) => s.setLocationFilter)
 
   const { focused, buttons } = useMemo(() => {
     if (selectedType === 'popup') {
@@ -31,7 +31,7 @@ const CategoryDial = () => {
 
     setPage(0)
     setZoomCount(0)
-    setIsLoadmoreShowing(false)
+    setLocationFilter(null, null)
     if (button === '팝업') {
       setSelectedType('popup')
       setOpen(false)

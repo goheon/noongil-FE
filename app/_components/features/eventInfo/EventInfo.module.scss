@@ -29,6 +29,15 @@
       .main-image {
         object-fit: cover;
       }
+
+      @media (max-width: 768px) {
+        padding: 0px 30px;
+        aspect-ratio: 1/1;
+
+        .main-image {
+          object-fit: contain;
+        }
+      }
     }
 
     .info-box {
@@ -149,12 +158,11 @@
           position: relative;
           width: 100%;
           max-width: 475px;
-          height: 570px;
           aspect-ratio: 3/4;
           overflow: hidden;
 
           .content-img {
-            object-fit: cover;
+            object-fit: contain;
           }
         }
       }

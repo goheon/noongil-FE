@@ -1,17 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { LocationPermissionModal } from './location-permission-modal/LocationPermissionModal'
 
 import {
-  useNaverMapSDK,
-  useMapInitializer,
   useMapCenter,
+  useMapInitializer,
+  useNaverMapSDK,
 } from '@/app/_store/map/MapHooks'
-import { useMapStore } from '@/app/_store/map/useMapStore'
-import { useMarkerStore } from '@/app/_store/map/useMapMarkerStore'
 import { useMapFilterStore } from '@/app/_store/map/useMapFilterStore'
+import { useMarkerStore } from '@/app/_store/map/useMapMarkerStore'
+import { useMapStore } from '@/app/_store/map/useMapStore'
 import { useMapQuery } from './useMapQuery'
 
 import { IEventInfo } from '../eventInfo/type'
@@ -32,11 +32,10 @@ export const MapBox: React.FC = () => {
   const selectedEvent = useMapStore((s) => s.selectedEvent)
   const setSelectedEventInfo = useMapStore((s) => s.setSelectedEventInfo)
   const setIsFilterOpen = useMapStore((s) => s.setIsFilterOpen)
-  const setIsLoadmoreShowing = useMapStore((s) => s.setIsLoadmoreShowing)
   const page = useMapFilterStore((s) => s.page)
   // 이벤트 조회 쿼리 데이터
   const { data } = useMapQuery()
-  console.log(data)
+  // console.log(data)
 
   // 지도 인스턴스 할당
   const map = useNaverMapSDK({
@@ -78,20 +77,11 @@ export const MapBox: React.FC = () => {
     // 줌할 때마다 라벨/상태 갱신
     onZoomChange: (zoom) => {
       updateLabels(zoom)
-      console.log('현재 줌 레벨:', zoom)
+      // console.log('현재 줌 레벨:', zoom)
     },
     // 줌이 N회 이상 변경되면 분기
     onZoomThreshold: ({ zoom, count }) => {
-      // ex) 토스트, 트래킹, 쿼리 무효화 등
-      console.log('임계치 도달', zoom, count)
-      console.log(page)
-      console.log(data?.totalPageCount)
-      if (page + 1 !== data?.totalPageCount && isSelectSheetShowing === false) {
-        console.log('더불러오기활성화')
-        setIsLoadmoreShowing(true)
-      } else {
-        setIsLoadmoreShowing(false)
-      }
+      // 임계치 도달 시 처리 (필요시 추가)
     },
     zoomChangeThreshold: 5, // 기본 5
     zoomDebounceMs: 500, // 기본 500ms
@@ -128,11 +118,13 @@ export const MapBox: React.FC = () => {
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [])
+  }, [setIsFilterOpen])
 
   // 마커 매니저 훅
   const addMarker = useMarkerStore((s) => s.addOne)
   const clearMarkers = useMarkerStore((s) => s.clearAll)
+  const isInitialDataLoaded = useMapStore((s) => s.isInitialDataLoaded)
+  const setIsInitialDataLoaded = useMapStore((s) => s.setIsInitialDataLoaded)
 
   // 테스트용 마커 추가
   useEffect(() => {
@@ -142,12 +134,21 @@ export const MapBox: React.FC = () => {
     const { events } = data
     if (!events || events.length === 0) return
 
-    const firstEvent = events[0]
-    const initialPosition = new naver.maps.LatLng(
-      firstEvent.addrLttd,
-      firstEvent.addrLotd,
-    )
-    const bounds = new naver.maps.LatLngBounds(initialPosition, initialPosition)
+    // 최초 로드 시에만 바운더리 기반 센터 이동 로직 적용
+    const isFirstLoad = !isInitialDataLoaded
+
+    let firstEvent: MapEventInfo | null = null
+    let initialPosition: naver.maps.LatLng | null = null
+    let bounds: naver.maps.LatLngBounds | null = null
+
+    if (isFirstLoad) {
+      firstEvent = events[0] as MapEventInfo
+      initialPosition = new naver.maps.LatLng(
+        firstEvent.addrLttd,
+        firstEvent.addrLotd,
+      )
+      bounds = new naver.maps.LatLngBounds(initialPosition, initialPosition)
+    }
 
     events.forEach((event: MapEventInfo) => {
       const position = new naver.maps.LatLng(event.addrLttd, event.addrLotd)
@@ -167,40 +168,58 @@ export const MapBox: React.FC = () => {
           // select bottomsheet open
           setIsSelectSheetOpen(true)
           // header back button
-          console.log(`${event.eventNm} 마커 클릭됨`)
+          // console.log(`${event.eventNm} 마커 클릭됨`)
         },
       })
 
-      bounds.extend(position)
+      // 최초 로드 시에만 바운더리 확장
+      if (isFirstLoad && bounds) {
+        bounds.extend(position)
+      }
     })
 
-    if (selectedEvent) {
-      map.setCenter({
-        lat: selectedEvent.addrLttd - 0.001,
-        lng: selectedEvent.addrLotd,
-      })
-      map.setZoom(16, true)
-    } else {
-      map.fitBounds(bounds, {
-        top: 50,
-        bottom: 50,
-        left: 50,
-        right: 50,
-      })
-      map.panToBounds(
-        bounds,
-        {},
-        {
-          top: 50,
-          bottom: 50,
-          left: 50,
-          right: 50,
-        },
-      )
+    // 최초 로드 시에만 바운더리 기반 센터 이동
+    if (isFirstLoad && bounds) {
+      if (selectedEvent) {
+        map.setCenter({
+          lat: selectedEvent.addrLttd - 0.001,
+          lng: selectedEvent.addrLotd,
+        })
+        map.setZoom(16, true)
+      } else {
+        map.panToBounds(
+          bounds,
+          {},
+          {
+            top: 50,
+            bottom: 50,
+            left: 50,
+            right: 50,
+          },
+        )
+      }
+
+      // 최초 로드 완료 표시
+      setIsInitialDataLoaded(true)
     }
 
-    setIsListSheetShowing(true)
-  }, [addMarker, map, data, setIsListSheetShowing])
+    // selectedEvent가 선택되어 있으면 (선택 바텀시트가 열려 있으면) 리스트 바텀시트를 보이지 않음
+    if (!selectedEvent) {
+      setIsListSheetShowing(true)
+    }
+  }, [
+    addMarker,
+    clearMarkers,
+    map,
+    data,
+    setIsListSheetShowing,
+    selectedEvent,
+    setSelectedEventInfo,
+    setIsSelectSheetShowing,
+    setIsSelectSheetOpen,
+    isInitialDataLoaded,
+    setIsInitialDataLoaded,
+  ])
 
   return (
     <div className={`${styles['map-box']}`}>

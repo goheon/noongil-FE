@@ -19,8 +19,6 @@ export const bookmarkEventItem = async ({
         withCredentials: true,
       },
     )
-
-    console.log('res :', response)
   } catch (err) {
     console.log('bookmark error :', err)
     throw err

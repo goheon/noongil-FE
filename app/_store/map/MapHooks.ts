@@ -1,6 +1,7 @@
-import { useLayoutEffect, useEffect, useState, useRef } from 'react'
-import { useMapStore } from './useMapStore'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useMapQuery } from '../../_components/features/map/useMapQuery'
+import { useMapFilterStore } from './useMapFilterStore'
+import { useMapStore } from './useMapStore'
 
 declare global {
   interface Window {
@@ -45,6 +46,26 @@ export const checkLocationPermission = async () => {
     name: 'geolocation',
   })
   return state === 'granted'
+}
+
+// ===== Distance Calculation (Haversine formula) =====
+export const calculateDistance = (
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number,
+): number => {
+  const R = 6371 // Earth's radius in kilometers
+  const dLat = ((lat2 - lat1) * Math.PI) / 180
+  const dLng = ((lng2 - lng1) * Math.PI) / 180
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  return R * c // Distance in kilometers
 }
 
 export const getCurrentLocation = async (): Promise<Position> => {
@@ -158,7 +179,6 @@ const createMapEventHandlers = (
     }
 
     // 2) 줌 변경 카운트 및 임계치 체크
-
     setZoomCount((zoomCount += 1))
     onZoomChange?.(currentZoom)
     if (zoomCount >= threshold) {
@@ -358,4 +378,110 @@ export const useMapCenter = (map: MapType | null) => {
   }, [map])
 
   return center
+}
+
+// ===== Map Center Movement Tracking Hook =====
+const MIN_ZOOM_FOR_LABELS = 15
+const MIN_DISTANCE_FOR_REQUERY_KM = 1
+
+export const useMapCenterMovement = (map: MapType | null) => {
+  const labelRenderCenter = useMapStore((s) => s.labelRenderCenter)
+  const setLabelRenderCenter = useMapStore((s) => s.setLabelRenderCenter)
+  const setCurrentZoom = useMapStore((s) => s.setCurrentZoom)
+  const setLocationFilter = useMapFilterStore((s) => s.setLocationFilter)
+  const { dataUpdatedAt } = useMapQuery()
+
+  // 데이터가 업데이트되면 기준점 초기화
+  useEffect(() => {
+    if (map) {
+      const currentZoom = map.getZoom()
+      if (currentZoom >= MIN_ZOOM_FOR_LABELS) {
+        const center = map.getCenter()
+        setLabelRenderCenter({ lat: center.y, lng: center.x })
+      } else {
+        setLabelRenderCenter(null)
+      }
+    }
+  }, [dataUpdatedAt, map, setLabelRenderCenter])
+
+  useEffect(() => {
+    if (!map) return
+
+    const handleZoomChanged = () => {
+      const currentZoom = map.getZoom()
+      const currentCenter = map.getCenter()
+
+      // 현재 줌 레벨 상태 업데이트
+      setCurrentZoom(currentZoom)
+
+      if (currentZoom >= MIN_ZOOM_FOR_LABELS) {
+        // 라벨 렌더링 조건 충족
+        if (!labelRenderCenter) {
+          // 최초 기준점 설정 (조건 3 - 데이터 재조회 로직 제거)
+          setLabelRenderCenter({
+            lat: currentCenter.y,
+            lng: currentCenter.x,
+          })
+          // setLocationFilter(currentCenter.y, currentCenter.x)
+        }
+      } else {
+        // 라벨 렌더링 조건 미충족 - 초기화
+        setLabelRenderCenter(null)
+      }
+    }
+
+    const handleCenterChanged = () => {
+      const currentZoom = map.getZoom()
+      const currentCenter = map.getCenter()
+      const isProgrammaticMove = useMapStore.getState().isProgrammaticMove
+
+      // 프로그래밍된 센터 이동인 경우 데이터 재조회하지 않음
+      if (isProgrammaticMove) return
+
+      if (currentZoom >= MIN_ZOOM_FOR_LABELS && labelRenderCenter) {
+        // 라벨이 렌더링되는 상태에서 중심 이동 체크 (조건 1)
+        const distance = calculateDistance(
+          labelRenderCenter.lat,
+          labelRenderCenter.lng,
+          currentCenter.y,
+          currentCenter.x,
+        )
+
+        if (distance >= MIN_DISTANCE_FOR_REQUERY_KM) {
+          // 1km 이상 이동 시 위치 필터 업데이트 및 데이터 재조회
+          setLocationFilter(currentCenter.y, currentCenter.x)
+          // 새로운 기준점으로 업데이트
+          setLabelRenderCenter({
+            lat: currentCenter.y,
+            lng: currentCenter.x,
+          })
+        }
+      }
+    }
+
+    const zoomListener = naver.maps.Event.addListener(
+      map,
+      'zoom_changed',
+      handleZoomChanged,
+    )
+    const centerListener = naver.maps.Event.addListener(
+      map,
+      'center_changed',
+      handleCenterChanged,
+    )
+
+    // 초기 상태 설정
+    handleZoomChanged()
+
+    return () => {
+      naver.maps.Event.removeListener(zoomListener)
+      naver.maps.Event.removeListener(centerListener)
+    }
+  }, [
+    map,
+    labelRenderCenter,
+    setLabelRenderCenter,
+    setLocationFilter,
+    setCurrentZoom,
+  ])
 }

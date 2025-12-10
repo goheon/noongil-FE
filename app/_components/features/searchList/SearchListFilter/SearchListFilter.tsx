@@ -7,6 +7,7 @@ import OrderFilter from './OrderFilter'
 import CategoryFilter from './CategoryFilter'
 import { TEventCodeName } from '@/app/_types'
 import RegionFilter from './RegionFilter'
+import { useMemo } from 'react'
 
 const cx = classNames.bind(styles)
 
@@ -19,9 +20,14 @@ const SearchListFilter = (props: SearchListFilterProps) => {
 
   const { isOpen, filter, setOpen } = useListFilterStore()
 
+  const bottomSheetType = useMemo(
+    () => (filter === 'order' ? 'filter-order' : 'filter'),
+    [filter],
+  )
+
   return (
     <BottomSheet
-      type="filter"
+      type={bottomSheetType}
       isOpen={isOpen}
       setIsOpen={setOpen}
       isExhibitionPage={eventCode === 'exhibition'}

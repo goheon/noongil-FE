@@ -1,0 +1,28 @@
+.not-found {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+
+  .title {
+    margin-top: 30%;
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .content {
+    padding: 15px;
+    font-size: 18px;
+  }
+
+  .home {
+    border: solid 1px #000;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    margin-top: 30px;
+    padding: 15px;
+    width: 50%;
+  }
+}

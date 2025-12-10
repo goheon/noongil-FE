@@ -12,7 +12,7 @@ const useSearchList = (eventCode: TAllEventCode) => {
   const startDate = searchParams.get('startDate') ?? ''
   const endDate = searchParams.get('endDate') ?? ''
   const regions = searchParams.get('regions') ?? ''
-  const sortType = searchParams.get('sortType') ?? ''
+  const sortType = searchParams.get('sortType') ?? '10'
   const keyword = searchParams.get('keyword') ?? ''
 
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
@@ -33,8 +33,8 @@ const useSearchList = (eventCode: TAllEventCode) => {
           sortType,
           eventCode,
           keyword,
-          operEndDt: startDate,
-          operStatDt: endDate,
+          operEndDt: endDate,
+          operStatDt: startDate,
           categories,
           regionGroups: regions,
         }),

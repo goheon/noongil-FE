@@ -21,9 +21,10 @@ const useUserAuth = () => {
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['map-user-categories'],
-      })
+      // queryClient.invalidateQueries({
+      //   queryKey: ['map-user-categories'],
+      // })
+      queryClient.clear()
       router.push('/')
     },
   })

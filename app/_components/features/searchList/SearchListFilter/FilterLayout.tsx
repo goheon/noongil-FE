@@ -24,7 +24,7 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
   const {
     filter,
     setFilter,
-    reset,
+    filterReset,
     category,
     setCategory,
     startDate,
@@ -136,7 +136,7 @@ const FilterLayout = (props: PropsWithChildren<FilterLayoutProps>) => {
             className={cx('btn', 'btn--reset', {
               'btn--reset--exhibition': isExhibitionPage,
             })}
-            onClick={() => reset()}
+            onClick={() => filterReset()}
           >
             초기화
           </button>
